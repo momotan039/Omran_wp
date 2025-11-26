@@ -37,9 +37,9 @@ if (!defined('ABSPATH')) {
                     <h4 class="text-white font-bold text-lg mb-4 border-b-2 border-secondary w-fit pb-1"><?php esc_html_e('روابط سريعة', 'alomran'); ?></h4>
                     <ul class="space-y-2 text-sm">
                         <li><a href="<?php echo esc_url(get_post_type_archive_link('product') ?: home_url('/products')); ?>" class="hover:text-secondary transition"><?php esc_html_e('منتجاتنا', 'alomran'); ?></a></li>
-                        <li><a href="<?php echo esc_url(get_permalink(get_page_by_path('about')) ?: home_url('/about')); ?>" class="hover:text-secondary transition"><?php esc_html_e('من نحن', 'alomran'); ?></a></li>
+                        <li><a href="<?php echo esc_url(alomran_get_page_url('عن الشركة') ?: alomran_get_page_url('about') ?: home_url('/about')); ?>" class="hover:text-secondary transition"><?php esc_html_e('من نحن', 'alomran'); ?></a></li>
                         <li><a href="<?php echo esc_url(get_post_type_archive_link('news') ?: home_url('/news')); ?>" class="hover:text-secondary transition"><?php esc_html_e('آخر الأخبار', 'alomran'); ?></a></li>
-                        <li><a href="<?php echo esc_url(get_permalink(get_page_by_path('contact')) ?: home_url('/contact')); ?>" class="hover:text-secondary transition"><?php esc_html_e('اتصل بنا', 'alomran'); ?></a></li>
+                        <li><a href="<?php echo esc_url(alomran_get_page_url('تواصل معنا') ?: alomran_get_page_url('contact') ?: home_url('/contact')); ?>" class="hover:text-secondary transition"><?php esc_html_e('اتصل بنا', 'alomran'); ?></a></li>
                     </ul>
                 </div>
 

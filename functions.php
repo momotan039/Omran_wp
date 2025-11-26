@@ -17,6 +17,7 @@ $alomran_includes = array(
     'inc/helpers.php',
     'inc/setup.php',
     'inc/assets.php',
+    'inc/menu-walker.php',
     'inc/cpt.php',
     'inc/taxonomies.php',
     'inc/acf.php',

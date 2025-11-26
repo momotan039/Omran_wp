@@ -33,11 +33,114 @@ if (!defined('ABSPATH')) {
       .delay-400 { animation-delay: 400ms; }
       .delay-500 { animation-delay: 500ms; }
       .delay-700 { animation-delay: 700ms; }
+      
+      /* Page Loader Animations */
+      @keyframes spin-slow {
+        from { transform: rotate(45deg); }
+        to { transform: rotate(405deg); }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 2s linear infinite;
+      }
+      
+      @keyframes progress {
+        0% { transform: translateX(-100%); }
+        50% { transform: translateX(0%); }
+        100% { transform: translateX(100%); }
+      }
+      .animate-progress {
+        animation: progress 1.5s ease-in-out infinite;
+      }
+      
+      /* Smooth Page Transitions */
+      @keyframes pageFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .page-fade-in {
+        animation: pageFadeIn 0.6s ease-out forwards;
+      }
+      
+      /* Image Loading Placeholder */
+      .image-loading {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      /* Content Skeleton */
+      .skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+      }
     </style>
 </head>
 <body <?php body_class('bg-white text-slate-800 font-sans antialiased'); ?>>
 <?php wp_body_open(); ?>
-<div id="page" class="site flex flex-col min-h-screen">
+
+<!-- Page Loader -->
+<div id="page-loader" class="fixed inset-0 z-[100] bg-white flex items-center justify-center transition-opacity duration-500">
+    <div class="text-center">
+        <!-- Industrial Logo Animation -->
+        <div class="relative w-20 h-20 mx-auto mb-6">
+            <div class="absolute inset-0 bg-secondary rounded-lg flex items-center justify-center transform rotate-45 animate-spin-slow">
+                <div class="w-12 h-12 border-4 border-primary border-t-transparent rounded-lg transform -rotate-45"></div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-8 h-8 bg-primary rounded transform rotate-45"></div>
+            </div>
+        </div>
+        <!-- Loading Text -->
+        <div class="space-y-2">
+            <h3 class="text-xl font-bold text-primary">العمران</h3>
+            <p class="text-sm text-gray-600">للصناعات المتطورة</p>
+            <!-- Progress Bar -->
+            <div class="w-48 h-1 bg-gray-200 rounded-full mx-auto mt-4 overflow-hidden">
+                <div id="loader-progress" class="h-full bg-gradient-to-r from-primary via-secondary to-primary rounded-full transform -translate-x-full animate-progress"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Vanilla JS fallback to hide loader - runs immediately
+(function() {
+    function hideLoader() {
+        const loader = document.getElementById('page-loader');
+        const page = document.getElementById('page');
+        
+        if (loader && page) {
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none';
+            page.style.opacity = '1';
+            
+            setTimeout(function() {
+                loader.style.display = 'none';
+            }, 500);
+        }
+    }
+    
+    // Hide loader when window loads
+    if (document.readyState === 'complete') {
+        setTimeout(hideLoader, 800);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(hideLoader, 800);
+        });
+    }
+    
+    // Safety fallback - hide after 3 seconds max
+    setTimeout(hideLoader, 3000);
+})();
+</script>
+
+<div id="page" class="site flex flex-col min-h-screen opacity-0 transition-opacity duration-500">
     <header class="bg-primary text-white sticky top-0 z-50 shadow-lg border-b border-white/10">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-20">
@@ -59,23 +162,36 @@ if (!defined('ABSPATH')) {
 
                 <nav class="hidden md:flex space-x-8 space-x-reverse items-center">
                     <?php
-                    $nav_links = array(
-                        array('name' => 'الرئيسية', 'url' => home_url('/')),
-                        array('name' => 'منتجاتنا', 'url' => get_post_type_archive_link('product') ?: home_url('/products')),
-                        array('name' => 'عن الشركة', 'url' => get_permalink(get_page_by_path('about')) ?: home_url('/about')),
-                        array('name' => 'الأخبار', 'url' => get_post_type_archive_link('news') ?: home_url('/news')),
-                        array('name' => 'الأسئلة الشائعة', 'url' => get_permalink(get_page_by_path('faq')) ?: home_url('/faq')),
-                        array('name' => 'تواصل معنا', 'url' => get_permalink(get_page_by_path('contact')) ?: home_url('/contact')),
-                    );
+                    if (has_nav_menu('primary')) {
+                        wp_nav_menu(array(
+                            'theme_location' => 'primary',
+                            'container'      => false,
+                            'menu_class'     => 'flex space-x-8 space-x-reverse items-center',
+                            'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
+                            'walker'         => new AlOmran_Walker_Nav_Menu(),
+                            'fallback_cb'    => false,
+                        ));
+                    } else {
+                        // Fallback menu if no menu is assigned
+                        $nav_links = array(
+                            array('name' => 'الرئيسية', 'url' => home_url('/')),
+                            array('name' => 'منتجاتنا', 'url' => get_post_type_archive_link('product') ?: home_url('/products')),
+                            array('name' => 'عن الشركة', 'url' => alomran_get_page_url('عن الشركة') ?: alomran_get_page_url('about') ?: home_url('/about')),
+                            array('name' => 'الأخبار', 'url' => get_post_type_archive_link('news') ?: home_url('/news')),
+                            array('name' => 'الأسئلة الشائعة', 'url' => alomran_get_page_url('الأسئلة الشائعة') ?: alomran_get_page_url('faq') ?: home_url('/faq')),
+                            array('name' => 'تواصل معنا', 'url' => alomran_get_page_url('تواصل معنا') ?: alomran_get_page_url('contact') ?: home_url('/contact')),
+                        );
 
-                    foreach ($nav_links as $link) {
-                        $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'text-white hover:text-secondary';
-                        echo '<a href="' . esc_url($link['url']) . '" class="transition-colors duration-300 text-sm lg:text-base ' . esc_attr($is_active) . '">' . esc_html($link['name']) . '</a>';
+                        echo '<ul class="flex space-x-8 space-x-reverse items-center">';
+                        foreach ($nav_links as $link) {
+                            $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'text-white hover:text-secondary';
+                            echo '<li class="transition-colors duration-300 text-sm lg:text-base ' . esc_attr($is_active) . '">';
+                            echo '<a href="' . esc_url($link['url']) . '">' . esc_html($link['name']) . '</a>';
+                            echo '</li>';
+                        }
+                        echo '</ul>';
                     }
                     ?>
-                    <a href="<?php echo esc_url(get_permalink(get_page_by_path('contact')) ?: home_url('/contact')); ?>" class="bg-secondary text-primary px-5 py-2 rounded-full font-bold hover:bg-yellow-500 transition shadow-lg animate-pulse">
-                        <?php esc_html_e('اطلب عرض سعر', 'alomran'); ?>
-                    </a>
                 </nav>
 
                 <div class="md:hidden">
@@ -94,9 +210,30 @@ if (!defined('ABSPATH')) {
         <div id="mobile-menu" class="md:hidden hidden bg-primary border-t border-gray-700">
             <div class="flex flex-col space-y-4 px-4 py-6">
                 <?php
-                foreach ($nav_links as $link) {
-                    $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'text-white hover:text-secondary';
-                    echo '<a href="' . esc_url($link['url']) . '" class="block ' . esc_attr($is_active) . '">' . esc_html($link['name']) . '</a>';
+                if (has_nav_menu('primary')) {
+                    wp_nav_menu(array(
+                        'theme_location' => 'primary',
+                        'container'      => false,
+                        'menu_class'     => 'flex flex-col space-y-4',
+                        'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
+                        'walker'         => new AlOmran_Walker_Nav_Menu(),
+                        'fallback_cb'    => false,
+                    ));
+                } else {
+                    // Fallback menu if no menu is assigned
+                    $nav_links = array(
+                        array('name' => 'الرئيسية', 'url' => home_url('/')),
+                        array('name' => 'منتجاتنا', 'url' => get_post_type_archive_link('product') ?: home_url('/products')),
+                        array('name' => 'عن الشركة', 'url' => alomran_get_page_url('عن الشركة') ?: alomran_get_page_url('about') ?: home_url('/about')),
+                        array('name' => 'الأخبار', 'url' => get_post_type_archive_link('news') ?: home_url('/news')),
+                        array('name' => 'الأسئلة الشائعة', 'url' => alomran_get_page_url('الأسئلة الشائعة') ?: alomran_get_page_url('faq') ?: home_url('/faq')),
+                        array('name' => 'تواصل معنا', 'url' => alomran_get_page_url('تواصل معنا') ?: alomran_get_page_url('contact') ?: home_url('/contact')),
+                    );
+
+                    foreach ($nav_links as $link) {
+                        $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'text-white hover:text-secondary';
+                        echo '<a href="' . esc_url($link['url']) . '" class="block ' . esc_attr($is_active) . '">' . esc_html($link['name']) . '</a>';
+                    }
                 }
                 ?>
             </div>
