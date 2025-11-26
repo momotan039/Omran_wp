@@ -41,6 +41,14 @@ A fully functional WordPress theme converted from a React application. This them
      - **FAQ** (use "FAQ Page" template)
    - Set a static front page (Settings → Reading → A static page → Select "Home")
 
+6. **Configure Navigation Menu**
+   - Go to Appearance → Menus
+   - Create a new menu or edit existing menu
+   - Add pages, posts, custom links, or categories to the menu
+   - Assign the menu to "Primary Menu" location
+   - **Tip**: To create a CTA button, add a menu item and in "CSS Classes" field, add: `menu-cta`
+   - Click "Save Menu"
+
 6. **Import Sample Data** (Optional)
    - You can create sample products, news items, testimonials, and FAQs manually
    - Or use a plugin like "WordPress Importer" to import from XML/JSON
@@ -102,6 +110,38 @@ alomran-theme/
 
 ### FAQ
 - **ACF Fields**: None (uses title for question, content for answer)
+
+## Navigation Menu Setup
+
+The theme uses WordPress's built-in menu system for easy management:
+
+1. **Access Menu Editor**
+   - Go to **Appearance → Menus** in WordPress admin
+   - Create a new menu or edit an existing one
+
+2. **Add Menu Items**
+   - Add pages, posts, custom links, or categories
+   - Drag and drop to reorder items
+   - Create submenus by indenting items
+
+3. **Create CTA Button**
+   - Add a menu item (usually "Contact" or "Request Quote")
+   - Click to expand the menu item
+   - In the **CSS Classes** field, add: `menu-cta`
+   - This will style the item as a button with special styling
+
+4. **Assign Menu Location**
+   - Check "Primary Menu" to display in header
+   - Check "Footer Menu" to display in footer (if implemented)
+   - Click "Save Menu"
+
+5. **Menu Features**
+   - Supports Arabic page titles
+   - Automatic active state highlighting
+   - Responsive mobile menu
+   - Custom styling for CTA buttons
+
+**Note**: If no menu is assigned, the theme will display a fallback menu with default links.
 
 ## Custom Fields Setup
 
