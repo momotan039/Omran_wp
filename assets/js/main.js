@@ -5,7 +5,113 @@
 (function($) {
     'use strict';
 
+    // Page Loader Management
+    const PageLoader = {
+        init: function() {
+            this.hideLoader();
+            this.setupImageLoading();
+            this.setupPageTransitions();
+        },
+        
+        hideLoader: function() {
+            const loader = $('#page-loader');
+            const page = $('#page');
+            
+            if (!loader.length) {
+                return; // Loader doesn't exist
+            }
+            
+            // Ensure minimum display time for smooth experience
+            const minDisplayTime = 800;
+            const startTime = Date.now();
+            
+            const hideLoaderNow = function() {
+                const elapsed = Date.now() - startTime;
+                const remaining = Math.max(0, minDisplayTime - elapsed);
+                
+                setTimeout(function() {
+                    loader.addClass('opacity-0 pointer-events-none');
+                    page.removeClass('opacity-0').addClass('page-fade-in');
+                    
+                    setTimeout(function() {
+                        loader.hide();
+                    }, 500);
+                }, remaining);
+            };
+            
+            // Check if window has already loaded
+            if (document.readyState === 'complete') {
+                hideLoaderNow();
+            } else {
+                // Wait for window load
+                $(window).on('load', hideLoaderNow);
+            }
+            
+            // Fallback if window load doesn't fire (safety net)
+            setTimeout(function() {
+                if (loader.is(':visible')) {
+                    hideLoaderNow();
+                }
+            }, 2000);
+        },
+        
+        setupImageLoading: function() {
+            // Add loading state to images
+            $('img').each(function() {
+                const $img = $(this);
+                
+                if (!$img.attr('src')) {
+                    $img.addClass('image-loading');
+                }
+                
+                $img.on('load', function() {
+                    $(this).removeClass('image-loading').addClass('opacity-0');
+                    $(this).animate({ opacity: 1 }, 300);
+                });
+                
+                $img.on('error', function() {
+                    $(this).removeClass('image-loading');
+                });
+            });
+        },
+        
+        setupPageTransitions: function() {
+            // Smooth page transitions for internal links
+            $('a[href^="' + window.location.origin + '"]').on('click', function(e) {
+                const href = $(this).attr('href');
+                
+                // Skip if external link, anchor, or special attributes
+                if ($(this).attr('target') === '_blank' || 
+                    $(this).attr('href').indexOf('#') !== -1 ||
+                    $(this).hasClass('no-transition')) {
+                    return;
+                }
+                
+                // Show loading overlay for page transitions
+                const $loader = $('#page-loader');
+                $loader.removeClass('opacity-0 pointer-events-none').show();
+                $('#page').addClass('opacity-0');
+            });
+        }
+    };
+
     $(document).ready(function() {
+        // Check if page is already loaded and hide loader immediately if so
+        if (document.readyState === 'complete') {
+            const loader = $('#page-loader');
+            const page = $('#page');
+            if (loader.length) {
+                setTimeout(function() {
+                    loader.fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                    page.removeClass('opacity-0').addClass('page-fade-in');
+                }, 500);
+            }
+        }
+        
+        // Initialize page loader
+        PageLoader.init();
         // Mobile Menu Toggle
         const mobileMenuToggle = $('#mobile-menu-toggle');
         const mobileMenu = $('#mobile-menu');
@@ -76,8 +182,8 @@
                 message: $form.find('textarea[name="message"]').val()
             };
 
-            // Disable submit button
-            $submitBtn.prop('disabled', true).text('جاري الإرسال...');
+            // Disable submit button and show loading
+            $submitBtn.prop('disabled', true).html('<span class="inline-flex items-center gap-2"><svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> جاري الإرسال...</span>');
 
             $.ajax({
                 url: alomranAjax.ajaxurl,
@@ -186,6 +292,11 @@
     $(window).on('load', function() {
         // Hide any loading spinners if present
         $('.loader').fadeOut();
+        
+        // Ensure page is visible after load
+        setTimeout(function() {
+            $('#page').removeClass('opacity-0');
+        }, 100);
     });
 
 })(jQuery);
