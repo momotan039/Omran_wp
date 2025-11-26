@@ -15,80 +15,68 @@ if (function_exists('acf_add_local_field_group')) {
      */
     function alomran_register_acf_fields() {
 
-        $acf_group_callback = 'acf_add_local_field_group';
-
-        call_user_func(
-            $acf_group_callback,
+        acf_add_local_field_group(
             array(
             'key'    => 'group_product_fields',
-            'title'  => 'Product Fields',
+            'title'  => 'حقول المنتج',
             'fields' => array(
                 array(
-                    'key'     => 'field_product_short_description',
-                    'label'   => 'Short Description',
-                    'name'    => 'short_description',
-                    'type'    => 'textarea',
-                    'required'=> 1,
+                    'key'           => 'field_product_short_description',
+                    'label'         => 'الوصف القصير',
+                    'name'          => 'short_description',
+                    'type'          => 'textarea',
+                    'required'      => 1,
+                    'rows'          => 3,
+                    'placeholder'   => 'أدخل وصفاً قصيراً للمنتج',
                 ),
                 array(
-                    'key'          => 'field_product_price',
-                    'label'        => 'Price',
-                    'name'         => 'price',
-                    'type'         => 'text',
-                    'default_value'=> 'تواصل للسعر',
+                    'key'           => 'field_product_price',
+                    'label'         => 'السعر',
+                    'name'          => 'price',
+                    'type'          => 'text',
+                    'default_value' => 'تواصل للسعر',
+                    'placeholder'   => 'السعر أو "تواصل للسعر"',
                 ),
                 array(
-                    'key'     => 'field_product_category_enum',
-                    'label'   => 'Product Category',
-                    'name'    => 'product_category_enum',
-                    'type'    => 'select',
-                    'choices' => array(
-                        'DRAIN_GRILLS'   => 'مصافي وجريلات',
-                        'GREASE_TRAPS'   => 'مصائد شحوم',
-                        'WATER_TREATMENT'=> 'معالجة مياه',
+                    'key'           => 'field_product_category_enum',
+                    'label'         => 'فئة المنتج',
+                    'name'          => 'product_category_enum',
+                    'type'          => 'select',
+                    'choices'       => array(
+                        'DRAIN_GRILLS'    => 'مصافي وجريلات',
+                        'GREASE_TRAPS'    => 'مصائد شحوم',
+                        'WATER_TREATMENT' => 'معالجة مياه',
                     ),
-                    'required' => 1,
+                    'required'      => 1,
+                    'default_value' => '',
                 ),
                 array(
-                    'key'       => 'field_product_features',
-                    'label'     => 'Features',
-                    'name'      => 'features',
-                    'type'      => 'repeater',
-                    'sub_fields'=> array(
-                        array(
-                            'key'   => 'field_feature_text',
-                            'label' => 'Feature Text',
-                            'name'  => 'feature_text',
-                            'type'  => 'text',
-                        ),
-                    ),
+                    'key'           => 'field_product_features',
+                    'label'         => 'المميزات',
+                    'name'          => 'features',
+                    'type'          => 'textarea',
+                    'rows'          => 6,
+                    'placeholder'   => 'أدخل كل ميزة في سطر منفصل' . "\n" . 'مثال:' . "\n" . 'مقاومة للصدأ (SS304)' . "\n" . 'سلة مخلفات داخلية' . "\n" . 'تصميم مانع للروائح',
+                    'instructions'  => 'أدخل كل ميزة في سطر منفصل. كل سطر سيظهر كقائمة منفصلة.',
                 ),
                 array(
-                    'key'       => 'field_product_specs',
-                    'label'     => 'Specifications',
-                    'name'      => 'specs',
-                    'type'      => 'repeater',
-                    'sub_fields'=> array(
-                        array(
-                            'key'   => 'field_spec_label',
-                            'label' => 'Label',
-                            'name'  => 'label',
-                            'type'  => 'text',
-                        ),
-                        array(
-                            'key'   => 'field_spec_value',
-                            'label' => 'Value',
-                            'name'  => 'value',
-                            'type'  => 'text',
-                        ),
-                    ),
+                    'key'           => 'field_product_specs',
+                    'label'         => 'المواصفات',
+                    'name'          => 'specs',
+                    'type'          => 'textarea',
+                    'rows'          => 8,
+                    'placeholder'   => 'أدخل كل مواصفة بصيغة: التسمية: القيمة' . "\n" . 'مثال:' . "\n" . 'المادة: Stainless Steel 304' . "\n" . 'الأبعاد: 30x30 سم' . "\n" . 'الغطاء: 2 مم' . "\n" . 'البدن: 1.5 مم',
+                    'instructions'  => 'أدخل كل مواصفة بصيغة: التسمية: القيمة (كل مواصفة في سطر منفصل)',
                 ),
                 array(
-                    'key'          => 'field_product_is_featured',
-                    'label'        => 'Is Featured',
-                    'name'         => 'is_featured',
-                    'type'         => 'true_false',
-                    'default_value'=> 0,
+                    'key'           => 'field_product_is_featured',
+                    'label'         => 'منتج مميز',
+                    'name'          => 'is_featured',
+                    'type'          => 'true_false',
+                    'default_value' => 0,
+                    'ui'            => 1,
+                    'ui_on_text'    => 'نعم',
+                    'ui_off_text'   => 'لا',
                 ),
             ),
             'location' => array(
@@ -100,20 +88,29 @@ if (function_exists('acf_add_local_field_group')) {
                     ),
                 ),
             ),
+            'menu_order'            => 0,
+            'position'              => 'normal',
+            'style'                 => 'default',
+            'label_placement'       => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen'       => '',
+            'active'                => true,
+            'description'           => 'حقول مخصصة للمنتجات',
         )
         );
 
-        call_user_func(
-            $acf_group_callback,
+        acf_add_local_field_group(
             array(
             'key'    => 'group_news_fields',
-            'title'  => 'News Fields',
+            'title'  => 'حقول الأخبار',
             'fields' => array(
                 array(
-                    'key'   => 'field_news_summary',
-                    'label' => 'Summary',
-                    'name'  => 'summary',
-                    'type'  => 'textarea',
+                    'key'         => 'field_news_summary',
+                    'label'       => 'الملخص',
+                    'name'        => 'summary',
+                    'type'        => 'textarea',
+                    'rows'        => 4,
+                    'placeholder' => 'أدخل ملخصاً للخبر',
                 ),
             ),
             'location' => array(
@@ -125,32 +122,43 @@ if (function_exists('acf_add_local_field_group')) {
                     ),
                 ),
             ),
+            'menu_order'            => 0,
+            'position'              => 'normal',
+            'style'                 => 'default',
+            'label_placement'       => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen'       => '',
+            'active'                => true,
+            'description'           => 'حقول مخصصة للأخبار',
         )
         );
 
-        call_user_func(
-            $acf_group_callback,
+        acf_add_local_field_group(
             array(
             'key'    => 'group_testimonial_fields',
-            'title'  => 'Testimonial Fields',
+            'title'  => 'حقول الشهادات',
             'fields' => array(
                 array(
-                    'key'   => 'field_testimonial_role',
-                    'label' => 'Role',
-                    'name'  => 'role',
-                    'type'  => 'text',
+                    'key'         => 'field_testimonial_role',
+                    'label'       => 'المنصب',
+                    'name'        => 'role',
+                    'type'        => 'text',
+                    'placeholder' => 'مثال: مدير المشتريات',
                 ),
                 array(
-                    'key'   => 'field_testimonial_company',
-                    'label' => 'Company',
-                    'name'  => 'company',
-                    'type'  => 'text',
+                    'key'         => 'field_testimonial_company',
+                    'label'       => 'الشركة',
+                    'name'        => 'company',
+                    'type'        => 'text',
+                    'placeholder' => 'اسم الشركة',
                 ),
                 array(
-                    'key'   => 'field_testimonial_content',
-                    'label' => 'Content',
-                    'name'  => 'content',
-                    'type'  => 'textarea',
+                    'key'         => 'field_testimonial_content',
+                    'label'       => 'محتوى الشهادة',
+                    'name'        => 'content',
+                    'type'        => 'textarea',
+                    'rows'        => 5,
+                    'placeholder' => 'أدخل نص الشهادة',
                 ),
             ),
             'location' => array(
@@ -162,9 +170,19 @@ if (function_exists('acf_add_local_field_group')) {
                     ),
                 ),
             ),
+            'menu_order'            => 0,
+            'position'              => 'normal',
+            'style'                 => 'default',
+            'label_placement'       => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen'       => '',
+            'active'                => true,
+            'description'           => 'حقول مخصصة للشهادات',
         )
         );
     }
+    // Register fields on both acf/init and init hooks for better compatibility
     add_action('acf/init', 'alomran_register_acf_fields');
+    add_action('init', 'alomran_register_acf_fields', 20);
 }
 

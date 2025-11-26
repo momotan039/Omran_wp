@@ -12,24 +12,11 @@ while (have_posts()) : the_post();
     $full_description = get_the_content();
     $price = get_field('price') ?: 'تواصل للسعر';
     $category_enum = get_field('product_category_enum') ?: '';
-    $features = get_field('features') ?: array();
-    $specs = get_field('specs') ?: array();
+    $features_raw = get_field('features') ?: '';
+    $specs_raw = get_field('specs') ?: '';
+    $features = alomran_parse_features($features_raw);
+    $specs = alomran_parse_specs($specs_raw);
     $is_featured = get_field('is_featured') ?: false;
-
-    // Separate thickness specs from general specs
-    $thickness_labels = array('الغطاء', 'البدن', 'المصفاة');
-    $thickness_specs = array();
-    $general_specs = array();
-    
-    if ($specs) {
-        foreach ($specs as $spec) {
-            if (in_array($spec['label'], $thickness_labels)) {
-                $thickness_specs[] = $spec;
-            } else {
-                $general_specs[] = $spec;
-            }
-        }
-    }
 ?>
 
 <div class="py-12 bg-white">
@@ -90,35 +77,14 @@ while (have_posts()) : the_post();
                 <?php if ($specs) : ?>
                     <div class="mb-8">
                         <h3 class="text-xl font-bold text-primary mb-4 border-b pb-2">المواصفات الفنية</h3>
-                        
-                        <!-- Thickness/Details Specific Section -->
-                        <?php if ($thickness_specs) : ?>
-                            <div class="grid grid-cols-3 gap-4 mb-6">
-                                <?php foreach ($thickness_specs as $index => $spec) : ?>
-                                    <div class="bg-white border border-gray-200 rounded-lg p-3 text-center shadow-sm hover:border-secondary transition-all hover:-translate-y-1" style="animation-delay: <?php echo $index * 100; ?>ms;">
-                                        <div class="text-secondary font-bold mb-1 flex justify-center">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                                            </svg>
-                                        </div>
-                                        <span class="block text-sm text-gray-500 mb-1"><?php echo esc_html($spec['label']); ?></span>
-                                        <span class="block font-bold text-primary text-lg dir-ltr"><?php echo esc_html($spec['value']); ?></span>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-
-                        <!-- General Specs -->
-                        <?php if ($general_specs) : ?>
-                            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                                <?php foreach ($general_specs as $index => $spec) : ?>
-                                    <div class="flex justify-between py-3 px-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                                        <span class="font-bold text-gray-700"><?php echo esc_html($spec['label']); ?></span>
-                                        <span class="text-gray-600 dir-ltr"><?php echo esc_html($spec['value']); ?></span>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
+                        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                            <?php foreach ($specs as $index => $spec) : ?>
+                                <div class="flex justify-between py-3 px-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
+                                    <span class="font-bold text-gray-700"><?php echo esc_html($spec['label']); ?></span>
+                                    <span class="text-gray-600 dir-ltr"><?php echo esc_html($spec['value']); ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 <?php endif; ?>
 
@@ -141,7 +107,7 @@ while (have_posts()) : the_post();
 
                 <!-- Actions -->
                 <div class="flex flex-col md:flex-row gap-4 mt-8">
-                    <a href="<?php echo esc_url(get_permalink(get_page_by_path('contact')) ?: home_url('/contact')); ?>" class="flex-1 bg-primary text-white py-4 rounded-lg font-bold hover:bg-green-800 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.02] duration-300">
+                    <a href="<?php echo esc_url(alomran_get_page_url('تواصل معنا') ?: alomran_get_page_url('contact') ?: home_url('/contact')); ?>" class="flex-1 bg-primary text-white py-4 rounded-lg font-bold hover:bg-green-800 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-[1.02] duration-300">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                         </svg>
