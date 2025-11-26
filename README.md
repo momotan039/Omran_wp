@@ -8,6 +8,7 @@ A fully functional WordPress theme converted from a React application. This them
 - **RTL Support**: Right-to-left text support for Arabic content
 - **Custom Post Types**: Products, News, Testimonials, and FAQ
 - **Advanced Custom Fields (ACF)**: Integrated ACF fields for custom content
+- **Redux Framework**: Dynamic page sections - enable/disable, reorder, edit content without code
 - **Tailwind CSS**: Modern utility-first CSS framework (production build)
 - **Interactive Elements**: Mobile menu, FAQ accordion, contact form with AJAX
 - **Chat Widget**: AI-powered chat widget (requires API integration)
@@ -28,6 +29,11 @@ A fully functional WordPress theme converted from a React application. This them
      - Install from Plugins → Add New
      - Search for "Advanced Custom Fields"
      - Install and activate
+   - **Redux Framework** - Required for theme options and dynamic sections
+     - Install from Plugins → Add New
+     - Search for "Redux Framework"
+     - Install and activate
+     - After activation, go to "إعدادات الموقع" (Site Settings) in admin menu
 
 4. **Set Permalinks**
    - Go to Settings → Permalinks
@@ -110,6 +116,32 @@ alomran-theme/
 
 ### FAQ
 - **ACF Fields**: None (uses title for question, content for answer)
+
+## Redux Framework - Dynamic Sections
+
+The theme uses Redux Framework to make all front page sections fully dynamic and editable from the WordPress admin panel.
+
+### Access Theme Options
+- Go to **إعدادات الموقع** (Site Settings) in WordPress admin menu
+- All sections can be enabled/disabled, reordered, and edited here
+
+### Available Sections
+1. **Hero Section** - Main banner with title, description, buttons, and background image
+2. **Risks Section** - Risk items with titles and descriptions
+3. **Sectors Section** - Service sectors with icons and descriptions
+4. **Products Section** - Featured products display
+5. **Stainless Steel Section** - Benefits of stainless steel
+6. **Testimonials Section** - Customer testimonials
+
+### Features
+- ✅ Enable/Disable any section
+- ✅ Drag & drop to reorder sections
+- ✅ Edit all text content
+- ✅ Upload and replace images
+- ✅ Add/remove items in repeater fields
+- ✅ All changes take effect immediately
+
+For detailed documentation, see `inc/redux/README.md`
 
 ## Navigation Menu Setup
 
