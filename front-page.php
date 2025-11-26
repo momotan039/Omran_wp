@@ -74,7 +74,7 @@ $why_stainless = array(
                             تصفح المنتجات
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                         </a>
-                        <a href="<?php echo esc_url(get_permalink(get_page_by_path('contact')) ?: home_url('/contact')); ?>" class="border-2 border-white hover:bg-white hover:text-primary px-8 py-3 rounded-md font-bold text-lg transition-all duration-300">
+                        <a href="<?php echo esc_url(alomran_get_page_url('تواصل معنا') ?: alomran_get_page_url('contact') ?: home_url('/contact')); ?>" class="border-2 border-white hover:bg-white hover:text-primary px-8 py-3 rounded-md font-bold text-lg transition-all duration-300">
                             استشارة مجانية
                         </a>
                     </div>
