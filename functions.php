@@ -1,7 +1,7 @@
 <?php
 /**
  * Bootstrap theme includes.
- *
+ * 
  * @package AlOmran
  */
 
@@ -22,11 +22,12 @@ $alomran_includes = array(
     'inc/taxonomies.php',
     'inc/acf.php',
     'inc/ajax.php',
+    'inc/redux/redux-helpers.php',
+    'inc/redux/redux-config.php',
 );
 
 foreach ($alomran_includes as $file) {
     $filepath = ALOMRAN_THEME_DIR . '/' . $file;
-
     if (file_exists($filepath)) {
         require_once $filepath;
     }
