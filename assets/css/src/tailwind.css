@@ -1,0 +1,9 @@
+/**
+ * Tailwind CSS Source File
+ * This file is compiled to assets/css/tailwind.css
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+

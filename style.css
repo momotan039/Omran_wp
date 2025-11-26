@@ -1,0 +1,19 @@
+/*
+Theme Name: Al-Omran Industries
+Theme URI: https://alomran-eg.com
+Author: Al-Omran Development Team
+Author URI: https://mohamad-taha.com
+Description: Custom WordPress theme for Al-Omran Industries - A company specializing in stainless steel drainage systems, grease traps, and water treatment solutions.
+Version: 1.0.0
+Text Domain: alomran
+Requires at least: 5.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: custom, industrial, business, rtl, arabic
+*/
+
+/* This file is required for WordPress theme recognition */
+/* All styles are loaded via Tailwind CSS CDN in header.php */
+
