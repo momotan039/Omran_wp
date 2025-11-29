@@ -18,9 +18,9 @@ $bg_image = !empty($data['background']['url']) ? $data['background']['url'] : 'h
 ?>
 
 <section class="relative h-[85vh] flex items-center overflow-hidden">
-    <div class="absolute inset-0 bg-primary/80 z-10 mix-blend-multiply"></div>
-    <div class="absolute inset-0 bg-black/30 z-10"></div>
-    <div class="absolute inset-0 bg-cover bg-center z-0 animate-scale-in" style="background-image: url('<?php echo esc_url($bg_image); ?>'); animation-duration: 10s;"></div>
+    <div class="absolute inset-0 bg-primary/80 z-10 mix-blend-multiply pointer-events-none"></div>
+    <div class="absolute inset-0 bg-black/30 z-10 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-cover bg-center z-0 animate-scale-in pointer-events-none" style="background-image: url('<?php echo esc_url($bg_image); ?>'); animation-duration: 10s;"></div>
     
     <div class="container mx-auto px-4 relative z-20 text-white text-center md:text-right">
         <div class="flex flex-col md:flex-row justify-between items-center md:items-start">
@@ -45,16 +45,16 @@ $bg_image = !empty($data['background']['url']) ? $data['background']['url'] : 'h
                     </p>
                 <?php endif; ?>
                 
-                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start animate-fade-in-up delay-400">
-                    <?php if (!empty($data['button1']['text'])) : ?>
-                        <a href="<?php echo esc_url($data['button1']['url']); ?>" class="bg-secondary text-white hover:bg-white hover:text-primary px-8 py-3 rounded-md font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-secondary/50">
+                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start animate-fade-in-up delay-400 relative z-30">
+                    <?php if (!empty($data['button1']['text']) && !empty($data['button1']['url'])) : ?>
+                        <a href="<?php echo esc_url($data['button1']['url']); ?>" class="bg-secondary text-white hover:bg-white hover:text-primary px-8 py-3 rounded-md font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-secondary/50 relative z-30 cursor-pointer">
                             <?php echo esc_html($data['button1']['text']); ?>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                         </a>
                     <?php endif; ?>
                     
-                    <?php if (!empty($data['button2']['text'])) : ?>
-                        <a href="<?php echo esc_url($data['button2']['url']); ?>" class="border-2 border-white hover:bg-white hover:text-primary px-8 py-3 rounded-md font-bold text-lg transition-all duration-300">
+                    <?php if (!empty($data['button2']['text']) && !empty($data['button2']['url'])) : ?>
+                        <a href="<?php echo esc_url($data['button2']['url']); ?>" class="border-2 border-white hover:bg-white hover:text-primary px-8 py-3 rounded-md font-bold text-lg transition-all duration-300 relative z-30 cursor-pointer">
                             <?php echo esc_html($data['button2']['text']); ?>
                         </a>
                     <?php endif; ?>
@@ -72,10 +72,11 @@ $bg_image = !empty($data['background']['url']) ? $data['background']['url'] : 'h
         </div>
     </div>
     
-    <div class="absolute bottom-0 left-0 right-0 z-20">
+    <div class="absolute bottom-0 left-0 right-0 z-20 pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path fill="#f3f4f6" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
     </div>
 </section>
+
 

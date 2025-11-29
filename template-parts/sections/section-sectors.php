@@ -40,7 +40,11 @@ $icons = array(
                 $icon_key = !empty($sector['sector_icon']) ? $sector['sector_icon'] : 'residential';
                 $icon = isset($icons[$icon_key]) ? $icons[$icon_key] : $icons['residential'];
                 ?>
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-secondary group animate-fade-in-up delay-<?php echo ($idx + 1) * 100; ?>">
+                <?php 
+                $delay_classes = array('delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay-500');
+                $delay_class = isset($delay_classes[$idx]) ? $delay_classes[$idx] : 'delay-500';
+                ?>
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-secondary group animate-fade-in-up <?php echo esc_attr($delay_class); ?>">
                     <div class="text-primary mb-6 group-hover:text-secondary transition-colors duration-300 transform group-hover:scale-110 origin-right">
                         <?php echo $icon; ?>
                     </div>
@@ -53,4 +57,5 @@ $icons = array(
         </div>
     </div>
 </section>
+
 

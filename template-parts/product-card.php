@@ -8,7 +8,6 @@
 $product_id = get_the_ID();
 $short_description = get_field('short_description') ?: get_the_excerpt();
 $price = get_field('price') ?: 'تواصل للسعر';
-$category_enum = get_field('product_category_enum') ?: '';
 $is_featured = get_field('is_featured') ?: false;
 ?>
 
@@ -28,11 +27,6 @@ $is_featured = get_field('is_featured') ?: false;
     
     <div class="p-6 flex-grow flex flex-col">
         <div class="flex justify-between items-start mb-2">
-            <?php if ($category_enum) : ?>
-                <span class="text-xs font-bold text-secondary uppercase tracking-wider">
-                    <?php echo esc_html(alomran_get_product_category_label($category_enum)); ?>
-                </span>
-            <?php endif; ?>
             <?php if ($is_featured) : ?>
                 <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded">مميز</span>
             <?php endif; ?>
