@@ -12,9 +12,11 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'  => 'قسم القطاعات',
-    'id'     => 'sectors_section',
-    'icon'   => 'el el-th',
+    'title'      => 'قسم القطاعات',
+    'id'         => 'sectors_section',
+    'subsection' => true,
+    'parent'     => 'homepage_sections',
+    'icon'       => 'el el-th',
     'fields' => array(
         array(
             'id'       => 'sectors_enable',

@@ -12,9 +12,11 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'  => 'قسم البطل (Hero)',
-    'id'     => 'hero_section',
-    'icon'   => 'el el-picture',
+    'title'      => 'قسم البطل (Hero)',
+    'id'         => 'hero_section',
+    'subsection' => true,
+    'parent'     => 'homepage_sections',
+    'icon'       => 'el el-picture',
     'fields' => array(
         array(
             'id'       => 'hero_enable',
@@ -94,4 +96,5 @@ Redux::setSection($opt_name, array(
         ),
     ),
 ));
+
 

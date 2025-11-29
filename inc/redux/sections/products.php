@@ -12,9 +12,11 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'  => 'قسم المنتجات',
-    'id'     => 'products_section',
-    'icon'   => 'el el-shopping-cart',
+    'title'      => 'قسم المنتجات',
+    'id'         => 'products_section',
+    'subsection' => true,
+    'parent'     => 'homepage_sections',
+    'icon'       => 'el el-shopping-cart',
     'fields' => array(
         array(
             'id'       => 'products_enable',
@@ -48,4 +50,5 @@ Redux::setSection($opt_name, array(
         ),
     ),
 ));
+
 

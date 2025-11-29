@@ -52,7 +52,8 @@ function alomran_redux_init() {
 
     $sections_dir = ALOMRAN_THEME_DIR . '/inc/redux/sections/';
     $section_files = array(
-        'general.php',
+        'header-logo.php',   // Header logo settings
+        'homepage.php',      // Main section for homepage
         'hero.php',
         'risks.php',
         'sectors.php',
@@ -60,6 +61,16 @@ function alomran_redux_init() {
         'stainless.php',
         'testimonials.php',
         'sections-order.php',
+        'company.php',       // Main section for company page
+        'about-page.php',    // Main section for about page
+        'about-header.php',
+        'about-content.php',
+        'about-vision-mission.php',
+        'about-stats.php',
+        'about-order.php',
+        'general.php',
+        'contact-page.php',
+        'footer.php',
     );
 
     foreach ($section_files as $file) {

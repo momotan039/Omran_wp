@@ -44,3 +44,4 @@ This guide explains how to format textarea fields in Redux options panel.
 - Empty lines are ignored
 - Leading/trailing spaces are automatically trimmed
 
+

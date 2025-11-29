@@ -12,9 +12,11 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'  => 'ترتيب الأقسام',
-    'id'     => 'sections_order',
-    'icon'   => 'el el-sort',
+    'title'      => 'ترتيب الأقسام',
+    'id'         => 'sections_order',
+    'subsection' => true,
+    'parent'     => 'homepage_sections',
+    'icon'       => 'el el-sort',
     'fields' => array(
         array(
             'id'       => 'sections_order',
@@ -35,4 +37,5 @@ Redux::setSection($opt_name, array(
         ),
     ),
 ));
+
 

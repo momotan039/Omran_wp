@@ -12,9 +12,11 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'  => 'الإعدادات العامة',
-    'id'     => 'general',
-    'icon'   => 'el el-cog',
+    'title'      => 'معلومات الشركة',
+    'id'         => 'general',
+    'subsection' => true,
+    'parent'     => 'company_sections',
+    'icon'       => 'el el-cog',
     'fields' => array(
         array(
             'id'       => 'company_name',
@@ -46,6 +48,21 @@ Redux::setSection($opt_name, array(
             'title'    => 'العنوان',
             'default'  => 'المنطقة الصناعية الثالثة، مدينة العاشر من رمضان، مصر',
         ),
+        array(
+            'id'       => 'company_vision',
+            'type'     => 'textarea',
+            'title'    => 'رؤية الشركة',
+            'default'  => 'أن نكون الرائد في صناعة أنظمة الصرف الصحي الآمنة والمستدامة في المنطقة، مع الالتزام بأعلى معايير الجودة والابتكار.',
+            'rows'     => 4,
+        ),
+        array(
+            'id'       => 'company_mission',
+            'type'     => 'textarea',
+            'title'    => 'رسالة الشركة',
+            'default'  => 'توفير منتجات عالية الجودة تحمي البنية التحتية والبيئة، مع التركيز على الابتكار والاستدامة ورضا العملاء.',
+            'rows'     => 4,
+        ),
     ),
 ));
+
 

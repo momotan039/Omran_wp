@@ -140,3 +140,4 @@ Each template automatically checks if the section is enabled and retrieves data 
 - Repeater fields allow unlimited items
 - Changes take effect immediately after saving
 
+

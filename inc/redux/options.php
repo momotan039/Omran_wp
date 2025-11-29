@@ -35,3 +35,17 @@ function alomran_is_section_enabled($section) {
     return alomran_get_option($section . '_enable', true);
 }
 
+function alomran_get_ordered_about_sections() {
+    $order = alomran_get_option('about_sections_order', array());
+    if (empty($order) || !isset($order['enabled'])) {
+        return array(
+            'header' => 'header',
+            'content' => 'content',
+            'vision_mission' => 'vision_mission',
+            'stats' => 'stats'
+        );
+    }
+    return $order['enabled'];
+}
+
+

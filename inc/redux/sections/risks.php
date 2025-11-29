@@ -12,9 +12,11 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'  => 'قسم المخاطر',
-    'id'     => 'risks_section',
-    'icon'   => 'el el-warning-sign',
+    'title'      => 'قسم المخاطر',
+    'id'         => 'risks_section',
+    'subsection' => true,
+    'parent'     => 'homepage_sections',
+    'icon'       => 'el el-warning-sign',
     'fields' => array(
         array(
             'id'       => 'risks_enable',
