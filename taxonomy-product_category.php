@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying product archives
+ * Template for displaying product category archives
  *
  * @package AlOmran
  */
@@ -13,14 +13,14 @@ $current_category_slug = $current_category_term ? $current_category_term->slug :
 $search_term = isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '';
 
 // Build products query
-if (is_tax('product_category') && empty($search_term)) {
-    global $wp_query;
-    $products_query = $wp_query;
-} else {
+if ($search_term) {
     $products_query = alomran_get_products_query(array(
         'category_slug' => $current_category_slug,
         'search_term'   => $search_term,
     ));
+} else {
+    global $wp_query;
+    $products_query = $wp_query;
 }
 ?>
 
@@ -28,9 +28,17 @@ if (is_tax('product_category') && empty($search_term)) {
     <div class="container mx-auto px-4">
         <!-- Header -->
         <div class="text-center mb-12 animate-fade-in-up">
-            <h1 class="text-4xl font-bold text-primary mb-4">منتجاتنا</h1>
+            <h1 class="text-4xl font-bold text-primary mb-4">
+                <?php echo $current_category_term ? esc_html($current_category_term->name) : 'الفئة'; ?>
+            </h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                تصفح مجموعتنا الواسعة من حلول الصرف والمعالجة المصممة وفق أعلى المعايير العالمية.
+                <?php 
+                if ($current_category_term && !empty($current_category_term->description)) {
+                    echo esc_html($current_category_term->description);
+                } elseif ($current_category_term) {
+                    echo 'تصفح منتجاتنا في فئة ' . esc_html($current_category_term->name);
+                }
+                ?>
             </p>
         </div>
 
@@ -90,8 +98,8 @@ if (is_tax('product_category') && empty($search_term)) {
                 <svg class="mx-auto text-gray-300 mb-4 w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
                 </svg>
-                <h3 class="text-xl font-bold text-gray-500">لا توجد منتجات تطابق بحثك</h3>
-                <p class="text-gray-400 mt-2">جرب تغيير كلمات البحث أو الفلاتر</p>
+                <h3 class="text-xl font-bold text-gray-500">لا توجد منتجات في هذه الفئة</h3>
+                <p class="text-gray-400 mt-2">جرب البحث في فئات أخرى</p>
             </div>
         <?php endif; ?>
     </div>

@@ -9,69 +9,64 @@
 get_header();
 
 $company_info = alomran_get_company_info();
+$contact_data = alomran_get_section_data('contact_page');
 ?>
 
 <div class="min-h-screen bg-gray-50 py-16">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16 animate-fade-in-up">
-            <h1 class="text-4xl font-bold text-primary mb-4">تواصل معنا</h1>
-            <p class="text-gray-600">فريقنا جاهز للرد على استفساراتكم وتقديم الدعم الفني</p>
+            <h1 class="text-4xl font-bold text-primary mb-4"><?php echo esc_html($contact_data['title'] ?? 'تواصل معنا'); ?></h1>
+            <p class="text-gray-600"><?php echo esc_html($contact_data['subtitle'] ?? 'فريقنا جاهز للرد على استفساراتكم وتقديم الدعم الفني'); ?></p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Info Cards -->
             <div class="lg:col-span-1 space-y-6">
-                <div class="bg-white p-8 rounded-xl shadow-sm flex items-start gap-4 animate-slide-in-right delay-100 hover:shadow-md transition">
-                    <div class="bg-blue-50 p-3 rounded-lg text-primary">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg mb-1">اتصل بنا</h3>
-                        <p class="text-gray-500 text-sm mb-2">متاحين من 9 صباحاً - 5 مساءً</p>
-                        <p class="font-bold text-primary dir-ltr text-right">
-                            <a href="tel:<?php echo esc_attr(str_replace(' ', '', $company_info['phone'])); ?>">
-                                <?php echo esc_html($company_info['phone']); ?>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 rounded-xl shadow-sm flex items-start gap-4 animate-slide-in-right delay-200 hover:shadow-md transition">
-                    <div class="bg-yellow-50 p-3 rounded-lg text-secondary">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg mb-1">البريد الإلكتروني</h3>
-                        <p class="text-gray-500 text-sm mb-2">للتعاقدات والمبيعات</p>
-                        <p class="font-bold text-primary">
-                            <a href="mailto:<?php echo esc_attr($company_info['email']); ?>">
-                                <?php echo esc_html($company_info['email']); ?>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 rounded-xl shadow-sm flex items-start gap-4 animate-slide-in-right delay-300 hover:shadow-md transition">
-                    <div class="bg-gray-100 p-3 rounded-lg text-gray-700">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg mb-1">المقر الرئيسي</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed"><?php echo esc_html($company_info['address']); ?></p>
-                    </div>
-                </div>
+                <?php
+                // Phone Card
+                echo alomran_render_contact_card(array(
+                    'icon_bg'    => 'bg-blue-50',
+                    'icon_color' => 'text-primary',
+                    'icon_svg'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>',
+                    'title'      => $contact_data['phone_title'] ?? 'اتصل بنا',
+                    'subtitle'   => $contact_data['phone_subtitle'] ?? 'متاحين من 9 صباحاً - 5 مساءً',
+                    'content'    => $company_info['phone'],
+                    'link_url'   => $company_info['phone'],
+                    'link_type'  => 'tel',
+                    'delay'      => 'delay-100',
+                ));
+                
+                // Email Card
+                echo alomran_render_contact_card(array(
+                    'icon_bg'    => 'bg-yellow-50',
+                    'icon_color' => 'text-secondary',
+                    'icon_svg'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>',
+                    'title'      => $contact_data['email_title'] ?? 'البريد الإلكتروني',
+                    'subtitle'   => $contact_data['email_subtitle'] ?? 'للتعاقدات والمبيعات',
+                    'content'    => $company_info['email'],
+                    'link_url'   => $company_info['email'],
+                    'link_type'  => 'mailto',
+                    'delay'      => 'delay-200',
+                ));
+                
+                // Address Card
+                echo alomran_render_contact_card(array(
+                    'icon_bg'    => 'bg-gray-100',
+                    'icon_color' => 'text-gray-700',
+                    'icon_svg'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>',
+                    'title'      => $contact_data['address_title'] ?? 'المقر الرئيسي',
+                    'subtitle'   => '',
+                    'content'    => $company_info['address'],
+                    'link_url'   => '',
+                    'link_type'  => 'text',
+                    'delay'      => 'delay-300',
+                ));
+                ?>
             </div>
 
             <!-- Form -->
             <div class="lg:col-span-2 bg-white p-8 md:p-10 rounded-xl shadow-md animate-fade-in-up delay-300">
-                <h2 class="text-2xl font-bold text-primary mb-6">أرسل رسالة</h2>
+                <h2 class="text-2xl font-bold text-primary mb-6"><?php echo esc_html($contact_data['form_title'] ?? 'أرسل رسالة'); ?></h2>
                 
                 <form id="contact-form" class="space-y-6">
                     <div id="form-message" class="hidden"></div>
@@ -104,19 +99,66 @@ $company_info = alomran_get_company_info();
             </div>
         </div>
 
-        <!-- Map Placeholder -->
-        <div class="mt-12 rounded-xl overflow-hidden shadow-md h-80 bg-gray-200 relative group animate-scale-in delay-500">
-            <img src="https://picsum.photos/id/122/1200/400" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700" alt="Map Location" />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/20">
-                <div class="bg-white px-6 py-3 rounded-full shadow-lg font-bold text-primary flex items-center gap-2 hover:scale-110 transition">
-                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    موقع المصنع
+        <!-- Map Banner -->
+        <?php 
+        if (!empty($contact_data['map_enable']) && !empty($contact_data['map_url'])) : 
+            $map_input = $contact_data['map_url'];
+            $embed_url = alomran_convert_google_maps_url($map_input);
+            $original_url = alomran_extract_map_url($map_input) ?: $map_input;
+        ?>
+            <div class="mt-16 -mx-4 md:-mx-8 lg:-mx-16">
+                <div class="w-full h-[500px] md:h-[600px] lg:h-[700px] relative overflow-hidden animate-scale-in delay-500 shadow-xl">
+                    <?php if (!empty($embed_url)) : ?>
+                        <iframe 
+                            src="<?php echo esc_url($embed_url); ?>" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="w-full h-full"
+                            title="<?php echo esc_attr($contact_data['map_text'] ?? 'موقع المصنع'); ?>"
+                        ></iframe>
+                    <?php elseif (strpos($map_input, '<iframe') !== false) : ?>
+                        <?php 
+                        echo wp_kses($map_input, array(
+                            'iframe' => array(
+                                'src' => array(),
+                                'width' => array(),
+                                'height' => array(),
+                                'style' => array(),
+                                'allowfullscreen' => array(),
+                                'loading' => array(),
+                                'referrerpolicy' => array(),
+                                'class' => array(),
+                                'title' => array(),
+                                'frameborder' => array(),
+                            ),
+                        ));
+                        ?>
+                    <?php else : ?>
+                        <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                            <p class="text-gray-500">الرجاء إدخال رابط صحيح لـ Google Maps</p>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($original_url) && strpos($original_url, 'http') === 0) : ?>
+                        <div class="absolute top-4 left-4 z-10">
+                            <a href="<?php echo esc_url($original_url); ?>" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 bg-white/90 hover:bg-white px-4 py-2 rounded-lg shadow-lg font-bold text-primary transition-all transform hover:scale-105 backdrop-blur-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                                <span class="text-sm">فتح في Google Maps</span>
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
 

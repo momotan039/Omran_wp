@@ -20,9 +20,8 @@ get_header();
                 <?php 
                 $index = 0;
                 while (have_posts()) : the_post(); 
-                    $summary = get_field('summary') ?: get_the_excerpt();
-                    $news_categories = get_the_terms(get_the_ID(), 'news_category');
-                    $category_name = $news_categories && !is_wp_error($news_categories) ? $news_categories[0]->name : '';
+                    $summary = alomran_get_auto_excerpt(get_the_ID(), 25);
+                    $category_name = alomran_get_first_category_name(get_the_ID(), 'news_category');
                 ?>
                     <article id="post-<?php the_ID(); ?>" <?php post_class('bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100 animate-fade-in-up'); ?> style="animation-delay: <?php echo $index * 150; ?>ms;">
                         <?php if (has_post_thumbnail()) : ?>
