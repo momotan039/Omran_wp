@@ -25,25 +25,91 @@
 
 /* Animations */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+        visibility: hidden;
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+        visibility: visible;
+    }
 }
 
-.animate-fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+.animate-fade-in-up { 
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.8s;
+}
+
+.animate-fade-in-up.animated {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
 
 @keyframes slideInRight {
-    from { opacity: 0; transform: translateX(-30px); }
-    to { opacity: 1; transform: translateX(0); }
+    from { 
+        opacity: 0; 
+        transform: translateX(-30px); 
+        visibility: hidden;
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0); 
+        visibility: visible;
+    }
 }
 
-.animate-slide-in-right { animation: slideInRight 0.8s ease-out forwards; opacity: 0; }
+.animate-slide-in-right { 
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-30px);
+    transition: opacity 0.8s ease-out, 
+                transform 0.8s ease-out,
+                visibility 0.8s;
+}
+
+.animate-slide-in-right.animated {
+    animation: slideInRight 0.8s ease-out forwards;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
 
 @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    from { 
+        opacity: 0; 
+        transform: scale(0.9); 
+        visibility: hidden;
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1); 
+        visibility: visible;
+    }
 }
 
-.animate-scale-in { animation: scaleIn 0.5s ease-out forwards; opacity: 0; }
+.animate-scale-in { 
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.9);
+    transition: opacity 0.5s ease-out, 
+                transform 0.5s ease-out,
+                visibility 0.5s;
+}
+
+.animate-scale-in.animated {
+    animation: scaleIn 0.5s ease-out forwards;
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
 
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
@@ -198,7 +264,7 @@ html {
     }
 }
 
-/* Redux Framework Overrides */
+/* Redux Framework Overrides - Hide all Redux UI elements */
 body:not(.wp-admin) .redux-container,
 body:not(.wp-admin) .redux-main,
 body:not(.wp-admin) .redux-field-container,
@@ -206,6 +272,18 @@ body:not(.wp-admin) .redux-notices,
 body:not(.wp-admin) .redux-dev-mode-question {
     display: none !important;
     visibility: hidden !important;
+}
+
+/* Prevent Redux CSS from affecting frontend - Override any Redux-generated styles */
+body:not(.wp-admin) style[data-redux-output],
+body:not(.wp-admin) style[id*="redux"],
+body:not(.wp-admin) link[href*="redux"] {
+    display: none !important;
+}
+
+/* Remove any Redux inline styles that might override Tailwind */
+body:not(.wp-admin) [style*="redux"] {
+    /* Let Tailwind handle all styling */
 }
 
 /* Tailwind Custom Colors Override */
@@ -236,4 +314,248 @@ body:not(.wp-admin) .redux-dev-mode-question {
 /* Font Family */
 body, html { font-family: 'Cairo', sans-serif !important; }
 
+/* Stats Section - Enhanced Typography */
+#about-stats-section .stat-number {
+    letter-spacing: -0.02em;
+}
+
+#about-stats-section .stat-value {
+    color: #ffffff !important;
+    font-weight: 900;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3), 
+                 0 0 20px rgba(16, 185, 129, 0.5),
+                 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+#about-stats-section .stat-suffix {
+    color: #10b981 !important;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(16, 185, 129, 0.6),
+                 0 0 15px rgba(16, 185, 129, 0.4) !important;
+}
+
+#about-stats-section .stat-label {
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 1rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4),
+                 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    opacity: 1 !important;
+}
+
+@media (min-width: 768px) {
+    #about-stats-section .stat-label {
+        font-size: 1.125rem;
+    }
+}
+
+#about-stats-section .stat-item:hover .stat-value {
+    text-shadow: 0 2px 15px rgba(255, 255, 255, 0.4), 
+                 0 0 30px rgba(16, 185, 129, 0.7),
+                 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+#about-stats-section .stat-item:hover .stat-suffix {
+    text-shadow: 0 2px 12px rgba(16, 185, 129, 0.8),
+                 0 0 20px rgba(16, 185, 129, 0.6) !important;
+}
+
+/* Product Media Slider */
+.product-media-slider {
+    margin-top: 1rem;
+}
+
+.product-media-slider .flex {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.product-media-slider .flex::-webkit-scrollbar {
+    display: none;
+}
+
+.media-slider-item {
+    transition: all 0.3s ease;
+}
+
+.media-slider-item:hover {
+    transform: scale(1.05);
+}
+
+.media-slider-item.active {
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+#product-main-container {
+    position: relative;
+    min-height: 400px;
+}
+
+#product-main-container .main-media-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#product-main-container .main-media-item.active {
+    position: relative;
+}
+
+/* News Page Styles */
+.prose {
+    color: #374151;
+    max-width: 65ch;
+}
+
+.prose p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    line-height: 1.75;
+}
+
+.prose h2 {
+    color: #047857;
+    font-weight: 700;
+    font-size: 1.875em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.3;
+}
+
+.prose h3 {
+    color: #047857;
+    font-weight: 600;
+    font-size: 1.5em;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    line-height: 1.4;
+}
+
+.prose a {
+    color: #047857;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.prose a:hover {
+    color: #10b981;
+}
+
+.prose img {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    border-radius: 0.5rem;
+}
+
+.prose ul, .prose ol {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-right: 1.625em;
+}
+
+.prose li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.prose blockquote {
+    border-right: 4px solid #10b981;
+    padding-right: 1em;
+    margin: 1.6em 0;
+    font-style: italic;
+    color: #6b7280;
+}
+
+/* News Image Modal */
+#imageModal {
+    cursor: pointer;
+}
+
+#imageModal img {
+    cursor: default;
+}
+
+#imageModal button {
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* News Gallery Grid */
+.news-gallery-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* News Video Container */
+.news-video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.news-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Reading Time Calculation */
+.reading-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Share Buttons */
+.share-button {
+    transition: all 0.3s ease;
+}
+
+.share-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Author Section */
+.author-card {
+    transition: background-color 0.3s ease;
+}
+
+.author-card:hover {
+    background-color: #f9fafb;
+}
+
+/* News Archive Card Improvements */
+.news-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Responsive Typography for News */
+@media (max-width: 768px) {
+    .prose {
+        font-size: 0.95rem;
+    }
+    
+    .prose h2 {
+        font-size: 1.5em;
+    }
+    
+    .prose h3 {
+        font-size: 1.25em;
+    }
+}
 
