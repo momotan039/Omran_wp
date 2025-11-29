@@ -38,19 +38,6 @@ if (function_exists('acf_add_local_field_group')) {
                     'placeholder'   => 'السعر أو "تواصل للسعر"',
                 ),
                 array(
-                    'key'           => 'field_product_category_enum',
-                    'label'         => 'فئة المنتج',
-                    'name'          => 'product_category_enum',
-                    'type'          => 'select',
-                    'choices'       => array(
-                        'DRAIN_GRILLS'    => 'مصافي وجريلات',
-                        'GREASE_TRAPS'    => 'مصائد شحوم',
-                        'WATER_TREATMENT' => 'معالجة مياه',
-                    ),
-                    'required'      => 1,
-                    'default_value' => '',
-                ),
-                array(
                     'key'           => 'field_product_features',
                     'label'         => 'المميزات',
                     'name'          => 'features',
@@ -99,39 +86,6 @@ if (function_exists('acf_add_local_field_group')) {
         )
         );
 
-        acf_add_local_field_group(
-            array(
-            'key'    => 'group_news_fields',
-            'title'  => 'حقول الأخبار',
-            'fields' => array(
-                array(
-                    'key'         => 'field_news_summary',
-                    'label'       => 'الملخص',
-                    'name'        => 'summary',
-                    'type'        => 'textarea',
-                    'rows'        => 4,
-                    'placeholder' => 'أدخل ملخصاً للخبر',
-                ),
-            ),
-            'location' => array(
-                array(
-                    array(
-                        'param'    => 'post_type',
-                        'operator' => '==',
-                        'value'    => 'news',
-                    ),
-                ),
-            ),
-            'menu_order'            => 0,
-            'position'              => 'normal',
-            'style'                 => 'default',
-            'label_placement'       => 'top',
-            'instruction_placement' => 'label',
-            'hide_on_screen'       => '',
-            'active'                => true,
-            'description'           => 'حقول مخصصة للأخبار',
-        )
-        );
 
         acf_add_local_field_group(
             array(
