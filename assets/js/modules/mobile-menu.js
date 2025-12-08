@@ -4,33 +4,48 @@
  * @package AlOmran
  */
 
-(function($) {
+(function() {
     'use strict';
-
-    const MobileMenu = {
-        init: function() {
-            const mobileMenuToggle = $('#mobile-menu-toggle');
-            const mobileMenu = $('#mobile-menu');
-            const menuIcon = $('#menu-icon');
-            const closeIcon = $('#close-icon');
-
-            if (mobileMenuToggle.length) {
-                mobileMenuToggle.on('click', function() {
-                    mobileMenu.toggleClass('hidden');
-                    menuIcon.toggleClass('hidden');
-                    closeIcon.toggleClass('hidden');
-                });
-            }
+    
+    function initMobileMenu() {
+        if (typeof jQuery === 'undefined') {
+            setTimeout(initMobileMenu, 50);
+            return;
         }
-    };
+        
+        var $ = jQuery;
+        
+        const MobileMenu = {
+            init: function() {
+                const mobileMenuToggle = $('#mobile-menu-toggle');
+                const mobileMenu = $('#mobile-menu');
+                const menuIcon = $('#menu-icon');
+                const closeIcon = $('#close-icon');
 
-    // Initialize on document ready
-    $(document).ready(function() {
-        MobileMenu.init();
-    });
+                if (mobileMenuToggle.length) {
+                    mobileMenuToggle.on('click', function() {
+                        mobileMenu.toggleClass('hidden');
+                        menuIcon.toggleClass('hidden');
+                        closeIcon.toggleClass('hidden');
+                    });
+                }
+            }
+        };
 
-    // Export for use in other modules
-    window.MobileMenu = MobileMenu;
+        // Initialize on document ready
+        $(document).ready(function() {
+            MobileMenu.init();
+        });
 
-})(jQuery);
+        // Export for use in other modules
+        window.MobileMenu = MobileMenu;
+    }
+    
+    // Start initialization
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileMenu);
+    } else {
+        initMobileMenu();
+    }
 
+})();

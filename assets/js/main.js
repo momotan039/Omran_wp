@@ -6,27 +6,31 @@
  * @package AlOmran
  */
 
-// Load all modules
-// Note: These should be enqueued in the correct order in functions.php/assets.php
-
-// Modules are loaded separately:
-// 1. loader.js - Page Loader Management
-// 2. mobile-menu.js - Mobile Menu Toggle
-// 3. faq.js - FAQ Accordion & Search
-// 4. contact-form.js - Contact Form AJAX
-// 5. animations.js - Scroll Animations & Lazy Loading
-// 6. stats-counter.js - Stats Counter Animation
-// 7. product-gallery.js - Product Gallery & Share
-
-(function($) {
+(function() {
     'use strict';
-
-    $(document).ready(function() {
-        // All modules are initialized in their respective files
-        // This main file serves as the entry point
+    
+    function initMain() {
+        if (typeof jQuery === 'undefined') {
+            setTimeout(initMain, 50);
+            return;
+        }
         
-        // Additional global initialization can go here if needed
-        console.log('Al-Omran Theme JavaScript loaded');
-    });
+        var $ = jQuery;
+        
+        $(document).ready(function() {
+            // All modules are initialized in their respective files
+            // This main file serves as the entry point
+            
+            // Additional global initialization can go here if needed
+            console.log('Al-Omran Theme JavaScript loaded');
+        });
+    }
+    
+    // Start initialization
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMain);
+    } else {
+        initMain();
+    }
 
-})(jQuery);
+})();

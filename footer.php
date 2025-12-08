@@ -11,8 +11,26 @@ if (!defined('ABSPATH')) {
 ?>
     </main>
 
-    <footer class="bg-slate-900 text-slate-300 pt-16 pb-8 border-t border-secondary/20">
-        <div class="container mx-auto px-4">
+    <?php alomran_display_ad('footer', 'container mx-auto px-4 py-4', 'footer-ad-top'); ?>
+
+    <?php
+    $footer_style = alomran_get_footer_style();
+    $footer_classes = array('pt-16', 'pb-8');
+    
+    if ($footer_style === 'dark') {
+        $footer_classes[] = 'bg-slate-900 text-slate-300 border-t border-secondary/20';
+    } elseif ($footer_style === 'minimal') {
+        $footer_classes[] = 'bg-gray-100 text-gray-800 border-t border-gray-200';
+    } elseif ($footer_style === 'centered') {
+        $footer_classes[] = 'bg-slate-900 text-slate-300 border-t border-secondary/20 text-center';
+    } else {
+        $footer_classes[] = 'bg-slate-900 text-slate-300 border-t border-secondary/20';
+    }
+    
+    $footer_class = implode(' ', $footer_classes);
+    ?>
+    <footer class="<?php echo esc_attr($footer_class); ?>">
+        <div class="<?php echo esc_attr(alomran_get_container_width_class()); ?> mx-auto px-4">
             <?php 
             $company_info = alomran_get_company_info();
             $footer_data = alomran_get_section_data('footer');
