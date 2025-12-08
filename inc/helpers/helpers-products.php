@@ -172,3 +172,133 @@ function alomran_get_products_query($args = array()) {
     return new WP_Query($query_args);
 }
 
+/**
+ * Get product technical specifications (from repeater or legacy field)
+ * 
+ * @param int $post_id Post ID.
+ * @return array
+ */
+function alomran_get_product_technical_specs($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    // Try repeater field first
+    $specs = get_field('technical_specs', $post_id);
+    
+    // Fallback to legacy textarea field
+    if (empty($specs)) {
+        $specs_raw = get_field('specs', $post_id);
+        $specs = alomran_parse_specs($specs_raw);
+    }
+    
+    return is_array($specs) ? $specs : array();
+}
+
+/**
+ * Get product ingredients (Food industry)
+ * 
+ * @param int $post_id Post ID.
+ * @return array
+ */
+function alomran_get_product_ingredients($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    $ingredients = get_field('ingredients', $post_id);
+    return is_array($ingredients) ? $ingredients : array();
+}
+
+/**
+ * Get product dimensions
+ * 
+ * @param int $post_id Post ID.
+ * @return array|false
+ */
+function alomran_get_product_dimensions($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    $dimensions = get_field('dimensions', $post_id);
+    return $dimensions ?: false;
+}
+
+/**
+ * Format dimensions as string
+ * 
+ * @param array|false $dimensions Dimensions array.
+ * @return string
+ */
+function alomran_format_dimensions($dimensions) {
+    if (!$dimensions || !is_array($dimensions)) {
+        return '';
+    }
+    
+    $parts = array();
+    $unit = isset($dimensions['unit']) ? $dimensions['unit'] : 'cm';
+    
+    if (!empty($dimensions['length'])) {
+        $parts[] = $dimensions['length'];
+    }
+    if (!empty($dimensions['width'])) {
+        $parts[] = $dimensions['width'];
+    }
+    if (!empty($dimensions['height'])) {
+        $parts[] = $dimensions['height'];
+    }
+    
+    $formatted = implode(' × ', $parts);
+    if (!empty($dimensions['weight'])) {
+        $formatted .= ' / ' . $dimensions['weight'];
+    }
+    
+    return $formatted;
+}
+
+/**
+ * Get product certifications
+ * 
+ * @param int $post_id Post ID.
+ * @return array
+ */
+function alomran_get_product_certifications($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    $certifications = get_field('certifications', $post_id);
+    return is_array($certifications) ? $certifications : array();
+}
+
+/**
+ * Get product downloads
+ * 
+ * @param int $post_id Post ID.
+ * @return array
+ */
+function alomran_get_product_downloads($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    $downloads = get_field('downloads', $post_id);
+    return is_array($downloads) ? $downloads : array();
+}
+
+/**
+ * Get product industry type
+ * 
+ * @param int $post_id Post ID.
+ * @return string
+ */
+function alomran_get_product_industry_type($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    $industry = get_field('industry_type', $post_id);
+    return $industry ?: 'general';
+}
+

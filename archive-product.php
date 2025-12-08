@@ -61,13 +61,59 @@ if (is_tax('product_category') && empty($search_term)) {
             </form>
         </div>
 
-        <!-- Products Grid -->
+        <!-- View Toggle -->
+        <?php 
+        $current_view = alomran_get_archive_view('product');
+        $grid_class = alomran_get_archive_grid_class('product');
+        ?>
+        <div class="flex justify-end mb-6">
+            <div class="bg-white rounded-lg p-1 border border-gray-200 inline-flex gap-1">
+                <button onclick="alomranSetView('grid')" class="view-toggle-btn px-4 py-2 rounded <?php echo $current_view === 'grid' ? 'bg-primary text-white' : 'text-gray-600'; ?>" data-view="grid">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                    </svg>
+                </button>
+                <button onclick="alomranSetView('list')" class="view-toggle-btn px-4 py-2 rounded <?php echo $current_view === 'list' ? 'bg-primary text-white' : 'text-gray-600'; ?>" data-view="list">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid/List -->
         <?php if ($products_query->have_posts()) : ?>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="products-archive grid <?php echo esc_attr($grid_class); ?> gap-8" data-view="<?php echo esc_attr($current_view); ?>">
                 <?php while ($products_query->have_posts()) : $products_query->the_post(); ?>
                     <?php get_template_part('template-parts/product-card'); ?>
                 <?php endwhile; ?>
             </div>
+            
+            <script>
+            function alomranSetView(view) {
+                document.querySelectorAll('.view-toggle-btn').forEach(function(btn) {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('text-gray-600');
+                });
+                event.target.classList.add('bg-primary', 'text-white');
+                event.target.classList.remove('text-gray-600');
+                
+                var container = document.querySelector('.products-archive');
+                container.setAttribute('data-view', view);
+                
+                // Store preference
+                localStorage.setItem('alomran_product_view', view);
+            }
+            
+            // Restore view preference
+            var savedView = localStorage.getItem('alomran_product_view');
+            if (savedView) {
+                var btn = document.querySelector('[data-view="' + savedView + '"]');
+                if (btn) {
+                    btn.click();
+                }
+            }
+            </script>
 
             <!-- Pagination -->
             <?php

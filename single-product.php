@@ -33,6 +33,8 @@ while (have_posts()) : the_post();
 
 <div class="py-12 bg-white">
     <div class="container mx-auto px-4">
+        <?php alomran_display_ad('content_before', 'mb-8', 'product-ad-before'); ?>
+        
         <!-- Breadcrumb -->
         <div class="flex items-center text-sm text-gray-500 mb-8 animate-fade-in-up">
             <a href="<?php echo esc_url(home_url('/')); ?>" class="hover:text-secondary">الرئيسية</a>
@@ -292,6 +294,8 @@ while (have_posts()) : the_post();
             </div>
         </div>
     </div>
+    
+    <?php alomran_display_ad('content_after', 'mt-8', 'product-ad-after'); ?>
 </div>
 
 <?php

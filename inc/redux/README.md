@@ -141,3 +141,4 @@ Each template automatically checks if the section is enabled and retrieves data 
 - Changes take effect immediately after saving
 
 
+

@@ -45,3 +45,4 @@ This guide explains how to format textarea fields in Redux options panel.
 - Leading/trailing spaces are automatically trimmed
 
 
+

@@ -64,3 +64,4 @@ if (!$featured_products_query->have_posts()) {
 </section>
 
 
+
