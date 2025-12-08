@@ -10,10 +10,20 @@ if (!defined('ABSPATH')) {
 }
 
 function alomran_get_option($option, $default = '') {
-    if (!class_exists('Redux')) {
-        return $default;
+    // On frontend, Redux should not be loaded, so get from database directly
+    if (!is_admin() && !class_exists('Redux')) {
+        $options = get_option('alomran_options', array());
+        return isset($options[$option]) ? $options[$option] : $default;
     }
-    return Redux::get_option('alomran_options', $option, $default);
+    
+    // In admin, use Redux if available
+    if (class_exists('Redux')) {
+        return Redux::get_option('alomran_options', $option, $default);
+    }
+    
+    // Fallback to database
+    $options = get_option('alomran_options', array());
+    return isset($options[$option]) ? $options[$option] : $default;
 }
 
 function alomran_get_ordered_sections() {
