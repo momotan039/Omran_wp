@@ -559,3 +559,73 @@ body, html { font-family: 'Cairo', sans-serif !important; }
     }
 }
 
+/* Demo Ads Styling */
+.demo-ad-wrapper {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+}
+
+.demo-ad-container {
+    position: relative;
+    overflow: hidden;
+    border: 2px dashed #cbd5e0;
+    background: #f7fafc;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.demo-ad-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    z-index: 1;
+}
+
+.demo-ad-watermark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    transition: opacity 0.3s ease, background 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.demo-ad-wrapper:hover .demo-ad-watermark {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.demo-ad-label {
+    background: rgba(74, 85, 104, 0.95);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Responsive demo ad labels */
+@media (max-width: 640px) {
+    .demo-ad-label {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.75rem;
+    }
+}
+
