@@ -1,0 +1,45 @@
+/**
+ * Industrial Preset Styles
+ * 
+ * Additional styles specific to the Industrial preset.
+ * Base styles are loaded from core/assets/css/
+ * 
+ * @package AlOmran_Preset_Industrial
+ */
+
+.preset-industrial {
+    /* Industrial-specific overrides */
+}
+
+.preset-industrial .hero-section {
+    background: linear-gradient(135deg, var(--preset-primary) 0%, var(--preset-secondary) 100%);
+}
+
+.preset-industrial .product-card {
+    border: 1px solid var(--preset-gray-200);
+    transition: all 0.3s ease;
+}
+
+.preset-industrial .product-card:hover {
+    border-color: var(--preset-accent);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+}
+
+.preset-industrial .btn-primary {
+    background: var(--preset-primary);
+    color: white;
+}
+
+.preset-industrial .btn-primary:hover {
+    background: var(--preset-secondary);
+}
+
+.preset-industrial .btn-accent {
+    background: var(--preset-accent);
+    color: white;
+}
+
+.preset-industrial .btn-accent:hover {
+    background: #ea580c;
+}
+

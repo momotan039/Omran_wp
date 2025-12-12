@@ -1,0 +1,83 @@
+/**
+ * Food & Beverage Preset Styles
+ * 
+ * Additional styles specific to the Food & Beverage preset.
+ * Base styles are loaded from core/assets/css/
+ * 
+ * @package AlOmran_Preset_Food
+ */
+
+.preset-food-beverage {
+    /* Food & Beverage specific styles */
+}
+
+.preset-food-beverage .hero-section {
+    background: linear-gradient(135deg, var(--preset-primary) 0%, var(--preset-secondary) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.preset-food-beverage .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(250, 204, 21, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.preset-food-beverage .product-card {
+    border-radius: var(--preset-card-radius, 0.75rem);
+    box-shadow: var(--preset-card-shadow, 0 4px 6px rgba(220, 38, 38, 0.1));
+    transition: all 0.3s ease;
+}
+
+.preset-food-beverage .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* Food-specific ingredient display */
+.preset-food-beverage .product-ingredients {
+    background: #fff9e6;
+    border-left: 4px solid var(--preset-accent);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+}
+
+.preset-food-beverage .product-nutrition {
+    background: #fef2f2;
+    border-left: 4px solid var(--preset-primary);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+}
+
+.preset-food-beverage .btn-primary {
+    background: var(--preset-primary);
+    color: white;
+    border-radius: var(--preset-button-radius, 0.75rem);
+}
+
+.preset-food-beverage .btn-primary:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.preset-food-beverage .btn-accent {
+    background: var(--preset-accent);
+    color: var(--preset-primary);
+    border-radius: var(--preset-button-radius, 0.75rem);
+    font-weight: 700;
+}
+
+.preset-food-beverage .btn-accent:hover {
+    background: #eab308;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+}
+
