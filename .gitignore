@@ -21,3 +21,6 @@ Thumbs.db
 wp-config.php
 .htaccess
 
+# Temporary/unused directories
+v0-food-and-beverage-website-main/
+
