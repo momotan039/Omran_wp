@@ -1,22 +1,27 @@
 <?php
 /**
- * Products Section Template
+ * Products Section - Core Logic Only
  * 
- * @package AlOmran
+ * This file contains only the logic for the products section.
+ * Layout/HTML is loaded from preset-specific layout files.
+ * 
+ * @package AlOmran_Core
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
+// Get section data
 $data = alomran_get_section_data('products');
 if (!$data['enable']) {
     return;
 }
 
-$featured_products_query = new WP_Query(array(
+// Query featured products
+$products_query = new WP_Query(array(
     'post_type' => 'product',
-    'posts_per_page' => $data['count'],
+    'posts_per_page' => isset($data['count']) ? $data['count'] : 6,
     'meta_query' => array(
         array(
             'key' => 'is_featured',
@@ -26,43 +31,39 @@ $featured_products_query = new WP_Query(array(
     )
 ));
 
-if (!$featured_products_query->have_posts()) {
+if (!$products_query->have_posts()) {
     return;
 }
-?>
 
-<section class="py-20 bg-accent">
-    <div class="container mx-auto px-4">
-        <div class="flex justify-between items-end mb-12 animate-fade-in-up">
-            <div>
-                <h2 class="text-3xl font-bold text-primary mb-2"><?php echo esc_html($data['title']); ?></h2>
-                <div class="h-1 w-20 bg-secondary"></div>
-            </div>
-            <?php if ($data['show_all_link']) : ?>
-                <a href="<?php echo esc_url(get_post_type_archive_link('product') ?: home_url('/products')); ?>" class="hidden md:flex items-center text-primary font-bold hover:text-secondary transition">
-                    عرض الكل
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                </a>
-            <?php endif; ?>
-        </div>
+// Prepare data for layout
+$products_data = array(
+    'enable' => $data['enable'],
+    'title' => isset($data['title']) ? $data['title'] : '',
+    'subtitle' => isset($data['subtitle']) ? $data['subtitle'] : '',
+    'show_all_link' => isset($data['show_all_link']) ? $data['show_all_link'] : true,
+    'all_link_url' => get_post_type_archive_link('product') ?: home_url('/products'),
+    'query' => $products_query,
+);
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <?php while ($featured_products_query->have_posts()) : $featured_products_query->the_post(); ?>
-                <?php get_template_part('template-parts/product-card'); ?>
-            <?php endwhile; wp_reset_postdata(); ?>
-        </div>
-        
-        <?php if ($data['show_all_link']) : ?>
-            <div class="mt-8 text-center md:hidden">
-                <a href="<?php echo esc_url(get_post_type_archive_link('product') ?: home_url('/products')); ?>" class="inline-flex items-center text-primary font-bold hover:text-secondary transition">
-                    عرض الكل
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                </a>
-            </div>
-        <?php endif; ?>
-    </div>
-</section>
+/**
+ * Filter products section data before rendering.
+ * 
+ * @since 1.0.0
+ * 
+ * @param array $products_data Products section data.
+ */
+$products_data = apply_filters('omran_core_products_data', $products_data);
 
+// Load preset-specific layout
+$layout_path = omran_core_locate_preset_template_part('sections/section-products', 'products');
+if (!$layout_path) {
+    // Fallback to default layout
+    $layout_path = get_template_directory() . '/template-parts/layouts/products-default.php';
+}
 
-
-
+if (file_exists($layout_path)) {
+    include $layout_path;
+} else {
+    // Minimal fallback
+    echo '<!-- Products section layout not found -->';
+}
