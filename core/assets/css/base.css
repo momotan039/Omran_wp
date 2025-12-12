@@ -1,0 +1,616 @@
+/**
+ * Base CSS for Al-Omran Theme
+ * 
+ * Base styles that apply to all presets.
+ * Component styles are in components.css
+ * Preset-specific styles are in presets/{preset-name}.css
+ * 
+ * @package AlOmran_Core
+ */
+
+/* Base Animations */
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+        visibility: hidden;
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+        visibility: visible;
+    }
+}
+
+.animate-fade-in-up { 
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.8s;
+}
+
+.animate-fade-in-up.animated {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+@keyframes slideInRight {
+    from { 
+        opacity: 0; 
+        transform: translateX(-30px); 
+        visibility: hidden;
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0); 
+        visibility: visible;
+    }
+}
+
+.animate-slide-in-right { 
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-30px);
+    transition: opacity 0.8s ease-out, 
+                transform 0.8s ease-out,
+                visibility 0.8s;
+}
+
+.animate-slide-in-right.animated {
+    animation: slideInRight 0.8s ease-out forwards;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+@keyframes scaleIn {
+    from { 
+        opacity: 0; 
+        transform: scale(0.9); 
+        visibility: hidden;
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1); 
+        visibility: visible;
+    }
+}
+
+.animate-scale-in { 
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.9);
+    transition: opacity 0.5s ease-out, 
+                transform 0.5s ease-out,
+                visibility 0.5s;
+}
+
+.animate-scale-in.animated {
+    animation: scaleIn 0.5s ease-out forwards;
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+
+@keyframes spin-slow {
+    from { transform: rotate(45deg); }
+    to { transform: rotate(405deg); }
+}
+
+.animate-spin-slow { animation: spin-slow 2s linear infinite; }
+
+@keyframes progress {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+}
+
+.animate-progress { animation: progress 1.5s ease-in-out infinite; }
+
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.page-fade-in { animation: pageFadeIn 0.6s ease-out forwards; }
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.image-loading,
+.skeleton {
+    background: linear-gradient(90deg, var(--theme-gray-100) 25%, var(--theme-gray-200) 50%, var(--theme-gray-100) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton { border-radius: 4px; }
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Accessibility improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+    outline: 2px solid var(--theme-secondary);
+    outline-offset: 2px;
+}
+
+/* RTL improvements */
+[dir="rtl"] .space-x-reverse > * + * {
+    margin-right: 0.5rem;
+    margin-left: 0;
+}
+
+/* Seamless Loading Styles */
+#page-loader {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+#page-loader.hidden {
+    display: none !important;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+img.image-loading { min-height: 200px; }
+
+/* Smooth Content Loading */
+.content-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.content-loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: loading-sweep 1.5s infinite;
+}
+
+@keyframes loading-sweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* AJAX Loading Indicator */
+.ajax-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.ajax-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 3px solid var(--theme-secondary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Smooth Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Redux Framework Overrides - Hide all Redux UI elements */
+body:not(.wp-admin) .redux-container,
+body:not(.wp-admin) .redux-main,
+body:not(.wp-admin) .redux-field-container,
+body:not(.wp-admin) .redux-notices,
+body:not(.wp-admin) .redux-dev-mode-question {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Prevent Redux CSS from affecting frontend - Override any Redux-generated styles */
+body:not(.wp-admin) style[data-redux-output],
+body:not(.wp-admin) style[id*="redux"],
+body:not(.wp-admin) link[href*="redux"] {
+    display: none !important;
+}
+
+/* Remove any Redux inline styles that might override Tailwind */
+body:not(.wp-admin) [style*="redux"] {
+    /* Let Tailwind handle all styling */
+}
+
+/* Tailwind Custom Colors Override - Now using CSS variables */
+.bg-primary, header.bg-primary, [class*="bg-primary"] { background-color: var(--theme-primary) !important; }
+.text-primary { color: var(--theme-primary) !important; }
+.border-primary { border-color: var(--theme-primary) !important; }
+.bg-secondary, [class*="bg-secondary"] { background-color: var(--theme-secondary) !important; }
+.text-secondary { color: var(--theme-secondary) !important; }
+.border-secondary { border-color: var(--theme-secondary) !important; }
+
+/* Tailwind Utilities */
+[class*="bg-"], [class*="text-"], [class*="border-"], [class*="rounded-"],
+[class*="p-"], [class*="m-"], [class*="flex"], [class*="grid"],
+[class*="w-"], [class*="h-"], [class*="space-"], [class*="gap-"] {
+    box-sizing: border-box;
+}
+
+/* Font Sizes */
+.text-xs { font-size: 0.75rem !important; line-height: 1rem !important; }
+.text-sm { font-size: 0.875rem !important; line-height: 1.25rem !important; }
+.text-base { font-size: 1rem !important; line-height: 1.5rem !important; }
+.text-lg { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+.text-xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+.text-2xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+.text-3xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+.text-4xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+
+/* Font Family */
+body, html { font-family: 'Cairo', sans-serif !important; }
+
+/* Stats Section - Enhanced Typography */
+#about-stats-section .stat-number {
+    letter-spacing: -0.02em;
+}
+
+#about-stats-section .stat-value {
+    color: var(--theme-white) !important;
+    font-weight: 900;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3), 
+                 0 0 20px rgba(var(--theme-secondary-rgb), 0.5),
+                 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+#about-stats-section .stat-suffix {
+    color: var(--theme-secondary) !important;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(var(--theme-secondary-rgb), 0.6),
+                 0 0 15px rgba(var(--theme-secondary-rgb), 0.4) !important;
+}
+
+#about-stats-section .stat-label {
+    color: var(--theme-white) !important;
+    font-weight: 600;
+    font-size: 1rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4),
+                 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    opacity: 1 !important;
+}
+
+@media (min-width: 768px) {
+    #about-stats-section .stat-label {
+        font-size: 1.125rem;
+    }
+}
+
+#about-stats-section .stat-item:hover .stat-value {
+    text-shadow: 0 2px 15px rgba(255, 255, 255, 0.4), 
+                 0 0 30px rgba(var(--theme-secondary-rgb), 0.7),
+                 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+#about-stats-section .stat-item:hover .stat-suffix {
+    text-shadow: 0 2px 12px rgba(var(--theme-secondary-rgb), 0.8),
+                 0 0 20px rgba(var(--theme-secondary-rgb), 0.6) !important;
+}
+
+/* Product Media Slider */
+.product-media-slider {
+    margin-top: 1rem;
+}
+
+.product-media-slider .flex {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.product-media-slider .flex::-webkit-scrollbar {
+    display: none;
+}
+
+.media-slider-item {
+    transition: all 0.3s ease;
+}
+
+.media-slider-item:hover {
+    transform: scale(1.05);
+}
+
+.media-slider-item.active {
+    box-shadow: 0 4px 12px rgba(var(--theme-secondary-rgb), 0.3);
+}
+
+#product-main-container {
+    position: relative;
+    min-height: 400px;
+}
+
+#product-main-container .main-media-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#product-main-container .main-media-item.active {
+    position: relative;
+}
+
+/* News Page Styles */
+.prose {
+    color: var(--theme-gray-700);
+    max-width: 65ch;
+}
+
+.prose p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    line-height: 1.75;
+}
+
+.prose h2 {
+    color: var(--theme-primary);
+    font-weight: 700;
+    font-size: 1.875em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    line-height: 1.3;
+}
+
+.prose h3 {
+    color: var(--theme-primary);
+    font-weight: 600;
+    font-size: 1.5em;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+    line-height: 1.4;
+}
+
+.prose a {
+    color: var(--theme-primary);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.prose a:hover {
+    color: var(--theme-secondary);
+}
+
+.prose img {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    border-radius: 0.5rem;
+}
+
+.prose ul, .prose ol {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-right: 1.625em;
+}
+
+.prose li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.prose blockquote {
+    border-right: 4px solid var(--theme-secondary);
+    padding-right: 1em;
+    margin: 1.6em 0;
+    font-style: italic;
+    color: var(--theme-gray-500);
+}
+
+/* News Image Modal */
+#imageModal {
+    cursor: pointer;
+}
+
+#imageModal img {
+    cursor: default;
+}
+
+#imageModal button {
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* News Gallery Grid */
+.news-gallery-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* News Video Container */
+.news-video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.news-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Reading Time Calculation */
+.reading-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Share Buttons */
+.share-button {
+    transition: all 0.3s ease;
+}
+
+.share-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Author Section */
+.author-card {
+    transition: background-color 0.3s ease;
+}
+
+.author-card:hover {
+    background-color: var(--theme-gray-50);
+}
+
+/* News Archive Card Improvements */
+.news-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Responsive Typography for News */
+@media (max-width: 768px) {
+    .prose {
+        font-size: 0.95rem;
+    }
+    
+    .prose h2 {
+        font-size: 1.5em;
+    }
+    
+    .prose h3 {
+        font-size: 1.25em;
+    }
+}
+
+/* Demo Ads Styling */
+.demo-ad-wrapper {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+}
+
+.demo-ad-container {
+    position: relative;
+    overflow: hidden;
+    border: 2px dashed var(--theme-slate-300);
+    background: var(--theme-slate-50);
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.demo-ad-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    z-index: 1;
+}
+
+.demo-ad-watermark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    transition: opacity 0.3s ease, background 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.demo-ad-wrapper:hover .demo-ad-watermark {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.demo-ad-label {
+    background: rgba(var(--theme-gray-600), 0.95);
+    color: var(--theme-white);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Responsive demo ad labels */
+@media (max-width: 640px) {
+    .demo-ad-label {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.75rem;
+    }
+}
+

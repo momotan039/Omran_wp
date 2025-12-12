@@ -1,0 +1,29 @@
+/**
+ * Industrial Preset Styles
+ * 
+ * Base styles for the Industrial theme preset.
+ * These styles are loaded when theme_preset is set to 'industrial'.
+ * 
+ * @package AlOmran_Core
+ */
+
+/* Industrial Preset Variables */
+:root {
+    --preset-primary: #2c5530;
+    --preset-secondary: #4a7c59;
+    --preset-accent: #f97316;
+    --preset-font-family: 'Cairo', sans-serif;
+}
+
+.preset-industrial {
+    /* Industrial-specific styles */
+}
+
+.preset-industrial .hero-section {
+    /* Hero section styles for industrial preset */
+}
+
+.preset-industrial .product-card {
+    /* Product card styles for industrial preset */
+}
+

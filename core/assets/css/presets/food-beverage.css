@@ -1,0 +1,47 @@
+/**
+ * Food & Beverage Preset Styles
+ * 
+ * Styles for the Food & Beverage theme preset.
+ * These styles are loaded when theme_preset is set to 'food' or 'food-beverage'.
+ * 
+ * @package AlOmran_Core
+ */
+
+/* Food & Beverage Preset Variables */
+:root {
+    --preset-primary: #dc2626;
+    --preset-secondary: #f97316;
+    --preset-accent: #facc15;
+    --preset-font-family: 'Tajawal', sans-serif;
+}
+
+.preset-food-beverage,
+.preset-food {
+    /* Food & Beverage specific styles */
+    color: var(--preset-primary);
+}
+
+.preset-food-beverage .hero-section {
+    /* Hero section with food industry styling */
+    background: linear-gradient(135deg, var(--preset-primary) 0%, var(--preset-secondary) 100%);
+}
+
+.preset-food-beverage .product-card {
+    /* Product cards with food industry styling */
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(220, 38, 38, 0.1);
+}
+
+.preset-food-beverage .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* Food-specific ingredient display */
+.preset-food-beverage .product-ingredients {
+    background: #fff9e6;
+    border-left: 4px solid var(--preset-accent);
+    padding: 1rem;
+    margin: 1rem 0;
+}
+

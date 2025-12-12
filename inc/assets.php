@@ -320,10 +320,24 @@ add_action('template_redirect', 'alomran_prevent_redux_css', 1); // Right before
 
 /**
  * Enqueue theme styles and scripts
+ * 
+ * NOTE: This function is kept for backward compatibility.
+ * The core theme now uses omran_core_enqueue_assets() from core/functions/assets-loader.php
+ * 
+ * @deprecated Use omran_core_enqueue_assets() instead
+ * 
  * Note: Redux CSS output is disabled in redux-config.php (output => false)
  * Additional protection via alomran_prevent_redux_css() above
  */
 function alomran_enqueue_assets() {
+    // If core assets loader is available, use it
+    if (function_exists('omran_core_enqueue_assets')) {
+        // Core loader handles everything, but we keep this for backward compatibility
+        // The core loader is already hooked, so this won't duplicate
+        return;
+    }
+    
+    // Fallback for legacy support
     // Only enqueue on frontend
     if (is_admin()) {
         return;
