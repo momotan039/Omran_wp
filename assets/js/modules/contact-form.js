@@ -49,7 +49,7 @@
                             
                             // Reset button after 3 seconds
                             setTimeout(function() {
-                                $messageDiv.addClass('hidden').removeClass('bg-green-50 text-green-700 p-4 rounded-lg text-center animate-scale-in');
+                                $messageDiv.addClass('hidden').removeAttr('style').removeClass('p-4 rounded-lg text-center animate-scale-in');
                                 $submitBtn.prop('disabled', false).html('إرسال الآن <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>');
                             }, 3000);
                         } else {
@@ -67,15 +67,27 @@
 
             showSuccess: function($messageDiv, message) {
                 $messageDiv
-                    .removeClass('hidden bg-red-50 text-red-700')
-                    .addClass('bg-green-50 text-green-700 p-4 rounded-lg text-center animate-scale-in')
+                    .removeClass('hidden')
+                    .addClass('p-4 rounded-lg text-center animate-scale-in')
+                    .css({
+                        'background-color': 'rgba(var(--theme-secondary-rgb), 0.1)',
+                        'color': 'var(--theme-secondary)',
+                        'border': '1px solid',
+                        'border-color': 'rgba(var(--theme-secondary-rgb), 0.3)'
+                    })
                     .text(message);
             },
 
             showError: function($messageDiv, message) {
                 $messageDiv
-                    .removeClass('hidden bg-green-50 text-green-700')
-                    .addClass('bg-red-50 text-red-700 p-4 rounded-lg text-center animate-scale-in')
+                    .removeClass('hidden')
+                    .addClass('p-4 rounded-lg text-center animate-scale-in')
+                    .css({
+                        'background-color': 'rgba(239, 68, 68, 0.1)',
+                        'color': 'rgb(220, 38, 38)',
+                        'border': '1px solid',
+                        'border-color': 'rgba(239, 68, 68, 0.3)'
+                    })
                     .text(message);
             }
         };

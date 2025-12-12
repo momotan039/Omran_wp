@@ -44,14 +44,14 @@ class Alomran_Download_Box_Widget extends WP_Widget {
                         $file_url = trim($parts[0]);
                         $file_label = isset($parts[1]) ? trim($parts[1]) : basename($file_url);
                     ?>
-                        <a href="<?php echo esc_url($file_url); ?>" target="_blank" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition group">
+                        <a href="<?php echo esc_url($file_url); ?>" target="_blank" class="flex items-center justify-between p-4 rounded-lg border transition group" style="background-color: var(--theme-gray-50); border-color: var(--theme-gray-200);" onmouseover="this.style.backgroundColor='var(--theme-gray-100)'" onmouseout="this.style.backgroundColor='var(--theme-gray-50)'">
                             <div class="flex items-center gap-3">
                                 <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
-                                <span class="text-gray-700 group-hover:text-primary transition"><?php echo esc_html($file_label); ?></span>
+                                <span class="group-hover:text-primary transition" style="color: var(--theme-gray-700);"><?php echo esc_html($file_label); ?></span>
                             </div>
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5" style="color: var(--theme-gray-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                             </svg>
                         </a>

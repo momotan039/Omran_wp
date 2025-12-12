@@ -38,11 +38,11 @@ class Alomran_Spec_Table_Widget extends WP_Widget {
             $specs = alomran_parse_specs($specs_text);
             if (!empty($specs)) {
                 ?>
-                <div class="alomran-spec-table bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="alomran-spec-table rounded-lg border overflow-hidden" style="background-color: var(--theme-white); border-color: var(--theme-gray-200);">
                     <?php foreach ($specs as $spec) : ?>
-                        <div class="flex justify-between py-3 px-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                            <span class="font-bold text-gray-700"><?php echo esc_html($spec['label']); ?></span>
-                            <span class="text-gray-600 dir-ltr"><?php echo esc_html($spec['value']); ?></span>
+                        <div class="flex justify-between py-3 px-4 border-b last:border-0 transition-colors" style="border-color: var(--theme-gray-100);" onmouseover="this.style.backgroundColor='var(--theme-gray-50)'" onmouseout="this.style.backgroundColor='transparent'">
+                            <span class="font-bold" style="color: var(--theme-gray-700);"><?php echo esc_html($spec['label']); ?></span>
+                            <span class="dir-ltr" style="color: var(--theme-gray-600);"><?php echo esc_html($spec['value']); ?></span>
                         </div>
                     <?php endforeach; ?>
                 </div>

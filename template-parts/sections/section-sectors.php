@@ -21,7 +21,7 @@ $icons = array(
 );
 ?>
 
-<section class="py-20 bg-white">
+<section class="py-20" style="background-color: var(--theme-white);">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16 animate-fade-in-up">
             <?php if (!empty($data['title'])) : ?>
@@ -29,7 +29,7 @@ $icons = array(
                 <div class="h-1 w-20 bg-secondary mx-auto"></div>
             <?php endif; ?>
             <?php if (!empty($data['subtitle'])) : ?>
-                <p class="mt-4 text-gray-500"><?php echo esc_html($data['subtitle']); ?></p>
+                <p class="mt-4" style="color: var(--theme-gray-500);"><?php echo esc_html($data['subtitle']); ?></p>
             <?php endif; ?>
         </div>
 
@@ -44,13 +44,13 @@ $icons = array(
                 $delay_classes = array('delay-100', 'delay-200', 'delay-300', 'delay-400', 'delay-500');
                 $delay_class = isset($delay_classes[$idx]) ? $delay_classes[$idx] : 'delay-500';
                 ?>
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-secondary group animate-fade-in-up <?php echo esc_attr($delay_class); ?>">
+                <div class="p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-secondary group animate-fade-in-up <?php echo esc_attr($delay_class); ?>" style="background-color: var(--theme-white);">
                     <div class="text-primary mb-6 group-hover:text-secondary transition-colors duration-300 transform group-hover:scale-110 origin-right">
                         <?php echo $icon; ?>
                     </div>
-                    <h3 class="text-xl font-bold mb-3 text-gray-800"><?php echo esc_html($sector['sector_title']); ?></h3>
+                    <h3 class="text-xl font-bold mb-3" style="color: var(--theme-gray-800);"><?php echo esc_html($sector['sector_title']); ?></h3>
                     <?php if (!empty($sector['sector_desc'])) : ?>
-                        <p class="text-gray-500 leading-relaxed text-sm"><?php echo esc_html($sector['sector_desc']); ?></p>
+                        <p class="leading-relaxed text-sm" style="color: var(--theme-gray-500);"><?php echo esc_html($sector['sector_desc']); ?></p>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>

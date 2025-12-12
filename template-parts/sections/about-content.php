@@ -19,7 +19,7 @@ if (!$data['enable']) {
     <div class="flex flex-col md:flex-row gap-16 items-center mb-20">
         <div class="md:w-1/2 animate-slide-in-right">
             <?php if (!empty($data['image'])) : ?>
-                <img src="<?php echo esc_url($data['image']); ?>" alt="<?php echo esc_attr($data['title']); ?>" class="rounded-xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 border-4 border-gray-100 w-full" />
+                <img src="<?php echo esc_url($data['image']); ?>" alt="<?php echo esc_attr($data['title']); ?>" class="rounded-xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 border-4 w-full" style="border-color: var(--theme-gray-100);" />
             <?php elseif (has_post_thumbnail()) : ?>
                 <?php the_post_thumbnail('large', array('class' => 'rounded-xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 border-4 border-gray-100')); ?>
             <?php else : ?>
@@ -33,7 +33,7 @@ if (!$data['enable']) {
                     <span class="absolute bottom-0 right-0 w-20 h-1 bg-secondary translate-y-2"></span>
                 </h2>
             <?php endif; ?>
-            <div class="prose prose-lg max-w-none text-gray-600 leading-loose text-lg">
+            <div class="prose prose-lg max-w-none leading-loose text-lg" style="color: var(--theme-gray-600);">
                 <?php if (!empty($data['content'])) : ?>
                     <?php echo wp_kses_post(wpautop($data['content'])); ?>
                 <?php elseif (have_posts()) : ?>

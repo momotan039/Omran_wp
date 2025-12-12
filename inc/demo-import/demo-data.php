@@ -22,7 +22,7 @@ function alomran_get_demo_data($preset = 'industrial') {
             'colors' => array(
                 'primary' => '#2c5530',
                 'secondary' => '#4a7c59',
-                'accent' => '#f59e0b',
+                'accent' => '#f97316', // Optimized vibrant orange
             ),
             'font_family' => 'cairo',
             'font_weight' => '400',
@@ -36,7 +36,7 @@ function alomran_get_demo_data($preset = 'industrial') {
             'colors' => array(
                 'primary' => '#dc2626',
                 'secondary' => '#f97316',
-                'accent' => '#fbbf24',
+                'accent' => '#facc15', // Optimized bright yellow
             ),
             'font_family' => 'tajawal',
             'font_weight' => '400',
@@ -50,7 +50,7 @@ function alomran_get_demo_data($preset = 'industrial') {
             'colors' => array(
                 'primary' => '#1e40af',
                 'secondary' => '#3b82f6',
-                'accent' => '#06b6d4',
+                'accent' => '#22d3ee', // Optimized bright cyan
             ),
             'font_family' => 'changa',
             'font_weight' => '600',

@@ -1,0 +1,65 @@
+warning: in the working copy of 'assets/css/custom.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'assets/js/chat-widget.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'assets/js/modules/contact-form.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'assets/js/modules/faq.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'footer.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'header.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'inc/helpers/helpers-presets.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'inc/setup.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'inc/widgets/hero-widget.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template-parts/header/header-loader.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template-parts/header/header-logo.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template-parts/product-card.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template-parts/sections/about-stats.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template-parts/sections/about-vision-mission.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template-parts/sections/section-hero.php', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'template-parts/sections/section-sectors.php', LF will be replaced by CRLF the next time Git touches it
+ assets/css/custom.css                            |  78 [32m++[m[31m--[m
+ assets/js/chat-widget.js                         |  56 [32m+[m[31m--[m
+ assets/js/modules/contact-form.js                |  22 [32m+[m[31m-[m
+ assets/js/modules/faq.js                         |  18 [32m+[m[31m-[m
+ docs/01-SETUP.md                                 |   1 [32m+[m
+ docs/02-BUILD.md                                 |   1 [32m+[m
+ docs/03-README.md                                |   1 [32m+[m
+ docs/04-REDUX-INTEGRATION.md                     |   1 [32m+[m
+ docs/05-REDUX-FORMAT.md                          |   1 [32m+[m
+ docs/06-REFACTORING.md                           |   1 [32m+[m
+ docs/07-CLEANUP.md                               |   1 [32m+[m
+ docs/08-FEATURES-IMPLEMENTATION.md               |   1 [32m+[m
+ docs/09-FEATURES-AR.md                           |   1 [32m+[m
+ footer.php                                       |  40 [32m++[m[31m-[m
+ header.php                                       |  63 [32m++[m[31m--[m
+ inc/demo-import/demo-data.php                    |   6 [32m+[m[31m-[m
+ inc/helpers/helpers-presets.php                  | 430 [32m+++++++++++++++++++++[m[31m--[m
+ inc/redux/parsers.php                            |   1 [32m+[m
+ inc/redux/sections/theme-presets.php             |   9 [32m+[m[31m-[m
+ inc/setup.php                                    |  28 [32m++[m
+ inc/widgets/clients-grid-widget.php              |   2 [32m+[m[31m-[m
+ inc/widgets/download-box-widget.php              |   6 [32m+[m[31m-[m
+ inc/widgets/hero-widget.php                      |  10 [32m+[m[31m-[m
+ inc/widgets/projects-slider-widget.php           |   4 [32m+[m[31m-[m
+ inc/widgets/spec-table-widget.php                |   8 [32m+[m[31m-[m
+ inc/widgets/testimonials-widget.php              |   8 [32m+[m[31m-[m
+ template-parts/header/header-loader.php          |   8 [32m+[m[31m-[m
+ template-parts/header/header-logo.php            |   4 [32m+[m[31m-[m
+ template-parts/header/header-mobile-menu.php     |   9 [32m+[m[31m-[m
+ template-parts/header/header-nav.php             |   8 [32m+[m[31m-[m
+ template-parts/news/news-content.php             |   8 [32m+[m[31m-[m
+ template-parts/news/news-hero.php                |  20 [32m+[m[31m-[m
+ template-parts/news/news-media.php               |  20 [32m+[m[31m-[m
+ template-parts/news/news-modals.php              |  10 [32m+[m[31m-[m
+ template-parts/news/news-navigation.php          |   5 [32m+[m[31m-[m
+ template-parts/news/news-related.php             |   6 [32m+[m[31m-[m
+ template-parts/news/news-share.php               |  14 [32m+[m[31m-[m
+ template-parts/product-card.php                  |  18 [32m+[m[31m-[m
+ template-parts/sections/about-content.php        |   4 [32m+[m[31m-[m
+ template-parts/sections/about-header.php         |   4 [32m+[m[31m-[m
+ template-parts/sections/about-stats.php          |   2 [32m+[m[31m-[m
+ template-parts/sections/about-vision-mission.php |  12 [32m+[m[31m-[m
+ template-parts/sections/section-hero.php         |  20 [32m+[m[31m-[m
+ template-parts/sections/section-products.php     |   1 [32m+[m
+ template-parts/sections/section-risks.php        |   9 [32m+[m[31m-[m
+ template-parts/sections/section-sectors.php      |  10 [32m+[m[31m-[m
+ template-parts/sections/section-stainless.php    |   9 [32m+[m[31m-[m
+ template-parts/sections/section-testimonials.php |  11 [32m+[m[31m-[m
+ 48 files changed, 742 insertions(+), 268 deletions(-)

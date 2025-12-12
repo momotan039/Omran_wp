@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <div class="md:hidden">
-    <button id="mobile-menu-toggle" class="text-white focus:outline-none" aria-label="<?php esc_attr_e('Toggle Menu', 'alomran'); ?>">
+    <button id="mobile-menu-toggle" class="focus:outline-none" style="color: var(--theme-white);" aria-label="<?php esc_attr_e('Toggle Menu', 'alomran'); ?>">
         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="menu-icon">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
     </button>
 </div>
 
-<div id="mobile-menu" class="md:hidden hidden bg-primary border-t border-gray-700">
+<div id="mobile-menu" class="md:hidden hidden border-t" style="background-color: var(--theme-primary); border-color: var(--theme-gray-700);">
     <div class="flex flex-col space-y-4 px-4 py-6">
         <?php
         if (has_nav_menu('primary')) {
@@ -44,8 +44,9 @@ if (!defined('ABSPATH')) {
             );
 
             foreach ($nav_links as $link) {
-                $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'text-white hover:text-secondary';
-                echo '<a href="' . esc_url($link['url']) . '" class="block ' . esc_attr($is_active) . '">' . esc_html($link['name']) . '</a>';
+                $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'hover:text-secondary';
+                $text_color = 'color: var(--theme-white);';
+                echo '<a href="' . esc_url($link['url']) . '" class="block ' . esc_attr($is_active) . '" style="' . esc_attr($text_color) . '">' . esc_html($link['name']) . '</a>';
             }
         }
         ?>

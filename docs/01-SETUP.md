@@ -51,3 +51,4 @@ Quick setup checklist for Al-Omran Industries WordPress theme.
 
 **Version**: 1.0.0 | **Last Updated**: 2024
 
+

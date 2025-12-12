@@ -51,8 +51,8 @@ class Alomran_Projects_Slider_Widget extends WP_Widget {
                                 <a href="<?php echo esc_url($project_url); ?>" class="block group">
                                     <div class="relative aspect-video overflow-hidden rounded-lg">
                                         <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($project_title); ?>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <span class="text-white font-bold"><?php echo esc_html($project_title); ?></span>
+                                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center" style="background-color: rgba(0, 0, 0, 0.4);">
+                                            <span class="font-bold" style="color: var(--theme-white);"><?php echo esc_html($project_title); ?></span>
                                         </div>
                                     </div>
                                 </a>

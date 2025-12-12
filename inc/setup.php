@@ -40,3 +40,31 @@ function alomran_set_content_width() {
 }
 add_action('after_setup_theme', 'alomran_set_content_width', 0);
 
+/**
+ * Add preset-based body classes
+ */
+function alomran_add_preset_body_classes($classes) {
+    $preset = alomran_get_theme_preset();
+    $header_style = alomran_get_header_style();
+    $footer_style = alomran_get_footer_style();
+    $content_layout = alomran_get_option('preset_content_layout', 'boxed');
+    
+    // Preset class
+    $classes[] = 'preset-' . esc_attr($preset);
+    
+    // Header style class
+    $classes[] = 'header-' . esc_attr($header_style);
+    if (alomran_is_header_sticky()) {
+        $classes[] = 'header-sticky';
+    }
+    
+    // Footer style class
+    $classes[] = 'footer-' . esc_attr($footer_style);
+    
+    // Content layout class
+    $classes[] = 'layout-' . esc_attr($content_layout);
+    
+    return $classes;
+}
+add_filter('body_class', 'alomran_add_preset_body_classes');
+

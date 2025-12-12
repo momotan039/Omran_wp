@@ -43,10 +43,10 @@ class Alomran_Hero_Widget extends WP_Widget {
         }
         ?>
         <div class="alomran-hero-widget relative py-20 bg-cover bg-center bg-no-repeat" style="<?php echo esc_attr($bg_style); ?>">
-            <div class="absolute inset-0 bg-black opacity-<?php echo esc_attr($overlay_opacity / 10); ?>"></div>
-            <div class="relative z-10 <?php echo esc_attr(alomran_get_container_width_class()); ?> mx-auto px-4 text-center text-white">
+            <div class="absolute inset-0" style="background-color: rgba(0, 0, 0, <?php echo esc_attr($overlay_opacity / 100); ?>);"></div>
+            <div class="relative z-10 <?php echo esc_attr(alomran_get_container_width_class()); ?> mx-auto px-4 text-center" style="color: var(--theme-white);">
                 <?php if ($subtitle) : ?>
-                    <p class="text-lg mb-4 text-accent"><?php echo esc_html($subtitle); ?></p>
+                    <p class="text-lg mb-4 text-accent" style="color: var(--theme-accent);"><?php echo esc_html($subtitle); ?></p>
                 <?php endif; ?>
                 <?php if ($title) : ?>
                     <h2 class="text-4xl md:text-6xl font-bold mb-6"><?php echo esc_html($title); ?></h2>
@@ -56,12 +56,12 @@ class Alomran_Hero_Widget extends WP_Widget {
                 <?php endif; ?>
                 <div class="flex flex-wrap gap-4 justify-center">
                     <?php if ($button_text && $button_url) : ?>
-                        <a href="<?php echo esc_url($button_url); ?>" class="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition">
+                        <a href="<?php echo esc_url($button_url); ?>" class="text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition" style="background-color: var(--theme-primary);">
                             <?php echo esc_html($button_text); ?>
                         </a>
                     <?php endif; ?>
                     <?php if ($button_text_2 && $button_url_2) : ?>
-                        <a href="<?php echo esc_url($button_url_2); ?>" class="bg-white text-primary px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition">
+                        <a href="<?php echo esc_url($button_url_2); ?>" class="px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition" style="background-color: var(--theme-white); color: var(--theme-primary);">
                             <?php echo esc_html($button_text_2); ?>
                         </a>
                     <?php endif; ?>

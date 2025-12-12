@@ -16,7 +16,7 @@ if (!$data['enable'] || empty($data['stats'])) {
 ?>
 
 <div class="container mx-auto px-4 py-16">
-    <div id="about-stats-section" class="bg-primary rounded-2xl p-12 text-white text-center grid grid-cols-1 md:grid-cols-3 gap-8 animate-scale-in delay-200">
+    <div id="about-stats-section" class="rounded-2xl p-12 text-center grid grid-cols-1 md:grid-cols-3 gap-8 animate-scale-in delay-200" style="background-color: var(--theme-primary); color: var(--theme-white);">
         <?php foreach ($data['stats'] as $index => $stat) : ?>
             <?php if (!empty($stat['number']) && !empty($stat['label'])) : ?>
                 <?php

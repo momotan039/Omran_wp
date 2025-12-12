@@ -51,7 +51,7 @@ class Alomran_Testimonials_Widget extends WP_Widget {
                     $company = get_field('company', $testimonial->ID);
                     $content = get_field('content', $testimonial->ID) ?: $testimonial->post_content;
                 ?>
-                    <div class="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+                    <div class="rounded-lg p-6 border shadow-sm" style="background-color: var(--theme-white); border-color: var(--theme-gray-200);">
                         <div class="flex items-start gap-1 mb-4">
                             <?php for ($i = 0; $i < 5; $i++) : ?>
                                 <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -59,12 +59,12 @@ class Alomran_Testimonials_Widget extends WP_Widget {
                                 </svg>
                             <?php endfor; ?>
                         </div>
-                        <p class="text-gray-700 mb-4"><?php echo esc_html($content); ?></p>
+                        <p class="mb-4" style="color: var(--theme-gray-700);"><?php echo esc_html($content); ?></p>
                         <div class="flex items-center gap-3">
                             <div>
-                                <p class="font-bold text-gray-900"><?php echo esc_html($testimonial->post_title); ?></p>
+                                <p class="font-bold" style="color: var(--theme-gray-900);"><?php echo esc_html($testimonial->post_title); ?></p>
                                 <?php if ($role || $company) : ?>
-                                    <p class="text-sm text-gray-500">
+                                    <p class="text-sm" style="color: var(--theme-gray-500);">
                                         <?php if ($role) echo esc_html($role); ?>
                                         <?php if ($role && $company) echo ' - '; ?>
                                         <?php if ($company) echo esc_html($company); ?>

@@ -45,3 +45,4 @@ Refactoring and SEO improvements for better maintainability.
 - Schema markup added to `<head>`
 - Meta tags dynamic by page type
 
+

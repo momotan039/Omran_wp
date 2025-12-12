@@ -15,22 +15,29 @@ if (!defined('ABSPATH')) {
 
     <?php
     $footer_style = alomran_get_footer_style();
-    $footer_classes = array('pt-16', 'pb-8');
     
-    if ($footer_style === 'dark') {
-        $footer_classes[] = 'bg-slate-900 text-slate-300 border-t border-secondary/20';
-    } elseif ($footer_style === 'minimal') {
-        $footer_classes[] = 'bg-gray-100 text-gray-800 border-t border-gray-200';
-    } elseif ($footer_style === 'centered') {
-        $footer_classes[] = 'bg-slate-900 text-slate-300 border-t border-secondary/20 text-center';
+    // Try to load dynamic footer template, fallback to default
+    $footer_template = 'template-parts/footer/footer-' . $footer_style;
+    if (locate_template($footer_template . '.php')) {
+        get_template_part('template-parts/footer/footer-' . $footer_style);
     } else {
-        $footer_classes[] = 'bg-slate-900 text-slate-300 border-t border-secondary/20';
-    }
-    
-    $footer_class = implode(' ', $footer_classes);
-    ?>
-    <footer class="<?php echo esc_attr($footer_class); ?>">
-        <div class="<?php echo esc_attr(alomran_get_container_width_class()); ?> mx-auto px-4">
+        // Fallback to default footer structure
+        $footer_classes = array('pt-16', 'pb-8');
+        
+        if ($footer_style === 'dark') {
+            $footer_classes[] = 'border-t border-secondary/20';
+        } elseif ($footer_style === 'minimal') {
+            $footer_classes[] = 'border-t border-gray-200';
+        } elseif ($footer_style === 'centered') {
+            $footer_classes[] = 'border-t border-secondary/20 text-center';
+        } else {
+            $footer_classes[] = 'border-t border-secondary/20';
+        }
+        
+        $footer_class = implode(' ', $footer_classes);
+        ?>
+        <footer class="<?php echo esc_attr($footer_class); ?>">
+            <div class="<?php echo esc_attr(alomran_get_container_width_class()); ?> mx-auto px-4">
             <?php 
             $company_info = alomran_get_company_info();
             $footer_data = alomran_get_section_data('footer');
@@ -143,7 +150,10 @@ if (!defined('ABSPATH')) {
                 </p>
             </div>
         </div>
-    </footer>
+        </footer>
+        <?php
+    }
+    ?>
 </div>
 
 <?php wp_footer(); ?>

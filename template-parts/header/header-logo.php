@@ -28,14 +28,14 @@ $logo_settings = alomran_get_header_logo_settings();
                 <?php if (is_front_page() || is_home()) : ?>
                     <h1 class="text-xl font-bold tracking-wider text-secondary"><?php echo esc_html($logo_settings['title']); ?></h1>
                 <?php else : ?>
-                    <a href="<?php echo esc_url(home_url('/')); ?>" class="text-xl font-bold tracking-wider text-secondary hover:text-yellow-400 transition">
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="text-xl font-bold tracking-wider hover:text-accent transition" style="color: var(--theme-secondary);">
                         <?php echo esc_html($logo_settings['title']); ?>
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
             
             <?php if ($logo_settings['show_subtitle']) : ?>
-                <p class="text-xs text-gray-300"><?php echo esc_html($logo_settings['subtitle']); ?></p>
+                <p class="text-xs" style="color: var(--theme-text-light);"><?php echo esc_html($logo_settings['subtitle']); ?></p>
             <?php endif; ?>
         </div>
     <?php endif; ?>

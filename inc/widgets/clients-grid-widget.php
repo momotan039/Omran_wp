@@ -47,7 +47,7 @@ class Alomran_Clients_Grid_Widget extends WP_Widget {
                         $client_url = isset($parts[1]) ? trim($parts[1]) : '#';
                         if (empty($logo_url)) continue;
                     ?>
-                        <a href="<?php echo esc_url($client_url); ?>" target="_blank" class="flex items-center justify-center p-4 bg-white rounded-lg border border-gray-200 hover:border-primary hover:shadow-md transition group">
+                        <a href="<?php echo esc_url($client_url); ?>" target="_blank" class="flex items-center justify-center p-4 rounded-lg hover:border-primary hover:shadow-md transition group" style="background-color: var(--theme-white); border-color: var(--theme-gray-200);">
                             <img src="<?php echo esc_url($logo_url); ?>" alt="" class="max-w-full max-h-16 object-contain opacity-60 group-hover:opacity-100 transition">
                         </a>
                     <?php endforeach; ?>

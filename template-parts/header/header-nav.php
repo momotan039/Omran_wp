@@ -33,8 +33,12 @@ if (!defined('ABSPATH')) {
 
         echo '<ul class="flex space-x-8 space-x-reverse items-center">';
         foreach ($nav_links as $link) {
-            $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'text-white hover:text-secondary';
-            echo '<li class="transition-colors duration-300 text-sm lg:text-base ' . esc_attr($is_active) . '">';
+            $is_active = (is_page($link['url']) || (is_home() && $link['url'] === home_url('/'))) ? 'text-secondary font-bold' : 'hover:text-secondary';
+            // For minimal header, use dark text; otherwise use white
+            $text_color_style = alomran_get_header_style() === 'minimal' 
+                ? 'color: var(--theme-gray-900);' 
+                : 'color: var(--theme-white);';
+            echo '<li class="transition-colors duration-300 text-sm lg:text-base ' . esc_attr($is_active) . '" style="' . esc_attr($text_color_style) . '">';
             echo '<a href="' . esc_url($link['url']) . '">' . esc_html($link['name']) . '</a>';
             echo '</li>';
         }

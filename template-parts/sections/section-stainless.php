@@ -24,14 +24,14 @@ $icons = array(
 );
 ?>
 
-<section class="py-20 bg-gray-100">
+<section class="py-20" style="background-color: var(--theme-gray-100);">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16 animate-fade-in-up">
             <?php if (!empty($data['title'])) : ?>
                 <h2 class="text-3xl font-bold text-primary mb-4"><?php echo esc_html($data['title']); ?></h2>
             <?php endif; ?>
             <?php if (!empty($data['subtitle'])) : ?>
-                <p class="text-gray-500"><?php echo esc_html($data['subtitle']); ?></p>
+                <p style="color: var(--theme-gray-500);"><?php echo esc_html($data['subtitle']); ?></p>
             <?php endif; ?>
         </div>
 
@@ -39,16 +39,17 @@ $icons = array(
             <?php foreach ($data['items'] as $idx => $item) : ?>
                 <?php if (empty($item['feature_text'])) continue; ?>
                 <?php $icon = $icons[$idx % count($icons)]; ?>
-                <div class="flex items-center gap-4 bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:border-secondary transition-all hover:-translate-y-1 animate-fade-in-up delay-<?php echo ($idx % 3 + 1) * 100; ?>">
+                <div class="flex items-center gap-4 p-6 rounded-lg shadow-sm border hover:border-secondary transition-all hover:-translate-y-1 animate-fade-in-up delay-<?php echo ($idx % 3 + 1) * 100; ?>" style="background-color: var(--theme-white); border-color: var(--theme-gray-100);">
                     <div class="text-secondary flex-shrink-0">
                         <?php echo $icon; ?>
                     </div>
-                    <p class="font-bold text-gray-700"><?php echo esc_html($item['feature_text']); ?></p>
+                    <p class="font-bold" style="color: var(--theme-gray-700);"><?php echo esc_html($item['feature_text']); ?></p>
                 </div>
             <?php endforeach; ?>
         </div>
     </div>
 </section>
+
 
 
 

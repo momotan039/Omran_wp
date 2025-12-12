@@ -14,10 +14,10 @@ $news_categories = get_the_terms($post_id, 'news_category');
 $author_name = get_the_author();
 ?>
 <div class="container mx-auto px-4 -mt-16 relative z-30">
-    <div class="bg-white rounded-xl shadow-xl p-8 md:p-12 border-t-4 border-secondary animate-fade-in-up delay-200">
+    <div class="rounded-xl shadow-xl p-8 md:p-12 border-t-4 border-secondary animate-fade-in-up delay-200" style="background-color: var(--theme-white);">
         
         <!-- Meta Data -->
-        <div class="flex flex-wrap items-center gap-6 text-gray-500 text-sm mb-8 border-b border-gray-100 pb-6">
+        <div class="flex flex-wrap items-center gap-6 text-sm mb-8 border-b pb-6" style="color: var(--theme-gray-500); border-color: var(--theme-gray-100);">
             <div class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -43,11 +43,11 @@ $author_name = get_the_author();
         </div>
 
         <!-- Content Body -->
-        <div class="prose prose-lg max-w-none text-gray-700 leading-loose">
+        <div class="prose prose-lg max-w-none leading-loose" style="color: var(--theme-gray-700);">
             <?php 
             $excerpt = alomran_get_auto_excerpt($post_id, 30);
             if (!empty($excerpt)) : ?>
-                <p class="font-bold text-xl text-gray-900 mb-6"><?php echo esc_html($excerpt); ?></p>
+                <p class="font-bold text-xl mb-6" style="color: var(--theme-gray-900);"><?php echo esc_html($excerpt); ?></p>
             <?php endif; ?>
             
             <?php the_content(); ?>

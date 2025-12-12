@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 $logo_settings = alomran_get_header_logo_settings();
 ?>
 <!-- Page Loader -->
-<div id="page-loader" class="fixed inset-0 z-[100] bg-white flex items-center justify-center transition-opacity duration-500">
+<div id="page-loader" class="fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-500" style="background-color: var(--theme-white);">
     <div class="text-center">
         <!-- Logo Animation -->
         <div class="relative w-20 h-20 mx-auto mb-6">
@@ -36,11 +36,11 @@ $logo_settings = alomran_get_header_logo_settings();
                 <h3 class="text-xl font-bold text-primary"><?php echo esc_html($logo_settings['title']); ?></h3>
             <?php endif; ?>
             <?php if ($logo_settings['show_subtitle']) : ?>
-                <p class="text-sm text-gray-600"><?php echo esc_html($logo_settings['subtitle']); ?></p>
+                <p class="text-sm" style="color: var(--theme-gray-600);"><?php echo esc_html($logo_settings['subtitle']); ?></p>
             <?php endif; ?>
             <!-- Progress Bar -->
-            <div class="w-48 h-1 bg-gray-200 rounded-full mx-auto mt-4 overflow-hidden">
-                <div id="loader-progress" class="h-full bg-gradient-to-r from-primary via-secondary to-primary rounded-full transform -translate-x-full animate-progress"></div>
+            <div class="w-48 h-1 rounded-full mx-auto mt-4 overflow-hidden" style="background-color: var(--theme-gray-200);">
+                <div id="loader-progress" class="h-full rounded-full transform -translate-x-full animate-progress" style="background: linear-gradient(to right, var(--theme-primary), var(--theme-secondary), var(--theme-primary));"></div>
             </div>
         </div>
     </div>

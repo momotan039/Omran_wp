@@ -30,19 +30,25 @@
                     const isOpen = $content.hasClass('max-h-48');
 
                     // Close all items
-                    $('.faq-item').removeClass('border-secondary bg-blue-50/30');
+                    $('.faq-item').css({
+                        'border-color': 'transparent',
+                        'background-color': 'transparent'
+                    });
                     $('.faq-content').removeClass('max-h-48 opacity-100').addClass('max-h-0 opacity-0');
-                    $('.faq-toggle span').removeClass('text-secondary').addClass('text-gray-700');
-                    $('.faq-icon').html('<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>').removeClass('text-secondary').addClass('text-gray-400');
+                    $('.faq-toggle span').css('color', 'var(--theme-gray-700)');
+                    $('.faq-icon').html('<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>').css('color', 'var(--theme-gray-400)');
 
                     if (isOpen) {
                         // Do nothing if already open (close it)
                     } else {
                         // Open clicked item
-                        $item.addClass('border-secondary bg-blue-50/30');
+                        $item.css({
+                            'border-color': 'var(--theme-secondary)',
+                            'background-color': 'rgba(var(--theme-secondary-rgb), 0.1)'
+                        });
                         $content.removeClass('max-h-0 opacity-0').addClass('max-h-48 opacity-100');
-                        $(this).find('span').removeClass('text-gray-700').addClass('text-secondary');
-                        $icon.html('<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>').removeClass('text-gray-400').addClass('text-secondary');
+                        $(this).find('span').css('color', 'var(--theme-secondary)');
+                        $icon.html('<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>').css('color', 'var(--theme-secondary)');
                     }
                 });
             },

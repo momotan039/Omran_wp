@@ -10,15 +10,15 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <!-- Image Modal -->
-<div id="imageModal" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-4" onclick="closeImageModal()">
-    <button class="absolute top-4 left-4 text-white text-2xl z-10 hover:text-gray-300 transition" onclick="closeImageModal()">×</button>
+<div id="imageModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="background-color: rgba(0, 0, 0, 0.9);" onclick="closeImageModal()">
+    <button class="absolute top-4 left-4 text-2xl z-10 transition" style="color: var(--theme-white);" onmouseover="this.style.color='var(--theme-gray-300)'" onmouseout="this.style.color='var(--theme-white)'" onclick="closeImageModal()">×</button>
     <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain" onclick="event.stopPropagation();">
 </div>
 
 <!-- Video Modal -->
-<div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-4" onclick="closeVideoModal()">
-    <button class="absolute top-4 left-4 text-white text-2xl z-10 hover:text-gray-300 transition" onclick="closeVideoModal()">×</button>
-    <div class="w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden" onclick="event.stopPropagation();">
+<div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="background-color: rgba(0, 0, 0, 0.9);" onclick="closeVideoModal()">
+    <button class="absolute top-4 left-4 text-2xl z-10 transition" style="color: var(--theme-white);" onmouseover="this.style.color='var(--theme-gray-300)'" onmouseout="this.style.color='var(--theme-white)'" onclick="closeVideoModal()">×</button>
+    <div class="w-full max-w-4xl aspect-video rounded-lg overflow-hidden" style="background-color: var(--theme-black);" onclick="event.stopPropagation();">
         <div id="videoContainer" class="w-full h-full"></div>
     </div>
 </div>
