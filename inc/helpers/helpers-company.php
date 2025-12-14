@@ -27,32 +27,117 @@ function alomran_get_company_info() {
 }
 
 /**
- * Get header logo settings.
+ * Get header logo URL with fallback priority.
+ * Priority: header_logo > header_logo_icon > custom_logo
  *
- * @return array
+ * @return string Logo URL
  */
-function alomran_get_header_logo_settings() {
-    $company_info = alomran_get_company_info();
-    
-    $logo_icon = alomran_get_option('header_logo_icon', '');
-    $icon_url = '';
-    if (!empty($logo_icon) && is_array($logo_icon) && isset($logo_icon['url'])) {
-        $icon_url = $logo_icon['url'];
-    } elseif (!empty($logo_icon) && is_numeric($logo_icon)) {
-        $icon_url = wp_get_attachment_image_url($logo_icon, 'full');
-    } elseif (is_string($logo_icon) && !empty($logo_icon)) {
-        $icon_url = $logo_icon;
+function alomran_get_header_logo_url() {
+    // Try new header_logo field first
+    $header_logo = alomran_get_option('header_logo', array());
+    if (!empty($header_logo) && isset($header_logo['url'])) {
+        return $header_logo['url'];
     }
     
-    $custom_title = alomran_get_option('header_logo_custom_title', '');
-    $custom_subtitle = alomran_get_option('header_logo_custom_subtitle', '');
+    // Fallback to old header_logo_icon field (backward compatibility)
+    $logo_icon = alomran_get_option('header_logo_icon', '');
+    if (!empty($logo_icon)) {
+        if (is_array($logo_icon) && isset($logo_icon['url'])) {
+            return $logo_icon['url'];
+        } elseif (is_numeric($logo_icon)) {
+            $url = wp_get_attachment_image_url($logo_icon, 'full');
+            if ($url) {
+                return $url;
+            }
+        } elseif (is_string($logo_icon) && !empty($logo_icon)) {
+            return $logo_icon;
+        }
+    }
     
+    // Final fallback to WordPress custom logo
+    $custom_logo_id = get_theme_mod('custom_logo');
+    if ($custom_logo_id) {
+        $url = wp_get_attachment_image_url($custom_logo_id, 'full');
+        if ($url) {
+            return $url;
+        }
+    }
+    
+    return '';
+}
+
+/**
+ * Get header logo title with fallback priority.
+ * Priority: header_logo_title > header_logo_custom_title > company_name
+ *
+ * @return string Title text
+ */
+function alomran_get_header_logo_title() {
+    $company_info = alomran_get_company_info();
+    
+    // Try new header_logo_title field first
+    $logo_title = alomran_get_option('header_logo_title', '');
+    if (!empty($logo_title)) {
+        return $logo_title;
+    }
+    
+    // Fallback to old header_logo_custom_title field (backward compatibility)
+    $custom_title = alomran_get_option('header_logo_custom_title', '');
+    if (!empty($custom_title)) {
+        return $custom_title;
+    }
+    
+    // Final fallback to company name
+    return $company_info['name'];
+}
+
+/**
+ * Get header logo subtitle with fallback priority.
+ * Priority: header_logo_subtitle > header_logo_custom_subtitle > company_slogan
+ *
+ * @return string Subtitle text
+ */
+function alomran_get_header_logo_subtitle() {
+    $company_info = alomran_get_company_info();
+    
+    // Try new header_logo_subtitle field first
+    $logo_subtitle = alomran_get_option('header_logo_subtitle', '');
+    if (!empty($logo_subtitle)) {
+        return $logo_subtitle;
+    }
+    
+    // Fallback to old header_logo_custom_subtitle field (backward compatibility)
+    $custom_subtitle = alomran_get_option('header_logo_custom_subtitle', '');
+    if (!empty($custom_subtitle)) {
+        return $custom_subtitle;
+    }
+    
+    // Final fallback to company slogan
+    return $company_info['slogan'];
+}
+
+/**
+ * Get header logo settings (unified function for backward compatibility).
+ *
+ * @return array {
+ *     @type string $icon_url      Logo URL
+ *     @type bool   $show_title    Whether to show title
+ *     @type bool   $show_subtitle Whether to show subtitle
+ *     @type string $title         Title text
+ *     @type string $subtitle      Subtitle text
+ *     @type int    $width         Logo width in pixels
+ *     @type int    $height        Logo height in pixels
+ * }
+ */
+function alomran_get_header_logo_settings() {
     return array(
-        'icon_url'      => $icon_url,
+        'icon_url'      => alomran_get_header_logo_url(),
         'show_title'    => alomran_get_option('header_logo_show_title', true),
         'show_subtitle' => alomran_get_option('header_logo_show_subtitle', true),
-        'title'         => !empty($custom_title) ? $custom_title : $company_info['name'],
-        'subtitle'      => !empty($custom_subtitle) ? $custom_subtitle : $company_info['slogan'],
+        'title'         => alomran_get_header_logo_title(),
+        'subtitle'      => alomran_get_header_logo_subtitle(),
+        'width'         => alomran_get_option('header_logo_width', 150),
+        'height'        => alomran_get_option('header_logo_height', 60),
     );
 }
 
