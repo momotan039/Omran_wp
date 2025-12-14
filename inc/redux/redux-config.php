@@ -84,9 +84,12 @@ function alomran_redux_init() {
         return;
     }
 
+    // Load theme presets helper first
+    require_once ALOMRAN_THEME_DIR . '/inc/redux/sections/theme-presets-helper.php';
+    
     $sections_dir = ALOMRAN_THEME_DIR . '/inc/redux/sections/';
     $section_files = array(
-        'header-logo.php',   // Header logo settings
+        // Header logo settings moved to preset-specific redux-config.php
         'homepage.php',      // Main section for homepage
         'hero.php',
         'risks.php',
@@ -106,7 +109,7 @@ function alomran_redux_init() {
         'contact-page.php',
         'footer.php',
         'ads.php',              // Ads / Monetization system
-        'theme-presets.php',    // Theme presets / Layout selector
+        'theme-presets.php',    // Theme presets / Layout selector (includes setup wizard)
         'content-display.php',  // Content display flexibility
     );
 
