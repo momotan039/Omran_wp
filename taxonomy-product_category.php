@@ -73,7 +73,7 @@ if ($search_term) {
         <?php if ($products_query->have_posts()) : ?>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php while ($products_query->have_posts()) : $products_query->the_post(); ?>
-                    <?php get_template_part('template-parts/product-card'); ?>
+                    <?php AlOmran_Preset_Loader::get_template_part('product-card'); ?>
                 <?php endwhile; ?>
             </div>
 

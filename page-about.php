@@ -41,8 +41,8 @@ $sections = alomran_get_ordered_about_sections();
             continue;
         }
         
-        // Load section template
-        get_template_part('template-parts/sections/' . $template_name);
+        // Load section template from preset
+        AlOmran_Preset_Loader::get_template_part($template_name, '', array(), 'sections');
     }
     ?>
 </div>

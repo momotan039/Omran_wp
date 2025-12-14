@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Primary Menu",
+    "location": "primary",
+    "items": [
+      {
+        "title": "Home",
+        "url": "/",
+        "type": "custom"
+      },
+      {
+        "title": "Products",
+        "url": "/products",
+        "type": "custom"
+      },
+      {
+        "title": "About",
+        "url": "/about",
+        "type": "custom"
+      },
+      {
+        "title": "News",
+        "url": "/news",
+        "type": "custom"
+      },
+      {
+        "title": "Contact",
+        "url": "/contact",
+        "type": "custom"
+      }
+    ]
+  },
+  {
+    "name": "Footer Menu",
+    "location": "footer",
+    "items": [
+      {
+        "title": "Privacy Policy",
+        "url": "/privacy-policy",
+        "type": "custom"
+      },
+      {
+        "title": "Terms of Service",
+        "url": "/terms",
+        "type": "custom"
+      }
+    ]
+  }
+]
+

@@ -1,0 +1,66 @@
+/**
+ * Admin Notices Styles
+ * 
+ * Styles for interactive admin notices
+ */
+
+.alomran-demo-notice {
+    border-right: 4px solid #2271b1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.alomran-notice-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.alomran-notice-icon {
+    flex-shrink: 0;
+}
+
+.alomran-import-progress {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.alomran-progress-bar {
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.alomran-progress-fill {
+    height: 100%;
+    background: #2271b1;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.alomran-progress-text {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+}
+
+.alomran-import-demo-btn .dashicons {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.dashicons-update.spin {
+    animation: spin 1s linear infinite;
+}
+

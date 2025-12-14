@@ -39,16 +39,33 @@ class AlOmran_Walker_Nav_Menu extends Walker_Nav_Menu {
         // Check if item has 'menu-cta' class for button styling
         $is_cta = in_array('menu-cta', $classes, true);
         
+        // Get header colors from Redux
+        $header_link_color = alomran_get_option('header_link_color', '');
+        $header_link_hover_color = alomran_get_option('header_link_hover_color', '');
+        
         // Add active class
         $active_classes = array();
+        $link_style = '';
         if (in_array('current-menu-item', $classes, true) || 
             in_array('current-page-ancestor', $classes, true) ||
             (is_home() && $item->url === home_url('/'))) {
-            $active_classes[] = 'text-secondary';
             $active_classes[] = 'font-bold';
+            if ($header_link_hover_color) {
+                $link_style = 'color: ' . esc_attr($header_link_hover_color) . ';';
+            } else {
+                $active_classes[] = 'text-secondary';
+            }
         } else {
-            $active_classes[] = 'text-white';
-            $active_classes[] = 'hover:text-secondary';
+            if ($header_link_color) {
+                $link_style = 'color: ' . esc_attr($header_link_color) . ';';
+            } else {
+                $active_classes[] = 'text-white';
+            }
+            if ($header_link_hover_color) {
+                // Will be handled via inline style on hover
+            } else {
+                $active_classes[] = 'hover:text-secondary';
+            }
         }
 
         // Base classes for menu items
@@ -99,6 +116,15 @@ class AlOmran_Walker_Nav_Menu extends Walker_Nav_Menu {
         $attributes .= !empty($item->xfn) ? ' rel="' . esc_attr($item->xfn) . '"' : '';
         $attributes .= !empty($item->url) ? ' href="' . esc_attr($item->url) . '"' : '';
         $attributes .= $link_class_string;
+        
+        // Add inline style for colors if set
+        if ($link_style) {
+            $hover_color = $header_link_hover_color ? $header_link_hover_color : 'var(--theme-accent)';
+            $current_color = $header_link_color ? $header_link_color : 'var(--theme-white)';
+            $attributes .= ' style="' . esc_attr($link_style) . '"';
+            $attributes .= ' onmouseover="this.style.color=\'' . esc_js($hover_color) . '\'"';
+            $attributes .= ' onmouseout="this.style.color=\'' . esc_js($current_color) . '\'"';
+        }
 
         $item_output = isset($args->before) ? $args->before : '';
         $item_output .= '<a' . $attributes . '>';

@@ -1,0 +1,29 @@
+{
+  "name": "Industrial",
+  "description": "Professional industrial theme preset for manufacturing and industrial companies",
+  "version": "1.0.0",
+  "author": "Al-Omran Development Team",
+  "colors": {
+    "primary": "#2c5530",
+    "secondary": "#4a7c59",
+    "accent": "#f97316"
+  },
+  "typography": {
+    "font_family": "cairo",
+    "font_weight": "400"
+  },
+  "layout": {
+    "header_style": "default",
+    "footer_style": "default",
+    "container_width": "standard",
+    "content_layout": "boxed"
+  },
+  "features": [
+    "Product showcase",
+    "Statistics section",
+    "Testimonials",
+    "Company information",
+    "News/Blog section"
+  ]
+}
+

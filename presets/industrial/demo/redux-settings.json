@@ -1,0 +1,39 @@
+{
+  "theme_preset": "industrial",
+  "preset_industrial_primary": "#2c5530",
+  "preset_industrial_secondary": "#4a7c59",
+  "preset_industrial_accent": "#f97316",
+  "preset_font_family": "cairo",
+  "preset_font_weight": "400",
+  "preset_header_style": "default",
+  "preset_header_sticky": true,
+  "preset_footer_style": "default",
+  "preset_container_width": "standard",
+  "preset_content_layout": "boxed",
+  "industrial_hero_title": "Industrial Solutions",
+  "industrial_hero_subtitle": "Professional stainless steel drainage systems and water treatment solutions",
+  "industrial_hero_button_text": "Explore Products",
+  "industrial_hero_button_url": "#products",
+  "industrial_show_stats": true,
+  "industrial_stats": {
+    "enabled": [
+      {
+        "stat_number": "500+",
+        "stat_label": "Projects Completed",
+        "stat_icon": "dashicons-portfolio"
+      },
+      {
+        "stat_number": "15+",
+        "stat_label": "Years Experience",
+        "stat_icon": "dashicons-awards"
+      },
+      {
+        "stat_number": "100+",
+        "stat_label": "Happy Clients",
+        "stat_icon": "dashicons-groups"
+      }
+    ],
+    "disabled": []
+  }
+}
+

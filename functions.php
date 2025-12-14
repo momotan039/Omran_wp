@@ -13,6 +13,9 @@ define('ALOMRAN_THEME_VERSION', wp_get_theme()->get('Version'));
 define('ALOMRAN_THEME_DIR', get_template_directory());
 define('ALOMRAN_THEME_URI', get_template_directory_uri());
 
+// Load Core System First (before everything else)
+require_once ALOMRAN_THEME_DIR . '/core/core-loader.php';
+
 $alomran_includes = array(
     // Core Setup
     'inc/setup.php',

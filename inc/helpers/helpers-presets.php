@@ -127,6 +127,25 @@ function alomran_get_header_style() {
 }
 
 /**
+ * Get available header styles for current preset
+ * 
+ * @return array
+ */
+function alomran_get_available_header_styles() {
+    if (class_exists('AlOmran_Preset_Loader')) {
+        return AlOmran_Preset_Loader::get_available_header_styles();
+    }
+    
+    // Fallback
+    return array(
+        'default' => __('افتراضي', 'alomran'),
+        'transparent' => __('شفاف', 'alomran'),
+        'minimal' => __('بسيط', 'alomran'),
+        'centered' => __('مركزي', 'alomran'),
+    );
+}
+
+/**
  * Check if header is sticky
  * 
  * @return bool
@@ -142,6 +161,25 @@ function alomran_is_header_sticky() {
  */
 function alomran_get_footer_style() {
     return alomran_get_option('preset_footer_style', 'default');
+}
+
+/**
+ * Get available footer styles for current preset
+ * 
+ * @return array
+ */
+function alomran_get_available_footer_styles() {
+    if (class_exists('AlOmran_Preset_Loader')) {
+        return AlOmran_Preset_Loader::get_available_footer_styles();
+    }
+    
+    // Fallback
+    return array(
+        'default' => __('افتراضي', 'alomran'),
+        'dark' => __('داكن', 'alomran'),
+        'minimal' => __('بسيط', 'alomran'),
+        'centered' => __('مركزي', 'alomran'),
+    );
 }
 
 /**

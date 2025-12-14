@@ -85,7 +85,7 @@ if (is_tax('product_category') && empty($search_term)) {
         <?php if ($products_query->have_posts()) : ?>
             <div class="products-archive grid <?php echo esc_attr($grid_class); ?> gap-8" data-view="<?php echo esc_attr($current_view); ?>">
                 <?php while ($products_query->have_posts()) : $products_query->the_post(); ?>
-                    <?php get_template_part('template-parts/product-card'); ?>
+                    <?php AlOmran_Preset_Loader::get_template_part('product-card'); ?>
                 <?php endwhile; ?>
             </div>
             

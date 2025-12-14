@@ -27,18 +27,25 @@ if (!defined('ABSPATH')) {
 <body <?php body_class('font-sans antialiased'); ?> style="background-color: var(--theme-background); color: var(--theme-text);">
 <?php wp_body_open(); ?>
 
-<?php get_template_part('template-parts/header/header-loader'); ?>
+<?php 
+// Load header loader from preset
+$loader_template = AlOmran_Preset_Loader::locate_template('header-loader', 'header');
+if ($loader_template) {
+    include $loader_template;
+}
+?>
 
 <div id="page" class="site flex flex-col min-h-screen opacity-0 transition-opacity duration-500">
     <?php
     $header_style = alomran_get_header_style();
     
-    // Try to load dynamic header template, fallback to default
-    $header_template = 'template-parts/header/header-' . $header_style;
-    if (locate_template($header_template . '.php')) {
-        get_template_part('template-parts/header/header-' . $header_style);
+    // Load preset-specific header template
+    $header_template = AlOmran_Preset_Loader::locate_template('header-' . $header_style, 'header');
+    
+    if ($header_template) {
+        include $header_template;
     } else {
-        // Fallback to default header structure
+        // Minimal fallback if preset template not found
         $header_sticky = alomran_is_header_sticky();
         $header_classes = array('bg-primary', 'text-white', 'z-50', 'shadow-lg', 'border-b', 'border-white/10');
         
@@ -46,25 +53,21 @@ if (!defined('ABSPATH')) {
             $header_classes[] = 'sticky top-0';
         }
         
-        if ($header_style === 'transparent') {
-            $header_classes[] = 'bg-transparent absolute w-full';
-        } elseif ($header_style === 'minimal') {
-            $header_classes[] = 'border-gray-200';
-            $header_classes[] = 'text-center';
-        } elseif ($header_style === 'centered') {
-            $header_classes[] = 'text-center';
-        }
-        
         $header_class = implode(' ', $header_classes);
         ?>
         <header class="<?php echo esc_attr($header_class); ?>">
             <div class="<?php echo esc_attr(alomran_get_container_width_class()); ?> mx-auto px-4">
-                <div class="flex <?php echo $header_style === 'centered' ? 'justify-center' : 'justify-between'; ?> items-center h-20">
-                    <?php get_template_part('template-parts/header/header-logo'); ?>
+                <div class="flex justify-between items-center h-20">
+                    <?php
+                    // Load header components from preset
+                    $logo_template = AlOmran_Preset_Loader::locate_template('header-logo', 'header');
+                    $nav_template = AlOmran_Preset_Loader::locate_template('header-nav', 'header');
+                    $mobile_template = AlOmran_Preset_Loader::locate_template('header-mobile-menu', 'header');
                     
-                    <?php get_template_part('template-parts/header/header-nav'); ?>
-                    
-                    <?php get_template_part('template-parts/header/header-mobile-menu'); ?>
+                    if ($logo_template) include $logo_template;
+                    if ($nav_template) include $nav_template;
+                    if ($mobile_template) include $mobile_template;
+                    ?>
                 </div>
             </div>
         </header>

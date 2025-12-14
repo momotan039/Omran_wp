@@ -10,17 +10,13 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Add setup wizard page to admin menu
+ * Add setup wizard as a subsection in theme presets
+ * Note: Setup wizard is now integrated into theme presets section
+ * This function is kept for backward compatibility but menu item is removed
  */
 function alomran_add_setup_wizard_page() {
-    add_submenu_page(
-        'alomran-options',
-        'معالج الإعداد السريع',
-        'معالج الإعداد',
-        'manage_options',
-        'alomran-setup-wizard',
-        'alomran_setup_wizard_page'
-    );
+    // Setup wizard is now part of theme presets section
+    // No separate menu item needed
 }
 add_action('admin_menu', 'alomran_add_setup_wizard_page', 20);
 

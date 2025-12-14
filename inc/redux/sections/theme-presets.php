@@ -12,11 +12,28 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'      => 'قوالب التصميم',
+    'title'      => 'قوالب التصميم والإعداد',
     'id'         => 'theme_presets',
     'icon'       => 'el el-brush',
-    'desc'       => 'اختر قالب التصميم المناسب لصناعتك',
+    'desc'       => 'اختر قالب التصميم المناسب لصناعتك واستورد المحتوى التجريبي',
     'fields' => array(
+        array(
+            'id'       => 'preset_setup_info',
+            'type'     => 'info',
+            'style'    => 'info',
+            'title'    => 'معالج الإعداد السريع',
+            'desc'     => 'يمكنك استيراد المحتوى التجريبي والإعدادات الجاهزة للقالب المحدد من خلال الزر أدناه.',
+        ),
+        array(
+            'id'       => 'preset_import_demo',
+            'type'     => 'raw',
+            'title'    => 'استيراد المحتوى التجريبي',
+            'content'  => alomran_render_demo_import_button(),
+        ),
+        array(
+            'id'       => 'preset_separator',
+            'type'     => 'divide',
+        ),
         array(
             'id'       => 'theme_preset',
             'type'     => 'image_select',
@@ -186,12 +203,8 @@ Redux::setSection($opt_name, array(
             'id'       => 'preset_header_style',
             'type'     => 'select',
             'title'    => 'نمط الهيدر',
-            'options'  => array(
-                'default'   => 'افتراضي (ثابت)',
-                'transparent' => 'شفاف',
-                'minimal'   => 'بسيط',
-                'centered'  => 'مركزي',
-            ),
+            'subtitle' => 'اختر نمط الهيدر المتاح في القالب الحالي',
+            'options'  => alomran_get_available_header_styles(),
             'default'  => 'default',
         ),
         array(
@@ -212,12 +225,8 @@ Redux::setSection($opt_name, array(
             'id'       => 'preset_footer_style',
             'type'     => 'select',
             'title'    => 'نمط الفوتر',
-            'options'  => array(
-                'default'   => 'افتراضي',
-                'minimal'   => 'بسيط',
-                'centered'  => 'مركزي',
-                'dark'      => 'داكن',
-            ),
+            'subtitle' => 'اختر نمط الفوتر المتاح في القالب الحالي',
+            'options'  => alomran_get_available_footer_styles(),
             'default'  => 'default',
         ),
         

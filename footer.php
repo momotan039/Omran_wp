@@ -16,10 +16,11 @@ if (!defined('ABSPATH')) {
     <?php
     $footer_style = alomran_get_footer_style();
     
-    // Try to load dynamic footer template, fallback to default
-    $footer_template = 'template-parts/footer/footer-' . $footer_style;
-    if (locate_template($footer_template . '.php')) {
-        get_template_part('template-parts/footer/footer-' . $footer_style);
+    // Load preset-specific footer template
+    $footer_template = AlOmran_Preset_Loader::locate_template('footer-' . $footer_style, 'footer');
+    
+    if ($footer_template) {
+        include $footer_template;
     } else {
         // Fallback to default footer structure
         $footer_classes = array('pt-16', 'pb-8');
