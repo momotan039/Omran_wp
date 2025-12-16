@@ -34,10 +34,10 @@ $alomran_includes = array(
     'inc/helpers/helpers-ads.php',
     'inc/helpers/helpers-presets.php',
     'inc/helpers/helpers-content-display.php',
+    'inc/helpers/helpers-taxonomies.php',  // Taxonomy helper functions
     
     // Custom Post Types & Taxonomies
-    'inc/cpt.php',
-    'inc/taxonomies.php',
+    'inc/cpt-common.php',  // Common CPTs (shared across all presets)
     'inc/acf.php',
     
     // Media Management
@@ -60,6 +60,9 @@ $alomran_includes = array(
     // Demo Import & Setup Wizard
     'inc/demo-import/demo-data.php',
     'inc/demo-import/setup-wizard.php',
+    
+    // Preset Content Isolation
+    'inc/preset-content-isolation.php',
     
     // Widgets
     'inc/widgets/ads-widget.php',
