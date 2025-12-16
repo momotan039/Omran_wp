@@ -14,6 +14,7 @@ if (!defined('ABSPATH')) {
 
 // Load core classes
 require_once ALOMRAN_THEME_DIR . '/core/classes/class-preset-loader.php';
+require_once ALOMRAN_THEME_DIR . '/core/classes/class-preset-registry.php';
 require_once ALOMRAN_THEME_DIR . '/core/classes/class-redux-loader.php';
 require_once ALOMRAN_THEME_DIR . '/core/classes/class-section-loader.php';
 require_once ALOMRAN_THEME_DIR . '/core/classes/class-demo-importer.php';
@@ -25,6 +26,9 @@ require_once ALOMRAN_THEME_DIR . '/core/classes/class-admin-notices.php';
 function alomran_core_init() {
     // Initialize preset loader
     AlOmran_Preset_Loader::init();
+    
+    // Initialize preset registry (CPTs, Taxonomies, Redux sections)
+    AlOmran_Preset_Registry::init();
     
     // Initialize Redux loader (admin only)
     AlOmran_Redux_Loader::init();

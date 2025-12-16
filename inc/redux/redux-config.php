@@ -84,35 +84,37 @@ function alomran_redux_init() {
         return;
     }
 
-    // Load theme presets helper first
+    // Load theme presets helper first (always needed)
     require_once ALOMRAN_THEME_DIR . '/inc/redux/sections/theme-presets-helper.php';
     
+    // Get sections from active preset
+    $preset = AlOmran_Preset_Loader::get_active_preset();
+    $preset_dir = AlOmran_Preset_Loader::get_preset_dir($preset);
+    
     $sections_dir = ALOMRAN_THEME_DIR . '/inc/redux/sections/';
-    $section_files = array(
-        // Header logo settings moved to preset-specific redux-config.php
-        'homepage.php',      // Main section for homepage
-        'hero.php',
-        'risks.php',
-        'sectors.php',
-        'products.php',
-        'stainless.php',
-        'testimonials.php',
-        'sections-order.php',
-        'company.php',       // Main section for company page
-        'about-page.php',    // Main section for about page
-        'about-header.php',
-        'about-content.php',
-        'about-vision-mission.php',
-        'about-stats.php',
-        'about-order.php',
-        'general.php',
-        'contact-page.php',
-        'footer.php',
-        'ads.php',              // Ads / Monetization system
+    $section_files = array();
+    
+    // Load preset-specific sections if available
+    if ($preset_dir) {
+        $redux_sections_file = $preset_dir . '/redux-sections.php';
+        if (file_exists($redux_sections_file)) {
+            $preset_sections = require $redux_sections_file;
+            if (is_array($preset_sections)) {
+                $section_files = $preset_sections;
+            }
+        }
+    }
+    
+    // Always include these core sections (not preset-specific)
+    $core_sections = array(
         'theme-presets.php',    // Theme presets / Layout selector (includes setup wizard)
         'content-display.php',  // Content display flexibility
     );
+    
+    // Merge core sections with preset sections
+    $section_files = array_merge($section_files, $core_sections);
 
+    // Load sections
     foreach ($section_files as $file) {
         $file_path = $sections_dir . $file;
         if (file_exists($file_path)) {
