@@ -1,0 +1,29 @@
+{
+  "name": "Food",
+  "description": "Modern food theme preset for restaurants, cafes, and food businesses",
+  "version": "1.0.0",
+  "author": "Al-Omran Development Team",
+  "colors": {
+    "primary": "#d97706",
+    "secondary": "#f59e0b",
+    "accent": "#dc2626"
+  },
+  "typography": {
+    "font_family": "cairo",
+    "font_weight": "400"
+  },
+  "layout": {
+    "header_style": "default",
+    "footer_style": "default",
+    "container_width": "standard",
+    "content_layout": "boxed"
+  },
+  "features": [
+    "Menu showcase",
+    "Gallery section",
+    "Testimonials",
+    "Reservation system",
+    "Blog/News section"
+  ]
+}
+
