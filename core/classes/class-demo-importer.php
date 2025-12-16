@@ -56,11 +56,23 @@ class AlOmran_Demo_Importer {
             'import_redux' => true,
             'import_menus' => true,
             'overwrite' => false,
+            'delete_other_presets' => true, // Delete content from other presets
         );
         
         $options = wp_parse_args($options, $defaults);
         
         $results = array();
+        
+        // Delete content from other presets if requested
+        if ($options['delete_other_presets']) {
+            $available_presets = AlOmran_Preset_Loader::get_available_presets();
+            foreach ($available_presets as $other_preset) {
+                if ($other_preset !== $preset) {
+                    $delete_result = alomran_delete_preset_content($other_preset);
+                    $results['deleted_' . $other_preset] = $delete_result;
+                }
+            }
+        }
         
         // Import Redux settings
         if ($options['import_redux']) {
@@ -239,6 +251,9 @@ class AlOmran_Demo_Importer {
                 wp_update_nav_menu_item($menu_id, 0, $item_args);
             }
             
+            // Set preset meta for menu - CRITICAL for content isolation
+            alomran_set_menu_preset($menu_id, $preset);
+            
             // Assign to location
             if ($menu_location) {
                 $locations = get_theme_mod('nav_menu_locations', array());
@@ -318,6 +333,9 @@ class AlOmran_Demo_Importer {
             if (is_wp_error($post_id)) {
                 continue;
             }
+            
+            // Set preset meta - CRITICAL for content isolation
+            alomran_set_post_preset($post_id, $preset);
             
             // Set featured image if provided
             if (isset($item['featured_image']) && !empty($item['featured_image'])) {
