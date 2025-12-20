@@ -12,10 +12,12 @@ if (!defined('ABSPATH')) {
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
-    'title'  => __('الإعلانات والربح', 'alomran'),
-    'id'     => 'ads-settings',
-    'desc'   => __('إعدادات الإعلانات ونظام الربح - بسيط وسهل', 'alomran'),
-    'icon'   => 'el el-usd',
+    'title'      => __('الإعلانات والربح', 'alomran'),
+    'id'         => 'ads-settings',
+    'subsection' => true,
+    'parent'     => 'food_general_sections',
+    'desc'       => __('إعدادات الإعلانات ونظام الربح - بسيط وسهل', 'alomran'),
+    'icon'       => 'el el-usd',
     'fields' => array(
         // Global Ads Toggle
         array(

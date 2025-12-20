@@ -10,7 +10,158 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Get preset pages as options array for Redux select field
+ * 
+ * @return array Array of page options (slug => title)
+ */
+function alomran_get_preset_pages_options() {
+    $options = array(
+        '' => __('-- اختر صفحة --', 'alomran'),
+    );
+    
+    // Add common hash links
+    $options['#menu'] = __('القائمة (Hash Link)', 'alomran');
+    $options['#branches'] = __('الفروع (Hash Link)', 'alomran');
+    $options['#story'] = __('القصة (Hash Link)', 'alomran');
+    $options['#experience'] = __('التجربة (Hash Link)', 'alomran');
+    
+    // Check if Preset Loader class exists
+    if (!class_exists('AlOmran_Preset_Loader')) {
+        $options['custom'] = __('رابط مخصص', 'alomran');
+        return $options;
+    }
+    
+    // Check if preset meta key is defined
+    if (!defined('ALOMRAN_PRESET_META_KEY')) {
+        $options['custom'] = __('رابط مخصص', 'alomran');
+        return $options;
+    }
+    
+    $active_preset = AlOmran_Preset_Loader::get_active_preset();
+    
+    if (!$active_preset) {
+        $options['custom'] = __('رابط مخصص', 'alomran');
+        return $options;
+    }
+    
+    // Query for pages in current preset
+    $args = array(
+        'post_type'      => 'page',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+        'orderby'        => 'title',
+        'order'          => 'ASC',
+        'meta_query'     => array(
+            array(
+                'key'   => ALOMRAN_PRESET_META_KEY,
+                'value' => $active_preset,
+            ),
+        ),
+    );
+    
+    $query = new WP_Query($args);
+    
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $page = get_post();
+            $slug = $page->post_name;
+            $title = get_the_title();
+            $options[$slug] = $title;
+        }
+        wp_reset_postdata();
+    }
+    
+    // Add custom link option at the end
+    $options['custom'] = __('رابط مخصص', 'alomran');
+    
+    return $options;
+}
+
+/**
+ * Get preset page by slug
+ * 
+ * @param string $slug Page slug
+ * @return WP_Post|null
+ */
+function alomran_get_preset_page($slug) {
+    // Check if Preset Loader class exists
+    if (!class_exists('AlOmran_Preset_Loader')) {
+        return null;
+    }
+    
+    // Check if preset meta key is defined
+    if (!defined('ALOMRAN_PRESET_META_KEY')) {
+        return null;
+    }
+    
+    $active_preset = AlOmran_Preset_Loader::get_active_preset();
+    
+    if (!$active_preset) {
+        return null;
+    }
+    
+    // Remove leading slash and get clean slug
+    $slug = ltrim($slug, '/');
+    
+    // Query for page in current preset
+    $args = array(
+        'post_type'      => 'page',
+        'name'           => $slug,
+        'posts_per_page' => 1,
+        'post_status'    => 'publish',
+        'meta_query'     => array(
+            array(
+                'key'   => ALOMRAN_PRESET_META_KEY,
+                'value' => $active_preset,
+            ),
+        ),
+    );
+    
+    $query = new WP_Query($args);
+    
+    if ($query->have_posts()) {
+        $query->the_post();
+        $page = get_post();
+        wp_reset_postdata();
+        return $page;
+    }
+    
+    return null;
+}
+
+/**
+ * Get button link based on link type and custom link
+ * 
+ * @param string $link_type The link type (page slug, hash link, or 'custom')
+ * @param string $custom_link The custom link if type is 'custom'
+ * @return string Formatted URL
+ */
+function alomran_get_button_link($link_type, $custom_link = '') {
+    if (empty($link_type)) {
+        return '#';
+    }
+    
+    // If custom link is selected
+    if ($link_type === 'custom') {
+        if (empty($custom_link)) {
+            return '#';
+        }
+        return alomran_format_url($custom_link);
+    }
+    
+    // If it's a hash link (starts with #)
+    if (strpos($link_type, '#') === 0) {
+        return esc_attr($link_type);
+    }
+    
+    // If a page slug is selected
+    return alomran_format_url('/' . $link_type);
+}
+
+/**
  * Format URL - converts relative URLs to full URLs.
+ * If URL starts with /, checks for preset page first.
  *
  * @param string $url The URL to format.
  * @return string Formatted URL.
@@ -25,14 +176,46 @@ function alomran_format_url($url) {
         return esc_url($url);
     }
     
-    // If it starts with /, it's a relative path - convert to full URL
-    if (strpos($url, '/') === 0) {
-        return esc_url(home_url($url));
-    }
-    
     // If it's a hash anchor, return as is
     if (strpos($url, '#') === 0) {
         return esc_attr($url);
+    }
+    
+    // If it starts with /, check for preset page first
+    if (strpos($url, '/') === 0) {
+        // Extract slug from URL (remove leading slash and any query/hash)
+        $path = trim($url, '/');
+        $path_parts = explode('?', $path);
+        $slug = $path_parts[0];
+        $path_parts = explode('#', $slug);
+        $slug = $path_parts[0];
+        
+        // Try to find page in current preset
+        $preset_page = alomran_get_preset_page($slug);
+        
+        if ($preset_page) {
+            // Found preset page, use home_url with slug to ensure correct path
+            // This ensures we get the full path including subdirectory if WordPress is installed in one
+            $permalink = home_url('/' . $slug . '/');
+            
+            // Preserve query string and hash if present
+            if (strpos($url, '?') !== false || strpos($url, '#') !== false) {
+                $query_hash = '';
+                if (strpos($url, '?') !== false) {
+                    $query_hash = substr($url, strpos($url, '?'));
+                } elseif (strpos($url, '#') !== false) {
+                    $query_hash = substr($url, strpos($url, '#'));
+                }
+                // Remove trailing slash before adding query/hash
+                $permalink = rtrim($permalink, '/');
+                return esc_url($permalink . $query_hash);
+            }
+            
+            return esc_url($permalink);
+        }
+        
+        // No preset page found, use home_url as fallback
+        return esc_url(home_url($url));
     }
     
     // Otherwise, treat as relative path and prepend home_url
