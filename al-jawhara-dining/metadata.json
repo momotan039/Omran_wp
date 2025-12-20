@@ -1,0 +1,5 @@
+{
+  "name": "Al-Jawhara Dining",
+  "description": "A high-end, modern Food & Beverage experience designed for the Arab market featuring an AI concierge.",
+  "requestFramePermissions": ["geolocation"]
+}
