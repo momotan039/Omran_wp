@@ -1,0 +1,29 @@
+[
+  {
+    "taxonomy": "menu_category",
+    "terms": [
+      {
+        "name": "المقبلات",
+        "slug": "starters",
+        "description": "مقبلات شهية تفتح الشهية"
+      },
+      {
+        "name": "الأطباق الرئيسية",
+        "slug": "mains",
+        "description": "أطباق رئيسية شهية ومشبعة"
+      },
+      {
+        "name": "الحلويات",
+        "slug": "desserts",
+        "description": "حلويات شرقية وأجنبية فاخرة"
+      },
+      {
+        "name": "المشروبات",
+        "slug": "drinks",
+        "description": "مشروبات ساخنة وباردة منعشة"
+      }
+    ]
+  }
+]
+
+
