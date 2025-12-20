@@ -9,6 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once ALOMRAN_THEME_DIR . '/inc/redux/redux-helpers-core.php';
 require_once ALOMRAN_THEME_DIR . '/inc/redux/options.php';
 require_once ALOMRAN_THEME_DIR . '/inc/redux/section-data.php';
 

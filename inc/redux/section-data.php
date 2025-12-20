@@ -16,8 +16,7 @@ function alomran_get_section_data($section) {
     
     switch ($section) {
         case 'hero':
-            $bg = alomran_get_option('hero_background_image', array());
-            $bg_url = is_array($bg) && isset($bg['url']) ? $bg['url'] : (is_string($bg) ? $bg : '');
+            $bg_url = alomran_extract_image_url(alomran_get_option('hero_background_image', array()));
             
             $data = array(
                 'enable'      => alomran_get_option('hero_enable', true),
@@ -94,12 +93,9 @@ function alomran_get_section_data($section) {
             break;
             
         case 'about_content':
-            $about_image = alomran_get_option('about_main_image', array());
-            $about_image_url = is_array($about_image) && isset($about_image['url']) ? $about_image['url'] : (is_string($about_image) ? $about_image : '');
-            
             $data = array(
                 'enable' => alomran_get_option('about_content_enable', true),
-                'image'  => $about_image_url,
+                'image'  => alomran_extract_image_url(alomran_get_option('about_main_image', array())),
                 'title'  => alomran_get_option('about_title', 'عن شركة العمران'),
                 'content' => alomran_get_option('about_content', ''),
             );
@@ -170,21 +166,8 @@ function alomran_get_section_data($section) {
             break;
             
         case 'contact_page':
-            $map_url = alomran_get_option('contact_map_url', '');
-            
-            $data = array(
-                'title'          => alomran_get_option('contact_page_title', 'تواصل معنا'),
-                'subtitle'       => alomran_get_option('contact_page_subtitle', 'فريقنا جاهز للرد على استفساراتكم وتقديم الدعم الفني'),
-                'form_title'     => alomran_get_option('contact_form_title', 'أرسل رسالة'),
-                'phone_title'    => alomran_get_option('contact_phone_title', 'اتصل بنا'),
-                'phone_subtitle' => alomran_get_option('contact_phone_subtitle', 'متاحين من 9 صباحاً - 5 مساءً'),
-                'email_title'    => alomran_get_option('contact_email_title', 'البريد الإلكتروني'),
-                'email_subtitle' => alomran_get_option('contact_email_subtitle', 'للتعاقدات والمبيعات'),
-                'address_title'  => alomran_get_option('contact_address_title', 'المقر الرئيسي'),
-                'map_enable'     => alomran_get_option('contact_map_enable', true),
-                'map_url'        => $map_url,
-                'map_text'       => alomran_get_option('contact_map_text', 'موقع المصنع'),
-            );
+            $preset = AlOmran_Preset_Loader::get_active_preset();
+            $data = alomran_get_contact_page_data($preset);
             break;
     }
     

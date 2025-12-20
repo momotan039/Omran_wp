@@ -73,6 +73,9 @@ function alomran_redux_init() {
         'dev_mode'                  => false,
         'system_info'               => false,
     );
+    
+    // Add Arabic translations for Redux interface strings
+    add_filter('redux/options/' . $opt_name . '/localize', 'alomran_redux_arabic_translations', 10, 1);
 
     try {
         if (class_exists('Redux')) {
@@ -123,6 +126,174 @@ function alomran_redux_init() {
     }
 }
 add_action('redux/loaded', 'alomran_redux_init');
+
+/**
+ * Add Arabic translations for Redux Framework interface strings
+ */
+function alomran_redux_arabic_translations($localize) {
+    if (!is_array($localize)) {
+        $localize = array();
+    }
+    
+    // Translate common Redux strings
+    $localize['rAds'] = array(
+        'save_pending'   => __('جارٍ الحفظ...', 'alomran'),
+        'save_verify'    => __('جارٍ التحقق...', 'alomran'),
+        'reset_confirm'  => __('هل أنت متأكد من إعادة تعيين هذا القسم؟', 'alomran'),
+        'reset_all_confirm' => __('هل أنت متأكد من إعادة تعيين جميع الإعدادات؟', 'alomran'),
+        'preset_confirm' => __('هل أنت متأكد من تطبيق هذا القالب؟ سيتم استبدال جميع الإعدادات الحالية.', 'alomran'),
+        'opt_name'       => 'alomran_options',
+    );
+    
+    // Translate Redux interface strings
+    $localize['redux'] = array(
+        'save_changes'   => __('حفظ التغييرات', 'alomran'),
+        'reset_section'  => __('إعادة تعيين القسم', 'alomran'),
+        'reset_all'      => __('إعادة تعيين الكل', 'alomran'),
+        'upload'         => __('رفع', 'alomran'),
+        'remove'         => __('إزالة', 'alomran'),
+        'on'             => __('مفعل', 'alomran'),
+        'off'            => __('معطل', 'alomran'),
+    );
+    
+    return $localize;
+}
+
+/**
+ * Translate Redux switch on/off labels
+ */
+add_filter('redux/options/alomran_options/field/switch/on', function() {
+    return __('مفعل', 'alomran');
+});
+
+add_filter('redux/options/alomran_options/field/switch/off', function() {
+    return __('معطل', 'alomran');
+});
+
+/**
+ * Add JavaScript to translate Redux interface strings using PHP translations
+ */
+add_action('admin_footer', 'alomran_redux_arabic_js_translations');
+function alomran_redux_arabic_js_translations() {
+    // Only on Redux admin pages
+    if (!isset($_GET['page']) || $_GET['page'] !== 'alomran-options') {
+        return;
+    }
+    
+    // Get translations from PHP (using Redux filter)
+    $localize = apply_filters('redux/options/alomran_options/localize', array());
+    $redux_translations = isset($localize['redux']) ? $localize['redux'] : array();
+    
+    // Fallback to direct translations if filter didn't provide them
+    if (empty($redux_translations)) {
+        $redux_translations = array(
+            'save_changes'  => __('حفظ التغييرات', 'alomran'),
+            'reset_section' => __('إعادة تعيين القسم', 'alomran'),
+            'reset_all'     => __('إعادة تعيين الكل', 'alomran'),
+            'upload'        => __('رفع', 'alomran'),
+            'remove'        => __('إزالة', 'alomran'),
+            'on'            => __('مفعل', 'alomran'),
+            'off'           => __('معطل', 'alomran'),
+        );
+    }
+    
+    // Load and output JavaScript with translations
+    $js_file = ALOMRAN_THEME_DIR . '/inc/redux/redux-translations.js';
+    if (file_exists($js_file)) {
+        $js_content = file_get_contents($js_file);
+        
+        // Replace placeholders with actual translations
+        $js_content = str_replace('{{SAVE_CHANGES}}', esc_js($redux_translations['save_changes']), $js_content);
+        $js_content = str_replace('{{RESET_SECTION}}', esc_js($redux_translations['reset_section']), $js_content);
+        $js_content = str_replace('{{RESET_ALL}}', esc_js($redux_translations['reset_all']), $js_content);
+        $js_content = str_replace('{{UPLOAD}}', esc_js($redux_translations['upload']), $js_content);
+        $js_content = str_replace('{{REMOVE}}', esc_js($redux_translations['remove']), $js_content);
+        $js_content = str_replace('{{ON}}', esc_js($redux_translations['on']), $js_content);
+        $js_content = str_replace('{{OFF}}', esc_js($redux_translations['off']), $js_content);
+        
+        echo '<script type="text/javascript">' . "\n";
+        echo $js_content;
+        echo "\n" . '</script>' . "\n";
+    }
+}
+
+/**
+ * Preserve Redux field values when sections are disabled
+ * This prevents Redux from deleting values when required fields become hidden
+ */
+function alomran_preserve_redux_values($options, $changed_values) {
+    $opt_name = 'alomran_options';
+    $current_options = get_option($opt_name, array());
+    
+    // Get critical fields from helper
+    $preserve_fields = alomran_get_critical_redux_fields();
+    
+    // Preserve existing values if they exist and are not empty
+    foreach ($preserve_fields as $field) {
+        if (isset($current_options[$field]) && !empty($current_options[$field])) {
+            // Only preserve if the new value is empty or doesn't exist
+            if (!isset($options[$field]) || empty($options[$field])) {
+                $options[$field] = $current_options[$field];
+            }
+        }
+    }
+    
+    return $options;
+}
+add_filter('redux/options/alomran_options/validate', 'alomran_preserve_redux_values', 10, 2);
+
+/**
+ * Restore deleted values after Redux save
+ * This ensures values are not permanently lost when sections are disabled
+ */
+function alomran_restore_redux_values_after_save() {
+    $opt_name = 'alomran_options';
+    $current_options = get_option($opt_name, array());
+    
+    // Backup of values before save (stored in transient)
+    $backup = get_transient('alomran_redux_backup');
+    
+    if ($backup && is_array($backup)) {
+        $needs_update = false;
+        
+        // Get critical fields from helper
+        $preserve_fields = alomran_get_critical_redux_fields();
+        
+        // Restore values that were deleted
+        foreach ($preserve_fields as $field) {
+            // If backup has value but current doesn't, restore it
+            if (isset($backup[$field]) && !empty($backup[$field])) {
+                if (!isset($current_options[$field]) || empty($current_options[$field])) {
+                    $current_options[$field] = $backup[$field];
+                    $needs_update = true;
+                }
+            }
+        }
+        
+        // Update options if needed
+        if ($needs_update) {
+            update_option($opt_name, $current_options);
+            // Clear Redux cache
+            delete_transient('redux-' . $opt_name);
+        }
+        
+        // Clear backup after use
+        delete_transient('alomran_redux_backup');
+    }
+}
+add_action('redux/options/alomran_options/saved', 'alomran_restore_redux_values_after_save', 20);
+
+/**
+ * Create backup before Redux save
+ */
+function alomran_backup_redux_values_before_save() {
+    $opt_name = 'alomran_options';
+    $current_options = get_option($opt_name, array());
+    
+    // Create backup (store for 1 hour)
+    set_transient('alomran_redux_backup', $current_options, HOUR_IN_SECONDS);
+}
+add_action('redux/options/alomran_options/before_save', 'alomran_backup_redux_values_before_save', 10);
 
 /**
  * ULTRA-AGGRESSIVE frontend protection: Block Redux completely on frontend
