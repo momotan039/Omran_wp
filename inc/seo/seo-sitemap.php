@@ -49,21 +49,7 @@ function alomran_generate_sitemap() {
     ));
     
     foreach ($products as $product) {
-        $sitemap .= '<url>' . "\n";
-        $sitemap .= '<loc>' . esc_url(get_permalink($product->ID)) . '</loc>' . "\n";
-        $sitemap .= '<lastmod>' . get_the_modified_date('Y-m-d', $product->ID) . '</lastmod>' . "\n";
-        $sitemap .= '<changefreq>weekly</changefreq>' . "\n";
-        $sitemap .= '<priority>0.9</priority>' . "\n";
-        
-        if (has_post_thumbnail($product->ID)) {
-            $image_url = get_the_post_thumbnail_url($product->ID, 'large');
-            $sitemap .= '<image:image>' . "\n";
-            $sitemap .= '<image:loc>' . esc_url($image_url) . '</image:loc>' . "\n";
-            $sitemap .= '<image:title>' . esc_html(get_the_title($product->ID)) . '</image:title>' . "\n";
-            $sitemap .= '</image:image>' . "\n";
-        }
-        
-        $sitemap .= '</url>' . "\n";
+        $sitemap = alomran_add_sitemap_url($sitemap, get_permalink($product->ID), get_the_modified_date('Y-m-d', $product->ID), 'weekly', '0.9', $product->ID);
     }
     
     // News
@@ -74,48 +60,71 @@ function alomran_generate_sitemap() {
     ));
     
     foreach ($news as $news_item) {
-        $sitemap .= '<url>' . "\n";
-        $sitemap .= '<loc>' . esc_url(get_permalink($news_item->ID)) . '</loc>' . "\n";
-        $sitemap .= '<lastmod>' . get_the_modified_date('Y-m-d', $news_item->ID) . '</lastmod>' . "\n";
-        $sitemap .= '<changefreq>weekly</changefreq>' . "\n";
-        $sitemap .= '<priority>0.8</priority>' . "\n";
-        
-        if (has_post_thumbnail($news_item->ID)) {
-            $image_url = get_the_post_thumbnail_url($news_item->ID, 'large');
-            $sitemap .= '<image:image>' . "\n";
-            $sitemap .= '<image:loc>' . esc_url($image_url) . '</image:loc>' . "\n";
-            $sitemap .= '<image:title>' . esc_html(get_the_title($news_item->ID)) . '</image:title>' . "\n";
-            $sitemap .= '</image:image>' . "\n";
+        $sitemap = alomran_add_sitemap_url($sitemap, get_permalink($news_item->ID), get_the_modified_date('Y-m-d', $news_item->ID), 'weekly', '0.8', $news_item->ID);
+    }
+    
+    // Food Preset Post Types
+    $food_post_types = array('branch', 'menu_item', 'blog_post');
+    foreach ($food_post_types as $post_type) {
+        if (post_type_exists($post_type)) {
+            $posts = get_posts(array(
+                'post_type' => $post_type,
+                'posts_per_page' => -1,
+                'post_status' => 'publish',
+            ));
+            
+            foreach ($posts as $post) {
+                $sitemap = alomran_add_sitemap_url($sitemap, get_permalink($post->ID), get_the_modified_date('Y-m-d', $post->ID), 'weekly', '0.8', $post->ID);
+            }
+            
+            // Add archive link
+            $archive_link = get_post_type_archive_link($post_type);
+            if ($archive_link) {
+                $sitemap .= '<url>' . "\n";
+                $sitemap .= '<loc>' . esc_url($archive_link) . '</loc>' . "\n";
+                $sitemap .= '<changefreq>weekly</changefreq>' . "\n";
+                $sitemap .= '<priority>0.7</priority>' . "\n";
+                $sitemap .= '</url>' . "\n";
+            }
         }
-        
-        $sitemap .= '</url>' . "\n";
     }
     
     // Archives
-    $sitemap .= '<url>' . "\n";
-    $sitemap .= '<loc>' . esc_url(get_post_type_archive_link('product')) . '</loc>' . "\n";
-    $sitemap .= '<changefreq>weekly</changefreq>' . "\n";
-    $sitemap .= '<priority>0.7</priority>' . "\n";
-    $sitemap .= '</url>' . "\n";
-    
-    $sitemap .= '<url>' . "\n";
-    $sitemap .= '<loc>' . esc_url(get_post_type_archive_link('news')) . '</loc>' . "\n";
-    $sitemap .= '<changefreq>weekly</changefreq>' . "\n";
-    $sitemap .= '<priority>0.7</priority>' . "\n";
-    $sitemap .= '</url>' . "\n";
-    
-    // Categories
-    $categories = get_terms(array(
-        'taxonomy' => 'product_category',
-        'hide_empty' => true,
-    ));
-    
-    foreach ($categories as $category) {
+    if (post_type_exists('product')) {
         $sitemap .= '<url>' . "\n";
-        $sitemap .= '<loc>' . esc_url(get_term_link($category)) . '</loc>' . "\n";
-        $sitemap .= '<changefreq>monthly</changefreq>' . "\n";
-        $sitemap .= '<priority>0.6</priority>' . "\n";
+        $sitemap .= '<loc>' . esc_url(get_post_type_archive_link('product')) . '</loc>' . "\n";
+        $sitemap .= '<changefreq>weekly</changefreq>' . "\n";
+        $sitemap .= '<priority>0.7</priority>' . "\n";
         $sitemap .= '</url>' . "\n";
+    }
+    
+    if (post_type_exists('news')) {
+        $sitemap .= '<url>' . "\n";
+        $sitemap .= '<loc>' . esc_url(get_post_type_archive_link('news')) . '</loc>' . "\n";
+        $sitemap .= '<changefreq>weekly</changefreq>' . "\n";
+        $sitemap .= '<priority>0.7</priority>' . "\n";
+        $sitemap .= '</url>' . "\n";
+    }
+    
+    // Categories and Taxonomies
+    $taxonomies = array('product_category', 'menu_category');
+    foreach ($taxonomies as $taxonomy) {
+        if (taxonomy_exists($taxonomy)) {
+            $terms = get_terms(array(
+                'taxonomy' => $taxonomy,
+                'hide_empty' => true,
+            ));
+            
+            if (!is_wp_error($terms) && !empty($terms)) {
+                foreach ($terms as $term) {
+                    $sitemap .= '<url>' . "\n";
+                    $sitemap .= '<loc>' . esc_url(get_term_link($term)) . '</loc>' . "\n";
+                    $sitemap .= '<changefreq>monthly</changefreq>' . "\n";
+                    $sitemap .= '<priority>0.6</priority>' . "\n";
+                    $sitemap .= '</url>' . "\n";
+                }
+            }
+        }
     }
     
     $sitemap .= '</urlset>';
@@ -129,7 +138,25 @@ add_action('template_redirect', 'alomran_generate_sitemap');
  * Add sitemap to robots.txt
  */
 function alomran_add_sitemap_to_robots($output) {
+    // Add sitemap reference
     $output .= "\nSitemap: " . home_url('/?sitemap=xml') . "\n";
+    
+    // Add user-agent rules for better SEO
+    $output .= "\nUser-agent: *\n";
+    $output .= "Allow: /\n";
+    $output .= "Disallow: /wp-admin/\n";
+    $output .= "Disallow: /wp-includes/\n";
+    $output .= "Disallow: /wp-content/plugins/\n";
+    $output .= "Disallow: /wp-content/themes/*/assets/\n";
+    $output .= "Disallow: /*?*\n"; // Disallow query strings
+    $output .= "Disallow: /search/\n";
+    $output .= "Disallow: /feed/\n";
+    
+    // Allow important files
+    $output .= "Allow: /wp-content/uploads/\n";
+    $output .= "Allow: /wp-content/themes/*/assets/css/\n";
+    $output .= "Allow: /wp-content/themes/*/assets/js/\n";
+    
     return $output;
 }
 add_filter('robots_txt', 'alomran_add_sitemap_to_robots');

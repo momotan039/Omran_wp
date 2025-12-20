@@ -10,12 +10,24 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> dir="<?php echo esc_attr(alomran_get_html_dir()); ?>">
+<html <?php language_attributes(); ?> dir="<?php echo esc_attr(alomran_get_html_dir()); ?>" itemscope itemtype="https://schema.org/WebSite">
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    
     <?php 
+    // Preconnect to external resources for better performance
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    echo '<link rel="dns-prefetch" href="//fonts.googleapis.com">' . "\n";
+    echo '<link rel="dns-prefetch" href="//fonts.gstatic.com">' . "\n";
+    
+    // DNS prefetch for common external resources
+    echo '<link rel="dns-prefetch" href="//www.google.com">' . "\n";
+    echo '<link rel="dns-prefetch" href="//www.google-analytics.com">' . "\n";
+    
     // Force Tailwind CSS to load - direct output as fallback
     $tailwind_path = get_template_directory() . '/assets/css/tailwind.css';
     $tailwind_uri = get_template_directory_uri() . '/assets/css/tailwind.css';
@@ -37,42 +49,7 @@ if ($loader_template) {
 
 <div id="page" class="site flex flex-col min-h-screen opacity-0 transition-opacity duration-500">
     <?php
-    $header_style = alomran_get_header_style();
-    
-    // Load preset-specific header template
-    $header_template = AlOmran_Preset_Loader::locate_template('header-' . $header_style, 'header');
-    
-    if ($header_template) {
-        include $header_template;
-    } else {
-        // Minimal fallback if preset template not found
-        $header_sticky = alomran_is_header_sticky();
-        $header_classes = array('bg-primary', 'text-white', 'z-50', 'shadow-lg', 'border-b', 'border-white/10');
-        
-        if ($header_sticky) {
-            $header_classes[] = 'sticky top-0';
-        }
-        
-        $header_class = implode(' ', $header_classes);
-        ?>
-        <header class="<?php echo esc_attr($header_class); ?>">
-            <div class="<?php echo esc_attr(alomran_get_container_width_class()); ?> mx-auto px-4">
-                <div class="flex justify-between items-center h-20">
-                    <?php
-                    // Load header components from preset
-                    $logo_template = AlOmran_Preset_Loader::locate_template('header-logo', 'header');
-                    $nav_template = AlOmran_Preset_Loader::locate_template('header-nav', 'header');
-                    $mobile_template = AlOmran_Preset_Loader::locate_template('header-mobile-menu', 'header');
-                    
-                    if ($logo_template) include $logo_template;
-                    if ($nav_template) include $nav_template;
-                    if ($mobile_template) include $mobile_template;
-                    ?>
-                </div>
-            </div>
-        </header>
-        <?php
-    }
+    // Header removed - no header or logo displayed
     ?>
 
     <?php alomran_display_ad('header', 'container mx-auto px-4 py-2', 'header-ad'); ?>

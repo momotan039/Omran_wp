@@ -27,13 +27,14 @@ function alomran_get_article_schema($post_id = null) {
     
     $author_id = $post->post_author;
     $author_name = get_the_author_meta('display_name', $author_id);
-    $image = has_post_thumbnail($post_id) ? get_the_post_thumbnail_url($post_id, 'large') : '';
+    $image_data = alomran_get_seo_image($post_id);
+    $description = alomran_get_seo_description($post_id);
     
     $schema = array(
         '@context' => 'https://schema.org',
         '@type' => 'Article',
         'headline' => get_the_title($post_id),
-        'description' => alomran_get_auto_excerpt($post_id, 30),
+        'description' => $description,
         'datePublished' => get_the_date('c', $post_id),
         'dateModified' => get_the_modified_date('c', $post_id),
         'author' => array(
@@ -46,16 +47,22 @@ function alomran_get_article_schema($post_id = null) {
             'logo' => array(
                 '@type' => 'ImageObject',
                 'url' => get_site_icon_url(512) ?: '',
+                'width' => 512,
+                'height' => 512,
             ),
+        ),
+        'mainEntityOfPage' => array(
+            '@type' => 'WebPage',
+            '@id' => get_permalink($post_id),
         ),
     );
     
-    if (!empty($image)) {
+    if ($image_data) {
         $schema['image'] = array(
             '@type' => 'ImageObject',
-            'url' => $image,
-            'width' => 1200,
-            'height' => 630,
+            'url' => $image_data['url'],
+            'width' => $image_data['width'],
+            'height' => $image_data['height'],
         );
     }
     
@@ -75,22 +82,25 @@ function alomran_get_product_schema($product_id = null) {
     
     $price = get_field('price', $product_id) ?: '';
     $categories = get_the_terms($product_id, 'product_category');
-    $image = has_post_thumbnail($product_id) ? get_the_post_thumbnail_url($product_id, 'large') : '';
+    $image_data = alomran_get_seo_image($product_id);
     $industry_type = alomran_get_product_industry_type($product_id);
     $dimensions = alomran_get_product_dimensions($product_id);
     $specs = alomran_get_product_technical_specs($product_id);
     $certifications = alomran_get_product_certifications($product_id);
+    $description = alomran_get_seo_description($product_id);
     
     $schema = array(
         '@context' => 'https://schema.org',
         '@type' => 'Product',
         'name' => get_the_title($product_id),
-        'description' => alomran_get_auto_excerpt($product_id, 30),
-        'image' => $image,
+        'description' => $description,
+        'image' => $image_data ? $image_data['url'] : '',
         'brand' => array(
             '@type' => 'Brand',
             'name' => get_bloginfo('name'),
         ),
+        'sku' => 'PROD-' . $product_id,
+        'mpn' => 'PROD-' . $product_id,
     );
     
     // Add offers if price is available
@@ -100,9 +110,11 @@ function alomran_get_product_schema($product_id = null) {
             $schema['offers'] = array(
                 '@type' => 'Offer',
                 'url' => get_permalink($product_id),
-                'priceCurrency' => 'EGP',
+                'priceCurrency' => 'SAR',
                 'availability' => 'https://schema.org/InStock',
                 'price' => $clean_price,
+                'priceValidUntil' => date('Y-m-d', strtotime('+1 year')),
+                'itemCondition' => 'https://schema.org/NewCondition',
             );
         }
     } else {
@@ -171,11 +183,14 @@ function alomran_get_service_schema($service_id = null) {
         $service_id = get_the_ID();
     }
     
+    $description = alomran_get_seo_description($service_id);
+    $image_data = alomran_get_seo_image($service_id);
+    
     $schema = array(
         '@context' => 'https://schema.org',
         '@type' => 'Service',
         'name' => get_the_title($service_id),
-        'description' => alomran_get_auto_excerpt($service_id, 30),
+        'description' => $description,
         'provider' => array(
             '@type' => 'Organization',
             'name' => get_bloginfo('name'),
@@ -183,13 +198,13 @@ function alomran_get_service_schema($service_id = null) {
         ),
         'areaServed' => array(
             '@type' => 'Country',
-            'name' => 'Egypt',
+            'name' => 'Saudi Arabia',
         ),
+        'serviceType' => get_the_title($service_id),
     );
     
-    $image = has_post_thumbnail($service_id) ? get_the_post_thumbnail_url($service_id, 'large') : '';
-    if ($image) {
-        $schema['image'] = $image;
+    if ($image_data) {
+        $schema['image'] = $image_data['url'];
     }
     
     return $schema;
@@ -206,21 +221,24 @@ function alomran_get_project_schema($project_id = null) {
         $project_id = get_the_ID();
     }
     
+    $description = alomran_get_seo_description($project_id);
+    $image_data = alomran_get_seo_image($project_id);
+    
     $schema = array(
         '@context' => 'https://schema.org',
         '@type' => 'CreativeWork',
         'name' => get_the_title($project_id),
-        'description' => alomran_get_auto_excerpt($project_id, 30),
+        'description' => $description,
         'creator' => array(
             '@type' => 'Organization',
             'name' => get_bloginfo('name'),
         ),
         'datePublished' => get_the_date('c', $project_id),
+        'dateModified' => get_the_modified_date('c', $project_id),
     );
     
-    $image = has_post_thumbnail($project_id) ? get_the_post_thumbnail_url($project_id, 'large') : '';
-    if ($image) {
-        $schema['image'] = $image;
+    if ($image_data) {
+        $schema['image'] = $image_data['url'];
     }
     
     return $schema;
@@ -266,6 +284,196 @@ function alomran_get_website_schema() {
 }
 
 /**
+ * Generate Restaurant schema for Food preset
+ *
+ * @return array
+ */
+function alomran_get_restaurant_schema() {
+    $preset = AlOmran_Preset_Loader::get_active_preset();
+    if ($preset !== 'food') {
+        return array();
+    }
+    
+    $app_name_ar = alomran_get_option('food_app_name_ar', get_bloginfo('name'));
+    $app_name_en = alomran_get_option('food_app_name_en', '');
+    $address = alomran_get_option('food_contact_address_text', '');
+    $phone = alomran_get_option('food_contact_phone_numbers', array());
+    $email = alomran_get_option('food_contact_email_addresses', array());
+    
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'Restaurant',
+        'name' => $app_name_ar,
+        'url' => home_url('/'),
+        'image' => get_site_icon_url(512) ?: '',
+        'description' => get_bloginfo('description'),
+    );
+    
+    if (!empty($app_name_en)) {
+        $schema['alternateName'] = $app_name_en;
+    }
+    
+    // Address
+    if (!empty($address)) {
+        $schema['address'] = array(
+            '@type' => 'PostalAddress',
+            'addressCountry' => 'SA',
+            'addressLocality' => 'الرياض',
+            'streetAddress' => $address,
+        );
+    }
+    
+    // Contact
+    $contact_points = alomran_build_contact_points($phone, $email, 'reservations', 'customer service');
+    if (!empty($contact_points)) {
+        $schema['contactPoint'] = $contact_points;
+    }
+    
+    // Social media
+    $social_urls = alomran_get_food_social_urls();
+    if (!empty($social_urls)) {
+        $schema['sameAs'] = $social_urls;
+    }
+    
+    // Menu
+    $menu_url = get_post_type_archive_link('menu_item');
+    if ($menu_url) {
+        $schema['hasMenu'] = array(
+            '@type' => 'Menu',
+            'url' => $menu_url,
+        );
+    }
+    
+    return $schema;
+}
+
+/**
+ * Generate FoodEstablishment schema for branches
+ *
+ * @param int $branch_id Branch ID.
+ * @return array
+ */
+function alomran_get_food_establishment_schema($branch_id = null) {
+    if (!$branch_id) {
+        $branch_id = get_the_ID();
+    }
+    
+    if (get_post_type($branch_id) !== 'branch') {
+        return array();
+    }
+    
+    $city = alomran_food_get_branch_city($branch_id);
+    $address = alomran_food_get_branch_address($branch_id);
+    $phone = alomran_food_get_branch_phone($branch_id);
+    $map_link = alomran_food_get_branch_map_link($branch_id);
+    
+    $image_data = alomran_get_seo_image($branch_id);
+    $description = alomran_get_seo_description($branch_id) ?: get_the_title($branch_id);
+    
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'FoodEstablishment',
+        'name' => get_the_title($branch_id),
+        'url' => get_permalink($branch_id),
+        'image' => $image_data ? $image_data['url'] : '',
+        'description' => $description,
+    );
+    
+    // Address
+    if (!empty($address)) {
+        $schema['address'] = array(
+            '@type' => 'PostalAddress',
+            'addressCountry' => 'SA',
+            'addressLocality' => $city ?: 'الرياض',
+            'streetAddress' => $address,
+        );
+    }
+    
+    // Phone
+    if (!empty($phone)) {
+        $schema['telephone'] = $phone;
+    }
+    
+    // Geo coordinates if map link exists
+    if (!empty($map_link) && strpos($map_link, 'google.com/maps') !== false) {
+        // Try to extract coordinates from Google Maps URL
+        if (preg_match('/@(-?\d+\.?\d*),(-?\d+\.?\d*)/', $map_link, $matches)) {
+            $schema['geo'] = array(
+                '@type' => 'GeoCoordinates',
+                'latitude' => floatval($matches[1]),
+                'longitude' => floatval($matches[2]),
+            );
+        }
+    }
+    
+    return $schema;
+}
+
+/**
+ * Generate MenuItem schema
+ *
+ * @param int $menu_item_id Menu item ID.
+ * @return array
+ */
+function alomran_get_menu_item_schema($menu_item_id = null) {
+    if (!$menu_item_id) {
+        $menu_item_id = get_the_ID();
+    }
+    
+    if (get_post_type($menu_item_id) !== 'menu_item') {
+        return array();
+    }
+    
+    $price = alomran_food_get_menu_item_price($menu_item_id);
+    $name_en = alomran_food_get_menu_item_name_en($menu_item_id);
+    $categories = get_the_terms($menu_item_id, 'menu_category');
+    $description = alomran_get_seo_description($menu_item_id) ?: get_the_title($menu_item_id);
+    $image_data = alomran_get_seo_image($menu_item_id);
+    
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'MenuItem',
+        'name' => get_the_title($menu_item_id),
+        'description' => $description,
+        'image' => $image_data ? $image_data['url'] : '',
+        'nutrition' => array(
+            '@type' => 'NutritionInformation',
+        ),
+    );
+    
+    if (!empty($name_en)) {
+        $schema['alternateName'] = $name_en;
+    }
+    
+    // Price
+    if (!empty($price)) {
+        $clean_price = preg_replace('/[^0-9.]/', '', $price);
+        if (!empty($clean_price)) {
+            $schema['offers'] = array(
+                '@type' => 'Offer',
+                'price' => $clean_price,
+                'priceCurrency' => 'SAR',
+                'availability' => 'https://schema.org/InStock',
+                'url' => get_permalink($menu_item_id),
+            );
+        }
+    }
+    
+    // Menu category
+    if ($categories && !is_wp_error($categories)) {
+        $schema['menuAddOn'] = array();
+        foreach ($categories as $category) {
+            $schema['menuAddOn'][] = array(
+                '@type' => 'MenuSection',
+                'name' => $category->name,
+            );
+        }
+    }
+    
+    return $schema;
+}
+
+/**
  * Output schema for current page (multi-industry support)
  */
 function alomran_output_page_schema() {
@@ -275,12 +483,22 @@ function alomran_output_page_schema() {
     if (is_front_page() || is_home()) {
         $schemas[] = alomran_get_website_schema();
         $schemas[] = alomran_get_organization_schema();
+        
+        // Add Restaurant schema for Food preset
+        $restaurant_schema = alomran_get_restaurant_schema();
+        if (!empty($restaurant_schema)) {
+            $schemas[] = $restaurant_schema;
+        }
     }
     
     // Content-specific schemas
     if (is_singular('product')) {
         $schemas[] = alomran_get_product_schema();
-    } elseif (is_singular('news')) {
+    } elseif (is_singular('branch')) {
+        $schemas[] = alomran_get_food_establishment_schema();
+    } elseif (is_singular('menu_item')) {
+        $schemas[] = alomran_get_menu_item_schema();
+    } elseif (is_singular('news') || is_singular('blog_post')) {
         $schemas[] = alomran_get_news_article_schema();
     } elseif (is_page()) {
         // Check if page is a service page (can be determined by template or custom field)
@@ -296,11 +514,7 @@ function alomran_output_page_schema() {
     
     // Output all schemas
     foreach ($schemas as $schema) {
-        if (!empty($schema)) {
-            echo '<script type="application/ld+json">' . "\n";
-            echo wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-            echo "\n" . '</script>' . "\n";
-        }
+        alomran_output_schema($schema);
     }
 }
 add_action('wp_head', 'alomran_output_page_schema', 4);
