@@ -4,9 +4,13 @@
   "version": "1.0.0",
   "author": "Al-Omran Development Team",
   "colors": {
-    "primary": "#d97706",
-    "secondary": "#f59e0b",
-    "accent": "#dc2626"
+    "primary": "#d4af37",
+    "secondary": "#1a1a1a",
+    "accent": "#d4af37",
+    "cream": "#fef9f3",
+    "gold": "#d4af37",
+    "black": "#1a1a1a",
+    "gray": "#6b7280"
   },
   "typography": {
     "font_family": "cairo",
