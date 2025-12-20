@@ -121,3 +121,54 @@ function alomran_handle_chat_message() {
 add_action('wp_ajax_alomran_chat_message', 'alomran_handle_chat_message');
 add_action('wp_ajax_nopriv_alomran_chat_message', 'alomran_handle_chat_message');
 
+/**
+ * Handle food reservation form submissions.
+ */
+function alomran_food_handle_reservation() {
+    // Validate and sanitize input
+    $branch_id = isset($_POST['branch_id']) ? intval($_POST['branch_id']) : 0;
+    $date      = isset($_POST['date']) ? sanitize_text_field(wp_unslash($_POST['date'])) : '';
+    $time      = isset($_POST['time']) ? sanitize_text_field(wp_unslash($_POST['time'])) : '';
+    $guests    = isset($_POST['guests']) ? intval($_POST['guests']) : 0;
+    $name      = isset($_POST['name']) ? sanitize_text_field(wp_unslash($_POST['name'])) : '';
+    $phone     = isset($_POST['phone']) ? sanitize_text_field(wp_unslash($_POST['phone'])) : '';
+    $email     = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
+    $notes     = isset($_POST['notes']) ? sanitize_textarea_field(wp_unslash($_POST['notes'])) : '';
+
+    // Validation
+    if (empty($branch_id) || empty($date) || empty($time) || empty($guests) || empty($name) || empty($phone)) {
+        wp_send_json_error(array('message' => __('يرجى ملء جميع الحقول المطلوبة.', 'alomran')));
+    }
+
+    if ($guests < 1) {
+        wp_send_json_error(array('message' => __('عدد الضيوف يجب أن يكون على الأقل 1.', 'alomran')));
+    }
+
+    $max_guests = alomran_get_option('food_reservations_max_guests', 20);
+    if ($guests > $max_guests) {
+        wp_send_json_error(array('message' => sprintf(__('الحد الأقصى لعدد الضيوف هو %d.', 'alomran'), $max_guests)));
+    }
+
+    // Create reservation
+    $reservation_data = array(
+        'branch_id' => $branch_id,
+        'date'      => $date,
+        'time'      => $time,
+        'guests'    => $guests,
+        'name'      => $name,
+        'phone'     => $phone,
+        'email'     => $email,
+        'notes'     => $notes,
+    );
+
+    $result = alomran_food_create_reservation($reservation_data);
+
+    if (is_wp_error($result)) {
+        wp_send_json_error(array('message' => __('حدث خطأ في حفظ الحجز. يرجى المحاولة مرة أخرى.', 'alomran')));
+    }
+
+    wp_send_json_success(array('message' => __('شكراً لك! تم استلام طلب الحجز وسيتم التأكيد قريباً.', 'alomran')));
+}
+add_action('wp_ajax_alomran_food_create_reservation', 'alomran_food_handle_reservation');
+add_action('wp_ajax_nopriv_alomran_food_create_reservation', 'alomran_food_handle_reservation');
+

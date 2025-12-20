@@ -53,6 +53,12 @@ class AlOmran_Preset_Loader {
         
         // Add preset body class
         add_filter('body_class', array(__CLASS__, 'add_preset_body_class'));
+        
+        // Load page templates from preset
+        add_filter('page_template', array(__CLASS__, 'load_preset_page_template'));
+        
+        // Load preset-specific templates (front-page, archive, single, etc.)
+        add_filter('template_include', array(__CLASS__, 'load_preset_template_include'), 20);
     }
     
     /**
@@ -442,6 +448,133 @@ class AlOmran_Preset_Loader {
      */
     public static function is_preset_active($preset) {
         return self::get_active_preset() === $preset;
+    }
+    
+    /**
+     * Load page template from preset
+     * 
+     * @param string $template Template path
+     * @return string
+     */
+    public static function load_preset_page_template($template) {
+        global $post;
+        
+        if (!$post) {
+            return $template;
+        }
+        
+        // Get page template from post meta
+        $page_template = get_post_meta($post->ID, '_wp_page_template', true);
+        
+        if (empty($page_template) || $page_template === 'default') {
+            return $template;
+        }
+        
+        // Check if template is from preset (format: presets/{preset}/templates/page-xxx.php)
+        if (strpos($page_template, 'presets/') === 0) {
+            $preset_template = ALOMRAN_THEME_DIR . '/' . $page_template;
+            if (file_exists($preset_template)) {
+                return $preset_template;
+            }
+        }
+        
+        // Check if template is just filename (e.g., 'page-story.php')
+        // Try to find it in active preset
+        $preset = self::get_active_preset();
+        $preset_dir = self::get_preset_dir($preset);
+        
+        if ($preset_dir) {
+            $preset_template = $preset_dir . '/templates/' . $page_template;
+            if (file_exists($preset_template)) {
+                return $preset_template;
+            }
+        }
+        
+        return $template;
+    }
+    
+    /**
+     * Load preset-specific front-page.php and archive templates
+     * 
+     * @param string $template Template path
+     * @return string
+     */
+    public static function load_preset_template_include($template) {
+        // Don't override if template is already from preset
+        if (strpos($template, '/presets/') !== false) {
+            return $template;
+        }
+        
+        $preset = self::get_active_preset();
+        $preset_dir = self::get_preset_dir($preset);
+        
+        if (!$preset_dir) {
+            return $template;
+        }
+        
+        $preset_templates_dir = $preset_dir . '/templates';
+        
+        // Check for front-page.php
+        if (is_front_page()) {
+            $preset_front_page = $preset_templates_dir . '/front-page.php';
+            if (file_exists($preset_front_page)) {
+                return $preset_front_page;
+            }
+        }
+        
+        // Check for archive templates
+        if (is_archive()) {
+            // Check for archive-{post_type}.php (e.g., archive-menu_item.php)
+            if (is_post_type_archive()) {
+                $post_type = get_post_type();
+                if ($post_type && $post_type !== 'post') {
+                    $archive_template = $preset_templates_dir . '/archive-' . $post_type . '.php';
+                    if (file_exists($archive_template)) {
+                        return $archive_template;
+                    }
+                }
+            }
+            
+            // Check for taxonomy templates (e.g., taxonomy-menu_category.php)
+            if (is_tax()) {
+                $term = get_queried_object();
+                if ($term && isset($term->taxonomy)) {
+                    $taxonomy_template = $preset_templates_dir . '/taxonomy-' . $term->taxonomy . '.php';
+                    if (file_exists($taxonomy_template)) {
+                        return $taxonomy_template;
+                    }
+                }
+            }
+            
+            // Check for generic archive.php in preset
+            $preset_archive = $preset_templates_dir . '/archive.php';
+            if (file_exists($preset_archive)) {
+                return $preset_archive;
+            }
+        }
+        
+        // Check for single templates
+        if (is_singular()) {
+            $post_type = get_post_type();
+            if ($post_type && $post_type !== 'post' && $post_type !== 'page') {
+                $single_template = $preset_templates_dir . '/single-' . $post_type . '.php';
+                if (file_exists($single_template)) {
+                    return $single_template;
+                }
+            }
+        }
+        
+        return $template;
+    }
+    
+    /**
+     * Load preset-specific front-page.php (kept for backward compatibility)
+     * 
+     * @param string $template Template path
+     * @return string
+     */
+    public static function load_preset_front_page($template) {
+        return self::load_preset_template_include($template);
     }
     
     /**

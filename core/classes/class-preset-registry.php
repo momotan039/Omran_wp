@@ -20,7 +20,7 @@ class AlOmran_Preset_Registry {
     public static function init() {
         // Register CPTs and Taxonomies from active preset
         add_action('init', array(__CLASS__, 'register_preset_cpts'), 5);
-        add_action('init', array(__CLASS__, 'register_preset_taxonomies'), 20);
+        add_action('init', array(__CLASS__, 'register_preset_taxonomies'), 15);
     }
     
     /**
@@ -62,6 +62,13 @@ class AlOmran_Preset_Registry {
         $taxonomies_file = $preset_dir . '/taxonomies.php';
         if (file_exists($taxonomies_file)) {
             require_once $taxonomies_file;
+            
+            // ALWAYS call registration function directly
+            // This ensures taxonomy is registered immediately
+            $register_function = 'alomran_' . $preset . '_register_taxonomies';
+            if (function_exists($register_function)) {
+                $register_function();
+            }
         }
     }
     

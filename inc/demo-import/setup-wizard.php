@@ -146,23 +146,12 @@ function alomran_setup_wizard_page() {
 
 /**
  * Handle demo import AJAX request
+ * NOTE: This handler is now handled by AlOmran_Demo_Importer::handle_ajax_import()
+ * This function is kept for backward compatibility but the action hook is removed
+ * to prevent conflicts with the proper importer class.
  */
 function alomran_handle_demo_import_ajax() {
-    check_ajax_referer('alomran_import_demo', 'nonce');
-    
-    if (!current_user_can('manage_options')) {
-        wp_send_json_error(array('message' => 'غير مصرح'));
-    }
-    
-    $preset = isset($_POST['preset']) ? sanitize_text_field($_POST['preset']) : 'industrial';
-    
-    $result = alomran_import_demo_data($preset);
-    
-    if ($result['success']) {
-        wp_send_json_success($result);
-    } else {
-        wp_send_json_error($result);
-    }
+    // This function is deprecated - use AlOmran_Demo_Importer::handle_ajax_import() instead
+    // The action hook has been removed to prevent conflicts
 }
-add_action('wp_ajax_alomran_import_demo', 'alomran_handle_demo_import_ajax');
 
