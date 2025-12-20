@@ -7,11 +7,10 @@ This directory contains demo content for the Food preset.
 - `redux-settings.json` - Redux configuration for demo
 - `content.json` - Demo pages, posts, and products
 - `menus.json` - Navigation menu structure
-- `redux.php` - Redux settings handler
-- `test-import.php` - Test import script
+- `taxonomies.json` - Taxonomy terms (categories) for demo
 - `media/` - Demo images and media files
 
 ## Importing Demo
 
-Use the theme's demo import functionality or run `test-import.php` directly.
+Use the theme's demo import functionality from the WordPress admin panel.
 

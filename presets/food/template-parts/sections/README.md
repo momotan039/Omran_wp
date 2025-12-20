@@ -10,3 +10,4 @@ Section templates for the Food preset.
 - `section-gallery.php` - Gallery section
 - `section-testimonials.php` - Testimonials section
 
+

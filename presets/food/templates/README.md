@@ -18,3 +18,4 @@ Templates in this directory override core theme templates when the Food preset i
 
 Templates are automatically loaded by the preset loader system. No manual inclusion needed.
 
+

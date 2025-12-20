@@ -9,3 +9,4 @@ Footer variations for the Food preset.
 - `footer-minimal.php` - Minimal footer style
 - `footer-dark.php` - Dark footer variant
 
+

@@ -13,3 +13,4 @@ Common reusable template parts for the Food preset.
 - `helpers.php` - Helper functions
 - `section-loader.php` - Section loader
 
+
