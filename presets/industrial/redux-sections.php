@@ -30,7 +30,7 @@ return array(
     'about-stats.php',
     'about-order.php',
     'general.php',
-    'contact-page.php',
+    'industrial-contact-page.php',  // Contact page settings - Industrial preset specific
     'footer.php',
     'ads.php',              // Ads / Monetization system
     'content-display.php',  // Content display flexibility

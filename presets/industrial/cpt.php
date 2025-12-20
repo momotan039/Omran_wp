@@ -118,3 +118,4 @@ function alomran_industrial_register_post_types() {
 }
 add_action('init', 'alomran_industrial_register_post_types', 10);
 
+
