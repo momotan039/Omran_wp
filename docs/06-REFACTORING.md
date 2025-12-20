@@ -46,3 +46,5 @@ Refactoring and SEO improvements for better maintainability.
 - Meta tags dynamic by page type
 
 
+
+

@@ -245,9 +245,27 @@ img.image-loading { min-height: 200px; }
     animation: spin 0.8s linear infinite;
 }
 
-/* Smooth Scroll Behavior */
+/* Enhanced Smooth Scroll Behavior */
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+
+/* Custom Smooth Scroll with Momentum */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    * {
+        scroll-behavior: inherit;
+    }
+}
+
+/* Smooth scroll for all elements */
+body {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -628,4 +646,5 @@ body, html { font-family: 'Cairo', sans-serif !important; }
         padding: 0.375rem 0.75rem;
     }
 }
+
 

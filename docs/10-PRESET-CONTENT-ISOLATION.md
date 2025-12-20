@@ -90,3 +90,4 @@ Content without a preset meta field is shown for backward compatibility. This al
 - Widget queries are also filtered
 - Custom post types can be added to the filtered list in `alomran_apply_preset_filter()`
 
+

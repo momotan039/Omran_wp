@@ -86,3 +86,4 @@ If you have custom presets that were using the old `inc/taxonomies.php` function
 - Review other areas for potential DRY improvements
 - Document any preset-specific requirements
 
+
