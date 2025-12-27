@@ -21,3 +21,12 @@ Thumbs.db
 wp-config.php
 .htaccess
 
+# React Apps (ignore React application folders)
+**/react-app/
+**/*react*/
+**/src/
+**/public/
+**/build/
+**/dist/
+**/إتقان---منصة-saas-العربية-المتكاملة/
+
