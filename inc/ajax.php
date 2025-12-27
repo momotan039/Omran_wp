@@ -172,3 +172,83 @@ function alomran_food_handle_reservation() {
 add_action('wp_ajax_alomran_food_create_reservation', 'alomran_food_handle_reservation');
 add_action('wp_ajax_nopriv_alomran_food_create_reservation', 'alomran_food_handle_reservation');
 
+/**
+ * Handle Tech preset contact form submissions (admin-post.php).
+ */
+function alomran_tech_handle_contact_submit() {
+    // Verify nonce
+    if (!isset($_POST['tech_contact_nonce']) || !wp_verify_nonce($_POST['tech_contact_nonce'], 'tech_contact_form')) {
+        wp_die(__('التحقق من الأمان فشل. يرجى المحاولة مرة أخرى.', 'alomran'));
+    }
+
+    // Validate and sanitize input
+    $name    = isset($_POST['name']) ? sanitize_text_field(wp_unslash($_POST['name'])) : '';
+    $email   = isset($_POST['email']) ? sanitize_email(wp_unslash($_POST['email'])) : '';
+    $message = isset($_POST['message']) ? sanitize_textarea_field(wp_unslash($_POST['message'])) : '';
+
+    // Validation
+    if (empty($name) || empty($email) || empty($message)) {
+        wp_redirect(add_query_arg('tech_contact_error', 'missing_fields', wp_get_referer()));
+        exit;
+    }
+
+    if (!is_email($email)) {
+        wp_redirect(add_query_arg('tech_contact_error', 'invalid_email', wp_get_referer()));
+        exit;
+    }
+
+    // Save message to database as custom post type
+    $post_data = array(
+        'post_title'   => sprintf(__('رسالة من: %s', 'alomran'), $name),
+        'post_content' => $message,
+        'post_status'  => 'publish',
+        'post_type'    => 'contact_message',
+        'post_author'  => 1,
+    );
+
+    $post_id = wp_insert_post($post_data);
+
+    if (is_wp_error($post_id)) {
+        wp_redirect(add_query_arg('tech_contact_error', 'save_error', wp_get_referer()));
+        exit;
+    }
+
+    // Save additional meta data
+    update_post_meta($post_id, '_contact_name', $name);
+    update_post_meta($post_id, '_contact_email', $email);
+    update_post_meta($post_id, '_contact_date', current_time('mysql'));
+    update_post_meta($post_id, '_contact_read', '0'); // 0 = unread, 1 = read
+
+    // Send email notification
+    $contact_email = alomran_get_option('tech_contact_email', get_option('admin_email'));
+    $to = $contact_email ?: get_option('admin_email');
+    $subject = sprintf(__('رسالة جديدة من نموذج التواصل - %s', 'alomran'), $name);
+    
+    $email_body = sprintf(
+        '<html><body style="font-family: Arial, sans-serif; direction: rtl; text-align: right;">' .
+        '<h2 style="color: #2563eb;">رسالة جديدة من نموذج التواصل - منصة إتقان</h2>' .
+        '<table style="width: 100%%; border-collapse: collapse; margin: 20px 0;">' .
+        '<tr><td style="padding: 10px; border: 1px solid #ddd; background: #f9f9f9; font-weight: bold;">الاسم:</td><td style="padding: 10px; border: 1px solid #ddd;">%s</td></tr>' .
+        '<tr><td style="padding: 10px; border: 1px solid #ddd; background: #f9f9f9; font-weight: bold;">البريد الإلكتروني:</td><td style="padding: 10px; border: 1px solid #ddd;">%s</td></tr>' .
+        '<tr><td style="padding: 10px; border: 1px solid #ddd; background: #f9f9f9; font-weight: bold;">الرسالة:</td><td style="padding: 10px; border: 1px solid #ddd;">%s</td></tr>' .
+        '</table>' .
+        '<p style="color: #666; font-size: 12px; margin-top: 20px;">يمكنك عرض هذه الرسالة في لوحة التحكم: <a href="%s">عرض الرسالة</a></p>' .
+        '</body></html>',
+        esc_html($name),
+        esc_html($email),
+        nl2br(esc_html($message)),
+        admin_url('post.php?post=' . $post_id . '&action=edit')
+    );
+
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+    
+    // Try to send email (don't fail if email fails)
+    wp_mail($to, $subject, $email_body, $headers);
+
+    // Redirect back with success message
+    wp_redirect(add_query_arg('tech_contact_success', '1', wp_get_referer()));
+    exit;
+}
+add_action('admin_post_tech_contact_submit', 'alomran_tech_handle_contact_submit');
+add_action('admin_post_nopriv_tech_contact_submit', 'alomran_tech_handle_contact_submit');
+

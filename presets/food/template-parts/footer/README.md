@@ -10,3 +10,4 @@ Footer variations for the Food preset.
 - `footer-dark.php` - Dark footer variant
 
 
+

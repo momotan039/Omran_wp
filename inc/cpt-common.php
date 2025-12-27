@@ -52,3 +52,4 @@ function alomran_register_common_post_types() {
 add_action('init', 'alomran_register_common_post_types', 10);
 
 
+
