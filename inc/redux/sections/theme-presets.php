@@ -9,6 +9,27 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * Get default theme preset value
+ * Returns current preset if set, otherwise returns active preset
+ */
+function alomran_get_theme_preset_default() {
+    // Get current preset from database
+    $current_preset = alomran_get_option('theme_preset', null);
+    if ($current_preset && in_array($current_preset, array('industrial', 'food', 'tech'), true)) {
+        return $current_preset;
+    }
+    // Fallback to active preset if available
+    if (class_exists('AlOmran_Preset_Loader')) {
+        $active_preset = AlOmran_Preset_Loader::get_active_preset();
+        if (in_array($active_preset, array('industrial', 'food', 'tech'), true)) {
+            return $active_preset;
+        }
+    }
+    // Final fallback
+    return 'industrial';
+}
+
 $opt_name = 'alomran_options';
 
 Redux::setSection($opt_name, array(
@@ -53,7 +74,7 @@ Redux::setSection($opt_name, array(
                     'img' => get_template_directory_uri() . '/assets/images/presets/tech.jpg',
                 ),
             ),
-            'default'  => 'industrial',
+            'default'  => alomran_get_theme_preset_default(),
         ),
         
         // Industrial Preset Colors

@@ -17,20 +17,45 @@ if (!defined('ABSPATH')) {
  * @return mixed
  */
 function alomran_get_option($option, $default = '') {
+    $value = null;
+    
     // On frontend, Redux should not be loaded, so get from database directly
     if (!is_admin() && !class_exists('Redux')) {
         $options = get_option('alomran_options', array());
-        return isset($options[$option]) ? $options[$option] : $default;
+        $value = isset($options[$option]) ? $options[$option] : null;
     }
-    
     // In admin, use Redux if available
-    if (class_exists('Redux')) {
-        return Redux::get_option('alomran_options', $option, $default);
+    elseif (class_exists('Redux')) {
+        $value = Redux::get_option('alomran_options', $option, null);
+    }
+    // Fallback to database
+    else {
+        $options = get_option('alomran_options', array());
+        $value = isset($options[$option]) ? $options[$option] : null;
     }
     
-    // Fallback to database
-    $options = get_option('alomran_options', array());
-    return isset($options[$option]) ? $options[$option] : $default;
+    // If value is null, use default
+    if ($value === null) {
+        return $default;
+    }
+    
+    // Handle serialized arrays (for repeater fields)
+    if (is_string($value)) {
+        // Check if it's a serialized array or object
+        if (substr($value, 0, 2) === 'a:' || substr($value, 0, 2) === 'O:') {
+            $unserialized = maybe_unserialize($value);
+            if ($unserialized !== false && is_array($unserialized)) {
+                return $unserialized;
+            }
+        }
+        // If it's a JSON string, try to decode it
+        $json_decoded = json_decode($value, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($json_decoded)) {
+            return $json_decoded;
+        }
+    }
+    
+    return $value;
 }
 
 /**
