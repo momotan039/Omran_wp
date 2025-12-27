@@ -1,0 +1,37 @@
+{
+  "name": "Tech",
+  "description": "Modern SaaS platform preset for technology companies, APIs, and automation services",
+  "version": "1.0.0",
+  "author": "Al-Omran Development Team",
+  "colors": {
+    "primary": "#2563eb",
+    "secondary": "#1e293b",
+    "accent": "#6366f1",
+    "blue": "#2563eb",
+    "violet": "#6366f1",
+    "slate": "#1e293b",
+    "slate-light": "#64748b",
+    "slate-50": "#f8fafc"
+  },
+  "typography": {
+    "font_family": "cairo",
+    "font_weight": "400"
+  },
+  "layout": {
+    "header_style": "default",
+    "footer_style": "default",
+    "container_width": "standard",
+    "content_layout": "full-width"
+  },
+  "features": [
+    "Hero section with CTA",
+    "Features showcase",
+    "Pricing plans",
+    "Use cases",
+    "About & Contact",
+    "API documentation ready",
+    "Dashboard integration ready"
+  ]
+}
+
+

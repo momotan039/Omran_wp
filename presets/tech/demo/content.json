@@ -1,0 +1,75 @@
+[
+  {
+    "post_type": "page",
+    "post_title": "المميزات",
+    "post_name": "features",
+    "post_content": "",
+    "post_excerpt": "اكتشف المميزات القوية لمنصة إتقان التقنية.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-features.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "الأسعار",
+    "post_name": "pricing",
+    "post_content": "",
+    "post_excerpt": "خطط مرنة وشفافة تناسب جميع احتياجاتك.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-pricing.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "حالات الاستخدام",
+    "post_name": "use-cases",
+    "post_content": "",
+    "post_excerpt": "اكتشف كيف يمكن لمنصة إتقان أن تساعد عملك.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-use-cases.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "من نحن",
+    "post_name": "about",
+    "post_content": "",
+    "post_excerpt": "تعرف على فريق إتقان ورؤيتنا للمستقبل.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-about.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "تواصل معنا",
+    "post_name": "contact",
+    "post_content": "",
+    "post_excerpt": "تواصل معنا للاستفسارات والاقتراحات، فريقنا جاهز للرد عليكم.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-contact.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "تسجيل الدخول",
+    "post_name": "login",
+    "post_content": "[login_form]",
+    "post_excerpt": "سجل دخولك إلى حسابك في منصة إتقان.",
+    "post_status": "publish"
+  },
+  {
+    "post_type": "page",
+    "post_title": "إنشاء حساب",
+    "post_name": "register",
+    "post_content": "[register_form]",
+    "post_excerpt": "أنشئ حسابك الجديد في منصة إتقان وابدأ رحلتك.",
+    "post_status": "publish"
+  }
+]
+
+
