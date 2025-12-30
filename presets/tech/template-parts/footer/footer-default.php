@@ -42,7 +42,7 @@ if (isset($menu_locations['footer']) && $menu_locations['footer'] > 0) {
                     $item->url = get_permalink($item->object_id);
                 }
                 // If it's a custom link starting with /, format it
-                elseif ($item->type === 'custom' && strpos($item->url, '/') === 0) {
+                elseif ($item->type === 'custom' && !empty($item->url) && strpos($item->url, '/') === 0) {
                     $item->url = alomran_format_url($item->url);
                 }
             }
@@ -60,7 +60,7 @@ if (empty($menu_items) && isset($menu_locations['primary']) && $menu_locations['
             foreach ($menu_items as $item) {
                 if ($item->type === 'post_type' && $item->object === 'page') {
                     $item->url = get_permalink($item->object_id);
-                } elseif ($item->type === 'custom' && strpos($item->url, '/') === 0) {
+                } elseif ($item->type === 'custom' && !empty($item->url) && strpos($item->url, '/') === 0) {
                     $item->url = alomran_format_url($item->url);
                 }
             }
@@ -73,8 +73,12 @@ if (empty($menu_items) && isset($menu_locations['primary']) && $menu_locations['
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
             <!-- Brand -->
             <div class="col-span-1 md:col-span-2 lg:col-span-1">
+                <?php
+                // Get first character of logo text
+                $logo_first_char = !empty($logo_text) ? mb_substr(trim($logo_text), 0, 1, 'UTF-8') : 'إ';
+                ?>
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="flex items-center gap-2 mb-6">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">إ</div>
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg"><?php echo esc_html($logo_first_char); ?></div>
                     <span class="text-2xl font-bold text-white"><?php echo esc_html($logo_text); ?></span>
                 </a>
                 <p class="text-slate-400 mb-8 max-w-xs">
@@ -109,8 +113,11 @@ if (empty($menu_items) && isset($menu_locations['primary']) && $menu_locations['
             </div>
 
             <!-- Links -->
-            <?php if ($menu_items && is_array($menu_items) && !empty($menu_items)) : ?>
-                <?php
+            <?php
+            // Get footer menu structure
+            $footer_columns = array();
+            
+            if ($menu_items && is_array($menu_items) && !empty($menu_items)) {
                 // Group menu items by parent
                 $parent_items = array();
                 $child_items = array();
@@ -120,12 +127,19 @@ if (empty($menu_items) && isset($menu_locations['primary']) && $menu_locations['
                     $menu_url = '';
                     if ($item->type === 'post_type' && $item->object === 'page') {
                         $menu_url = get_permalink($item->object_id);
-                    } elseif ($item->type === 'custom' && strpos($item->url, '/') === 0) {
-                        $menu_url = alomran_format_url($item->url);
+                    } elseif ($item->type === 'custom') {
+                        if (strpos($item->url, '/') === 0) {
+                            $menu_url = alomran_format_url($item->url);
+                        } elseif (!empty($item->url) && $item->url !== '#') {
+                            $menu_url = $item->url;
+                        } else {
+                            $menu_url = '';
+                        }
                     } else {
-                        $menu_url = $item->url;
+                        $menu_url = !empty($item->url) ? $item->url : '';
                     }
                     $item->formatted_url = $menu_url;
+                    $item->has_valid_url = !empty($menu_url) && $menu_url !== '#';
                     
                     if ($item->menu_item_parent == 0) {
                         $parent_items[] = $item;
@@ -137,76 +151,101 @@ if (empty($menu_items) && isset($menu_locations['primary']) && $menu_locations['
                     }
                 }
                 
-                // Display up to 3 columns of parent items
+                // Build footer columns from menu (up to 3 columns)
                 if (!empty($parent_items)) {
                     $columns = array_slice($parent_items, 0, 3);
-                    foreach ($columns as $col_item) :
-                        // Check if this parent has children or should be displayed as link
+                    foreach ($columns as $col_item) {
                         $has_children = isset($child_items[$col_item->ID]) && !empty($child_items[$col_item->ID]);
-                    ?>
-                        <div>
-                            <?php if ($has_children) : ?>
-                                <h4 class="text-white font-bold mb-6"><?php echo esc_html($col_item->title); ?></h4>
-                                <ul class="space-y-4">
-                                    <?php foreach ($child_items[$col_item->ID] as $child) : 
-                                        $child_url = isset($child->formatted_url) ? $child->formatted_url : $child->url;
-                                    ?>
-                                        <li>
-                                            <a href="<?php echo esc_url($child_url); ?>" class="text-slate-400 hover:text-blue-400 transition-colors">
-                                                <?php echo esc_html($child->title); ?>
-                                            </a>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            <?php else : ?>
-                                <h4 class="text-white font-bold mb-6">
-                                    <a href="<?php echo esc_url($col_item->formatted_url); ?>" class="hover:text-blue-400 transition-colors">
-                                        <?php echo esc_html($col_item->title); ?>
-                                    </a>
-                                </h4>
-                            <?php endif; ?>
-                        </div>
-                    <?php endforeach; 
-                } else {
-                    // If no parent items, show all items as simple list
-                    $simple_items = array_slice($menu_items, 0, 12); // Max 12 items
-                    $items_per_col = ceil(count($simple_items) / 3);
-                    $cols = array_chunk($simple_items, $items_per_col);
-                    
-                    foreach ($cols as $col_items) : ?>
-                        <div>
-                            <ul class="space-y-4">
-                                <?php foreach ($col_items as $item) : 
-                                    $item_url = isset($item->formatted_url) ? $item->formatted_url : $item->url;
-                                ?>
-                                    <li>
-                                        <a href="<?php echo esc_url($item_url); ?>" class="text-slate-400 hover:text-blue-400 transition-colors">
-                                            <?php echo esc_html($item->title); ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                    <?php endforeach;
+                        $footer_columns[] = array(
+                            'title' => $col_item->title,
+                            'url' => $col_item->has_valid_url ? $col_item->formatted_url : '',
+                            'children' => $has_children ? $child_items[$col_item->ID] : array(),
+                        );
+                    }
                 }
-                ?>
-            <?php else : ?>
-                <!-- Fallback: Show default links if no menu -->
+            }
+            
+            // Filter out empty columns - Footer is now fully dynamic from WordPress menu
+            $footer_columns = array_filter($footer_columns, function($column) {
+                return !empty($column['title']) || !empty($column['children']);
+            });
+            
+            // Display footer columns (up to 3 columns as in React app)
+            $display_columns = array_slice($footer_columns, 0, 3);
+            
+            if (!empty($display_columns)) :
+                foreach ($display_columns as $column) :
+                    $column_title = isset($column['title']) ? $column['title'] : '';
+                    $column_url = isset($column['url']) ? $column['url'] : '';
+                    $column_children = isset($column['children']) ? $column['children'] : array();
+                    
+                    // Skip empty columns
+                    if (empty($column_title) && empty($column_children)) {
+                        continue;
+                    }
+            ?>
                 <div>
-                    <h4 class="text-white font-bold mb-6">روابط سريعة</h4>
-                    <ul class="space-y-4">
-                        <?php
-                        $default_pages = array('features', 'pricing', 'use-cases', 'about', 'contact');
-                        foreach ($default_pages as $page_slug) {
-                            $page = get_page_by_path($page_slug);
-                            if ($page) {
-                                echo '<li><a href="' . esc_url(get_permalink($page)) . '" class="text-slate-400 hover:text-blue-400 transition-colors">' . esc_html($page->post_title) . '</a></li>';
-                            }
-                        }
-                        ?>
-                    </ul>
+                    <?php if (!empty($column_title)) : ?>
+                        <h4 class="text-white font-bold mb-6">
+                            <?php if (!empty($column_url) && $column_url !== '#') : ?>
+                                <a href="<?php echo esc_url($column_url); ?>" class="hover:text-blue-400 transition-colors">
+                                    <?php echo esc_html($column_title); ?>
+                                </a>
+                            <?php else : ?>
+                                <?php echo esc_html($column_title); ?>
+                            <?php endif; ?>
+                        </h4>
+                    <?php endif; ?>
+                    <?php if (!empty($column_children)) : ?>
+                        <ul class="space-y-4">
+                            <?php foreach ($column_children as $child) : 
+                                $child_title = is_object($child) ? $child->title : (isset($child['title']) ? $child['title'] : '');
+                                $child_url = '';
+                                
+                                if (is_object($child)) {
+                                    $child_url = isset($child->formatted_url) ? $child->formatted_url : (isset($child->url) ? $child->url : '');
+                                } else {
+                                    $child_url_raw = isset($child['url']) ? $child['url'] : '#';
+                                    $child_type = isset($child['type']) ? $child['type'] : 'custom';
+                                    
+                                    if ($child_type === 'page' && !empty($child_url_raw) && $child_url_raw !== '#') {
+                                        $child_page_slug = ltrim($child_url_raw, '/');
+                                        $child_page = get_page_by_path($child_page_slug);
+                                        if ($child_page) {
+                                            $child_url = get_permalink($child_page->ID);
+                                        } else {
+                                            $child_url = alomran_format_url($child_url_raw);
+                                        }
+                                    } elseif ($child_type === 'custom' && !empty($child_url_raw) && $child_url_raw !== '#') {
+                                        if (strpos($child_url_raw, '/') === 0) {
+                                            $child_url = alomran_format_url($child_url_raw);
+                                        } else {
+                                            $child_url = $child_url_raw;
+                                        }
+                                    } else {
+                                        $child_url = $child_url_raw;
+                                    }
+                                }
+                                
+                                $child_has_url = !empty($child_url) && $child_url !== '#';
+                            ?>
+                                <li>
+                                    <?php if ($child_has_url) : ?>
+                                        <a href="<?php echo esc_url($child_url); ?>" class="text-slate-400 hover:text-blue-400 transition-colors">
+                                            <?php echo esc_html($child_title); ?>
+                                        </a>
+                                    <?php else : ?>
+                                        <span class="text-slate-400"><?php echo esc_html($child_title); ?></span>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            <?php 
+                endforeach;
+            endif; // End if !empty($display_columns)
+            ?>
         </div>
 
         <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">

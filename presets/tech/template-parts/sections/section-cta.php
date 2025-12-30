@@ -18,12 +18,12 @@ if (!$cta_enable) {
 
 $cta_title = alomran_get_option('tech_cta_title', 'جاهز لبدء رحلتك الرقمية؟');
 $cta_description = alomran_get_option('tech_cta_description', 'انضم إلى مئات الشركات التي تعتمد على إتقان لتحويل أعمالها رقمياً');
-$cta_button_text = alomran_get_option('tech_cta_button_text', 'ابدأ مجاناً الآن');
-$cta_button_link_type = alomran_get_option('tech_cta_button_link_type', 'register');
+$cta_button_text = alomran_get_option('tech_cta_button_text', 'احجز عرضًا توضيحيًا');
+$cta_button_link_type = alomran_get_option('tech_cta_button_link_type', 'book-demo');
 $cta_button_link_custom = alomran_get_option('tech_cta_button_link_custom', '');
 $cta_button_link = alomran_get_button_link($cta_button_link_type, $cta_button_link_custom);
-$cta_secondary_text = alomran_get_option('tech_cta_secondary_text', 'أو شاهد العرض التوضيحي');
-$cta_secondary_link_type = alomran_get_option('tech_cta_secondary_link_type', 'features');
+$cta_secondary_text = alomran_get_option('tech_cta_secondary_text', 'اطّلع على الباقات');
+$cta_secondary_link_type = alomran_get_option('tech_cta_secondary_link_type', 'pricing');
 $cta_secondary_link_custom = alomran_get_option('tech_cta_secondary_link_custom', '');
 $cta_secondary_link = alomran_get_button_link($cta_secondary_link_type, $cta_secondary_link_custom);
 ?>
@@ -38,7 +38,7 @@ $cta_secondary_link = alomran_get_button_link($cta_secondary_link_type, $cta_sec
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-4xl mx-auto">
             <div class="inline-block mb-6">
-                <span class="text-sm font-black text-blue-200 uppercase tracking-widest">ابدأ الآن</span>
+                <span class="text-sm font-black text-blue-200 uppercase tracking-widest">جاهز للبدء؟</span>
             </div>
             
             <h2 class="text-4xl lg:text-7xl font-black mb-8 leading-tight">
@@ -72,7 +72,7 @@ $cta_secondary_link = alomran_get_button_link($cta_secondary_link_type, $cta_sec
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                     </svg>
-                    <span class="text-sm font-bold">تجربة مجانية 14 يوم</span>
+                    <span class="text-sm font-bold">عرض توضيحي مجاني</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -84,11 +84,12 @@ $cta_secondary_link = alomran_get_button_link($cta_secondary_link_type, $cta_sec
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                     </svg>
-                    <span class="text-sm font-bold">إلغاء في أي وقت</span>
+                    <span class="text-sm font-bold">استجابة خلال 24 ساعة</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 

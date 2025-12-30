@@ -22,14 +22,14 @@ $hero_title_highlight = alomran_get_option('tech_hero_title_highlight', 'في 5 
 $hero_description = alomran_get_option('tech_hero_description', 'محرك الأتمتة الأول للشركات التقنية في المنطقة. وفر أسابيع من التطوير البرمجي وابدأ التوسع اليوم.');
 $hero_image = alomran_get_option('tech_hero_image', '');
 
-// Get button settings
-$primary_button_text = alomran_get_option('tech_hero_primary_button_text', 'ابدأ مجاناً');
-$primary_button_link_type = alomran_get_option('tech_hero_primary_button_link_type', 'register');
+// Get button settings - Marketing preset defaults
+$primary_button_text = alomran_get_option('tech_hero_primary_button_text', 'احجز عرضًا توضيحيًا');
+$primary_button_link_type = alomran_get_option('tech_hero_primary_button_link_type', 'book-demo');
 $primary_button_link_custom = alomran_get_option('tech_hero_primary_button_link_custom', '');
 $primary_button_link = alomran_get_button_link($primary_button_link_type, $primary_button_link_custom);
 
-$secondary_button_text = alomran_get_option('tech_hero_secondary_button_text', 'شاهد العرض');
-$secondary_button_link_type = alomran_get_option('tech_hero_secondary_button_link_type', 'features');
+$secondary_button_text = alomran_get_option('tech_hero_secondary_button_text', 'اطّلع على الباقات');
+$secondary_button_link_type = alomran_get_option('tech_hero_secondary_button_link_type', 'pricing');
 $secondary_button_link_custom = alomran_get_option('tech_hero_secondary_button_link_custom', '');
 $secondary_button_link = alomran_get_button_link($secondary_button_link_type, $secondary_button_link_custom);
 
@@ -60,7 +60,7 @@ if ($hero_image) {
             
             <h1 class="hero-title text-5xl lg:text-8xl font-black text-slate-900 leading-[1.1] mb-8 tracking-tight transition-all duration-1000 delay-300 transform opacity-0 translate-y-12 blur-xl">
                 <?php echo esc_html($hero_title); ?> <br />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-violet-600 animate-gradient-x">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-violet-600 animate-gradient-x relative z-10 inline-block" style="line-height: 1.4; padding-top: 0.15em; padding-bottom: 0.15em; margin-top: -0.15em; margin-bottom: -0.15em; overflow: visible;">
                     <?php echo esc_html($hero_title_highlight); ?>
                 </span>
             </h1>
