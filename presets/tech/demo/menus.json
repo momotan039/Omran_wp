@@ -52,11 +52,6 @@
             "title": "حالات الاستخدام",
             "url": "/use-cases",
             "type": "page"
-          },
-          {
-            "title": "تحديثات المنتج",
-            "url": "#",
-            "type": "custom"
           }
         ]
       },
@@ -68,21 +63,6 @@
             "title": "من نحن",
             "url": "/about",
             "type": "page"
-          },
-          {
-            "title": "المدونة",
-            "url": "#",
-            "type": "custom"
-          },
-          {
-            "title": "اتفاقية الاستخدام",
-            "url": "#",
-            "type": "custom"
-          },
-          {
-            "title": "سياسة الخصوصية",
-            "url": "#",
-            "type": "custom"
           }
         ]
       },
@@ -91,29 +71,15 @@
         "type": "custom",
         "children": [
           {
-            "title": "مركز المساعدة",
-            "url": "#",
-            "type": "custom"
-          },
-          {
-            "title": "الأسئلة الشائعة",
-            "url": "#",
-            "type": "custom"
-          },
-          {
             "title": "تواصل معنا",
             "url": "/contact",
             "type": "page"
-          },
-          {
-            "title": "حالة النظام",
-            "url": "#",
-            "type": "custom"
           }
         ]
       }
     ]
   }
 ]
+
 
 

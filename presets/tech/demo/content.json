@@ -56,20 +56,16 @@
   },
   {
     "post_type": "page",
-    "post_title": "تسجيل الدخول",
-    "post_name": "login",
-    "post_content": "[login_form]",
-    "post_excerpt": "سجل دخولك إلى حسابك في منصة إتقان.",
-    "post_status": "publish"
-  },
-  {
-    "post_type": "page",
-    "post_title": "إنشاء حساب",
-    "post_name": "register",
-    "post_content": "[register_form]",
-    "post_excerpt": "أنشئ حسابك الجديد في منصة إتقان وابدأ رحلتك.",
-    "post_status": "publish"
+    "post_title": "احجز عرضًا توضيحيًا",
+    "post_name": "book-demo",
+    "post_content": "",
+    "post_excerpt": "احجز عرضًا توضيحيًا مجانيًا لترى كيف يمكن لمنصة إتقان أن تحول عملك.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-book-demo.php"
+    }
   }
 ]
+
 
 
