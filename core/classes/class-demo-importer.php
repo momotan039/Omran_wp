@@ -267,100 +267,12 @@ class AlOmran_Demo_Importer {
      * @return array
      */
     private static function import_menus($preset) {
-        $preset_dir = AlOmran_Preset_Loader::get_preset_dir($preset);
-        if (!$preset_dir) {
-            return array('success' => false, 'message' => __('مجلد القالب غير موجود', 'alomran'));
-        }
+        // Use the same function as menu reset to ensure consistency
+        // This ensures both "Import Demo" and "Reset Menus" use the same logic
+        // and produce identical results
+        $result = alomran_import_preset_menus($preset, false);
         
-        $menus_json = $preset_dir . '/demo/menus.json';
-        if (!file_exists($menus_json)) {
-            return array('success' => false, 'message' => __('ملف القوائم غير موجود', 'alomran'));
-        }
-        
-        $json_content = file_get_contents($menus_json);
-        if (!$json_content) {
-            return array('success' => false, 'message' => __('لا يمكن قراءة ملف القوائم', 'alomran'));
-        }
-        
-        $menus_data = json_decode($json_content, true);
-        if (!$menus_data || !is_array($menus_data)) {
-            return array('success' => false, 'message' => __('تنسيق القوائم غير صحيح', 'alomran'));
-        }
-        
-        $imported = 0;
-        
-        foreach ($menus_data as $menu_data) {
-            if (!isset($menu_data['name']) || !isset($menu_data['items'])) {
-                continue;
-            }
-            
-            $menu_name = sanitize_text_field($menu_data['name']);
-            $menu_location = isset($menu_data['location']) ? sanitize_text_field($menu_data['location']) : '';
-            
-            // Check if menu exists
-            $menu = wp_get_nav_menu_object($menu_name);
-            
-            if (!$menu) {
-                // Create menu
-                $menu_id = wp_create_nav_menu($menu_name);
-            } else {
-                $menu_id = $menu->term_id;
-            }
-            
-            if (is_wp_error($menu_id)) {
-                continue;
-            }
-            
-            // Clear existing items
-            $existing_items = wp_get_nav_menu_items($menu_id);
-            if ($existing_items) {
-                foreach ($existing_items as $item) {
-                    wp_delete_post($item->ID, true);
-                }
-            }
-            
-            // Add menu items
-            foreach ($menu_data['items'] as $item_data) {
-                $item_args = array(
-                    'menu-item-title' => isset($item_data['title']) ? sanitize_text_field($item_data['title']) : '',
-                    'menu-item-url' => isset($item_data['url']) ? esc_url_raw($item_data['url']) : '',
-                    'menu-item-status' => 'publish',
-                );
-                
-                if (isset($item_data['type'])) {
-                    if ($item_data['type'] === 'page' && isset($item_data['page_id'])) {
-                        $item_args['menu-item-type'] = 'post_type';
-                        $item_args['menu-item-object'] = 'page';
-                        $item_args['menu-item-object-id'] = intval($item_data['page_id']);
-                    } elseif ($item_data['type'] === 'post_type' && isset($item_data['post_type'])) {
-                        // Handle custom post type archive links
-                        $archive_url = get_post_type_archive_link($item_data['post_type']);
-                        if ($archive_url) {
-                            $item_args['menu-item-url'] = $archive_url;
-                        }
-                    }
-                }
-                
-                wp_update_nav_menu_item($menu_id, 0, $item_args);
-            }
-            
-            // Set preset meta for menu - CRITICAL for content isolation
-            alomran_set_menu_preset($menu_id, $preset);
-            
-            // Assign to location
-            if ($menu_location) {
-                $locations = get_theme_mod('nav_menu_locations', array());
-                $locations[$menu_location] = $menu_id;
-                set_theme_mod('nav_menu_locations', $locations);
-            }
-            
-            $imported++;
-        }
-        
-        return array(
-            'success' => true,
-            'message' => sprintf(_n('تم استيراد %d قائمة', 'تم استيراد %d قائمة', $imported, 'alomran'), $imported)
-        );
+        return $result;
     }
     
     /**

@@ -150,67 +150,135 @@ function omran_demo_admin_page() {
             </div>
             
             <!-- What Will Be Imported -->
+            <?php
+            $import_summary = alomran_get_preset_import_summary($current_preset);
+            $preset_colors = alomran_get_preset_colors();
+            $primary_color = $preset_colors['primary'];
+            $secondary_color = $preset_colors['secondary'];
+            $accent_color = $preset_colors['accent'];
+            ?>
             <div class="card" style="background: white; padding: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 8px;">
                 <h2 style="margin-top: 0;">
                     <span class="dashicons dashicons-list-view" style="margin-left: 10px;"></span>
                     <?php _e('ما سيتم استيراده', 'alomran'); ?>
                 </h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #2c5530;">
-                        <strong style="display: block; margin-bottom: 5px;">
-                            <span class="dashicons dashicons-admin-page" style="margin-left: 5px;"></span>
-                            <?php _e('الصفحات', 'alomran'); ?>
-                        </strong>
-                        <span style="color: #666; font-size: 14px;">5 صفحات (من نحن، اتصل بنا، إلخ)</span>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #4a7c59;">
-                        <strong style="display: block; margin-bottom: 5px;">
-                            <span class="dashicons dashicons-products" style="margin-left: 5px;"></span>
-                            <?php _e('المنتجات', 'alomran'); ?>
-                        </strong>
-                        <span style="color: #666; font-size: 14px;">4 منتجات مع فئات</span>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #f97316;">
-                        <strong style="display: block; margin-bottom: 5px;">
-                            <span class="dashicons dashicons-megaphone" style="margin-left: 5px;"></span>
-                            <?php _e('الأخبار', 'alomran'); ?>
-                        </strong>
-                        <span style="color: #666; font-size: 14px;">3 أخبار مع فئات</span>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #2c5530;">
-                        <strong style="display: block; margin-bottom: 5px;">
-                            <span class="dashicons dashicons-format-quote" style="margin-left: 5px;"></span>
-                            <?php _e('الشهادات', 'alomran'); ?>
-                        </strong>
-                        <span style="color: #666; font-size: 14px;">3 شهادات عملاء</span>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #4a7c59;">
-                        <strong style="display: block; margin-bottom: 5px;">
-                            <span class="dashicons dashicons-editor-help" style="margin-left: 5px;"></span>
-                            <?php _e('الأسئلة الشائعة', 'alomran'); ?>
-                        </strong>
-                        <span style="color: #666; font-size: 14px;">5 أسئلة شائعة</span>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #f97316;">
-                        <strong style="display: block; margin-bottom: 5px;">
-                            <span class="dashicons dashicons-menu" style="margin-left: 5px;"></span>
-                            <?php _e('القوائم', 'alomran'); ?>
-                        </strong>
-                        <span style="color: #666; font-size: 14px;">2 قوائم (رئيسية وتذييل)</span>
-                    </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #2c5530;">
+                    <?php if ($import_summary['pages'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($primary_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-admin-page" style="margin-left: 5px;"></span>
+                                <?php _e('الصفحات', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['pages']); ?> <?php _e('صفحة', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['products'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($secondary_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-products" style="margin-left: 5px;"></span>
+                                <?php _e('المنتجات', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['products']); ?> <?php _e('منتج', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['menu_items'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($accent_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-food" style="margin-left: 5px;"></span>
+                                <?php _e('عناصر القائمة', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['menu_items']); ?> <?php _e('عنصر', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['news'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($accent_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-megaphone" style="margin-left: 5px;"></span>
+                                <?php _e('الأخبار', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['news']); ?> <?php _e('خبر', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['blog_posts'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($primary_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-admin-post" style="margin-left: 5px;"></span>
+                                <?php _e('المدونة', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['blog_posts']); ?> <?php _e('مقال', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['branches'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($secondary_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-location" style="margin-left: 5px;"></span>
+                                <?php _e('الفروع', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['branches']); ?> <?php _e('فرع', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['testimonials'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($primary_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-format-quote" style="margin-left: 5px;"></span>
+                                <?php _e('الشهادات', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['testimonials']); ?> <?php _e('شهادة', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['faqs'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($secondary_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-editor-help" style="margin-left: 5px;"></span>
+                                <?php _e('الأسئلة الشائعة', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['faqs']); ?> <?php _e('سؤال', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($import_summary['menus'] > 0) : ?>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($accent_color); ?>;">
+                            <strong style="display: block; margin-bottom: 5px;">
+                                <span class="dashicons dashicons-menu" style="margin-left: 5px;"></span>
+                                <?php _e('القوائم', 'alomran'); ?>
+                            </strong>
+                            <span style="color: #666; font-size: 14px;"><?php echo esc_html($import_summary['menus']); ?> <?php _e('قائمة', 'alomran'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($import_summary['other'])) : ?>
+                        <?php foreach ($import_summary['other'] as $post_type => $count) : ?>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($primary_color); ?>;">
+                                <strong style="display: block; margin-bottom: 5px;">
+                                    <span class="dashicons dashicons-admin-post" style="margin-left: 5px;"></span>
+                                    <?php echo esc_html(ucfirst($post_type)); ?>
+                                </strong>
+                                <span style="color: #666; font-size: 14px;"><?php echo esc_html($count); ?> <?php _e('عنصر', 'alomran'); ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($primary_color); ?>;">
                         <strong style="display: block; margin-bottom: 5px;">
                             <span class="dashicons dashicons-admin-settings" style="margin-left: 5px;"></span>
                             <?php _e('إعدادات Redux', 'alomran'); ?>
                         </strong>
-                        <span style="color: #666; font-size: 14px;">إعدادات القالب الكاملة</span>
+                        <span style="color: #666; font-size: 14px;"><?php _e('إعدادات القالب الكاملة', 'alomran'); ?></span>
                     </div>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid #4a7c59;">
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-right: 3px solid <?php echo esc_attr($secondary_color); ?>;">
                         <strong style="display: block; margin-bottom: 5px;">
                             <span class="dashicons dashicons-images-alt2" style="margin-left: 5px;"></span>
                             <?php _e('الوسائط', 'alomran'); ?>
                         </strong>
-                        <span style="color: #666; font-size: 14px;">الصور والملفات (إن وجدت)</span>
+                        <span style="color: #666; font-size: 14px;"><?php _e('الصور والملفات (إن وجدت)', 'alomran'); ?></span>
                     </div>
                 </div>
             </div>
@@ -430,6 +498,7 @@ function omran_demo_admin_page() {
                 data: {
                     action: 'alomran_reset_menu',
                     preset: preset,
+                    force_update: '1', // Force update to replace existing menu items
                     nonce: '<?php echo wp_create_nonce('alomran_reset_menu'); ?>'
                 },
                 success: function(response) {

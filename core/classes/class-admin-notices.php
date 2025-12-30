@@ -118,10 +118,42 @@ class AlOmran_Admin_Notices {
             return;
         }
         
+        // Show marketing preset notice for Tech preset
+        if ($active_preset === 'tech') {
+            self::render_marketing_notice();
+        }
+        
         // Check if demo is not imported
         if (!$demo_imported) {
             self::render_demo_notice($active_preset);
         }
+    }
+    
+    /**
+     * Render marketing preset notice
+     */
+    private static function render_marketing_notice() {
+        ?>
+        <div class="notice notice-info is-dismissible" style="border-right: 4px solid #2271b1; padding: 15px;">
+            <div style="display: flex; align-items: flex-start; gap: 15px;">
+                <div style="flex: 1;">
+                    <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: 600; color: #1d2327;">
+                        <span class="dashicons dashicons-info" style="color: #2271b1; margin-left: 5px;"></span>
+                        <?php _e('ملاحظة مهمة: هذا القالب تسويقي فقط', 'alomran'); ?>
+                    </h3>
+                    <p style="margin: 0 0 10px 0; font-size: 14px; line-height: 1.6; color: #50575e;">
+                        <?php _e('هذا القالب تسويقي فقط ولا يحتوي على نظام تسجيل دخول أو حسابات مستخدمين. جميع الأزرار والروابط موجهة لصفحات التسعير وحجز العروض التوضيحية.', 'alomran'); ?>
+                    </p>
+                    <div style="background: #f0f6fc; border: 1px solid #c3d4e6; border-radius: 4px; padding: 12px; margin-top: 10px;">
+                        <p style="margin: 0; font-size: 13px; color: #1d2327;">
+                            <strong><?php _e('الصفحات المتاحة:', 'alomran'); ?></strong>
+                            <?php _e('الصفحة الرئيسية، المميزات، الأسعار، حالات الاستخدام، من نحن، تواصل معنا، احجز عرضًا توضيحيًا', 'alomran'); ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
     }
     
     /**
