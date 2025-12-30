@@ -63,18 +63,52 @@ if (!defined('ABSPATH')) {
   }
 </script>
 
-<!-- Cairo Font -->
+<?php
+// Get typography settings
+$font_family = alomran_get_option('tech_typography_font_family', 'cairo');
+$font_families = array(
+    'cairo' => array('name' => 'Cairo', 'url' => 'Cairo:wght@200;300;400;500;600;700;800;900'),
+    'tajawal' => array('name' => 'Tajawal', 'url' => 'Tajawal:wght@200;300;400;500;700;800;900'),
+    'almarai' => array('name' => 'Almarai', 'url' => 'Almarai:wght@300;400;700;800'),
+);
+$selected_font = isset($font_families[$font_family]) ? $font_families[$font_family] : $font_families['cairo'];
+?>
+<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=<?php echo esc_attr($selected_font['url']); ?>&display=swap" rel="stylesheet">
 
+<?php
+// Get typography settings
+$font_family = alomran_get_option('tech_typography_font_family', 'cairo');
+$font_families = array(
+    'cairo' => 'Cairo',
+    'tajawal' => 'Tajawal',
+    'almarai' => 'Almarai',
+);
+$font_name = isset($font_families[$font_family]) ? $font_families[$font_family] : 'Cairo';
+?>
 <style>
+  *,
+  *::before,
+  *::after {
+    font-family: '<?php echo esc_attr($font_name); ?>', sans-serif !important;
+  }
+  
   body {
     background-color: #f8fafc;
     color: #1e293b;
     overflow-x: hidden;
     cursor: default;
-    font-family: 'Cairo', sans-serif;
+    font-family: '<?php echo esc_attr($font_name); ?>', sans-serif !important;
+  }
+  
+  /* Apply font to all text elements */
+  h1, h2, h3, h4, h5, h6,
+  p, span, div, a, button,
+  input, textarea, select,
+  label, li, td, th {
+    font-family: '<?php echo esc_attr($font_name); ?>', sans-serif !important;
   }
   
   /* Hide scrollbar but keep functionality */

@@ -333,8 +333,15 @@ function alomran_enqueue_assets() {
     $tailwind_path = get_template_directory() . '/assets/css/tailwind.css';
     $tailwind_uri = get_template_directory_uri() . '/assets/css/tailwind.css';
 
-    // Enqueue styles - ensure proper order
-    wp_enqueue_style('alomran-google-fonts', 'https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap', array(), null);
+    // Enqueue Google Fonts dynamically based on typography settings
+    $font_family = alomran_get_option('tech_typography_font_family', 'cairo');
+    $font_families = array(
+        'cairo' => 'Cairo:wght@200;300;400;500;600;700;800;900',
+        'tajawal' => 'Tajawal:wght@200;300;400;500;700;800;900',
+        'almarai' => 'Almarai:wght@300;400;700;800',
+    );
+    $font_url = isset($font_families[$font_family]) ? $font_families[$font_family] : $font_families['cairo'];
+    wp_enqueue_style('alomran-google-fonts', 'https://fonts.googleapis.com/css2?family=' . esc_attr($font_url) . '&display=swap', array(), null);
     
     // Register and enqueue Tailwind CSS explicitly - with highest priority
     $tailwind_version = file_exists($tailwind_path) ? filemtime($tailwind_path) : $version;
@@ -367,6 +374,11 @@ function alomran_enqueue_assets() {
         // Output Tailwind CSS as the absolute last stylesheet
         echo '<link rel="stylesheet" id="alomran-tailwind-css" href="' . esc_url($tailwind_uri) . '?ver=' . esc_attr($tailwind_version) . '" type="text/css" media="all" data-theme="tailwind" data-protected="true" data-priority="99999" />' . "\n";
     }, 99999);
+    
+    // Loader CSS - load early for smooth transition
+    $loader_css_path = get_template_directory() . '/assets/css/loader.css';
+    $loader_css_version = file_exists($loader_css_path) ? filemtime($loader_css_path) : $version;
+    wp_enqueue_style('alomran-loader', get_template_directory_uri() . '/assets/css/loader.css', array(), $loader_css_version, 'all');
     
     // Custom CSS depends on Tailwind
     $custom_css_path = get_template_directory() . '/assets/css/custom.css';
