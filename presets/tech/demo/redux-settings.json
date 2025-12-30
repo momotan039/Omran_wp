@@ -4,10 +4,10 @@
   "tech_hero_title": "اربط تقنياتك وأتمت عملك",
   "tech_hero_title_highlight": "في 5 ثوانٍ فقط",
   "tech_hero_description": "محرك الأتمتة الأول للشركات التقنية في المنطقة. وفر أسابيع من التطوير البرمجي وابدأ التوسع اليوم.",
-  "tech_hero_primary_button_text": "ابدأ مجاناً",
-  "tech_hero_primary_button_link_type": "register",
-  "tech_hero_secondary_button_text": "شاهد العرض",
-  "tech_hero_secondary_button_link_type": "features",
+  "tech_hero_primary_button_text": "احجز عرضًا توضيحيًا",
+  "tech_hero_primary_button_link_type": "book-demo",
+  "tech_hero_secondary_button_text": "اطّلع على الباقات",
+  "tech_hero_secondary_button_link_type": "pricing",
   "tech_case_study_enable": true,
   "tech_case_study_title": "كيف أتمتنا 50,000 شحنة شهرياً؟",
   "tech_case_study_description": "قامت شركة \"توصيل\" بربط أسطولها التقني بالكامل عبر واجهة إتقان، مما سمح لهم بتتبع الشحنات لحظياً آلياً في الوقت الحقيقي.",
@@ -18,6 +18,19 @@
   "tech_pricing_page_title": "خطط مرنة وشفافة",
   "tech_pricing_page_title_highlight": "مرنة وشفافة",
   "tech_pricing_show_annual_toggle": true,
+  "tech_pricing_annual_label": "سنوي (وفر 20%)",
+  "tech_pricing_cta_type": "book-demo",
+  "tech_pricing_cta_text": "احجز عرضًا توضيحيًا",
+  "tech_pricing_cta_text_popular": "احجز عرضًا توضيحيًا",
+  "tech_cta_title": "جاهز لبدء رحلتك الرقمية؟",
+  "tech_cta_description": "انضم إلى مئات الشركات التي تعتمد على إتقان لتحويل أعمالها رقمياً",
+  "tech_cta_button_text": "احجز عرضًا توضيحيًا",
+  "tech_cta_button_link_type": "book-demo",
+  "tech_cta_secondary_text": "اطّلع على الباقات",
+  "tech_cta_secondary_link_type": "pricing",
+  "tech_demo_page_title": "احجز عرضًا توضيحيًا مجانيًا",
+  "tech_demo_page_subtitle": "اكتشف كيف يمكن لمنصة إتقان أن تحول عملك",
+  "tech_demo_page_description": "خلال 30 دقيقة، سنعرض لك كيف يمكن لمنصة إتقان أن تساعدك في تحقيق أهدافك التجارية. احجز موعدك الآن واستمتع بعرض توضيحي مخصص لاحتياجاتك.",
   "tech_use_cases_page_title": "حلول مصممة لتحدياتك",
   "tech_use_cases_page_subtitle": "نحن نفهم تحديات السوق المحلي ونقدم حلولاً تقنية تعالج جذور المشكلة.",
   "tech_about_page_title": "نعيد تعريف الربط التقني في المنطقة",
@@ -39,5 +52,6 @@
   "tech_social_facebook": "",
   "tech_social_instagram": ""
 }
+
 
 
