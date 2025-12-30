@@ -140,3 +140,4 @@ if (!$location_image_url) {
 get_footer();
 
 
+

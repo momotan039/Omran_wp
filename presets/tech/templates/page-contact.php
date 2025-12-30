@@ -57,3 +57,4 @@ $contact_email = alomran_get_option('tech_contact_email', 'hello@etqan-saas.com'
 get_footer();
 
 
+
