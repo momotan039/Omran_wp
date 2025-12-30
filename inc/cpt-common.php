@@ -48,8 +48,43 @@ function alomran_register_common_post_types() {
             'show_in_rest'       => false,
         )
     );
+    
+    // Demo requests - for marketing preset
+    register_post_type(
+        'demo_request',
+        array(
+            'labels' => array(
+                'name'               => 'طلبات الديمو',
+                'singular_name'      => 'طلب ديمو',
+                'add_new'            => 'إضافة طلب',
+                'add_new_item'       => 'إضافة طلب جديد',
+                'edit_item'          => 'عرض الطلب',
+                'new_item'           => 'طلب جديد',
+                'view_item'          => 'عرض الطلب',
+                'search_items'       => 'البحث في الطلبات',
+                'not_found'          => 'لم يتم العثور على طلبات',
+                'not_found_in_trash' => 'لم يتم العثور على طلبات في سلة المحذوفات',
+                'all_items'          => 'جميع الطلبات',
+                'menu_name'          => 'طلبات الديمو',
+            ),
+            'public'             => false,
+            'publicly_queryable' => false,
+            'show_ui'            => true,
+            'show_in_menu'       => true,
+            'has_archive'        => false,
+            'menu_icon'          => 'dashicons-calendar-alt',
+            'supports'           => array('title', 'editor'),
+            'capability_type'    => 'post',
+            'capabilities'       => array(
+                'create_posts' => false, // Prevent manual creation
+            ),
+            'map_meta_cap'       => true,
+            'show_in_rest'       => false,
+        )
+    );
 }
 add_action('init', 'alomran_register_common_post_types', 10);
+
 
 
 

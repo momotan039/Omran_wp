@@ -36,6 +36,7 @@ $alomran_includes = array(
     'inc/helpers/helpers-content-display.php',
     'inc/helpers/helpers-taxonomies.php',  // Taxonomy helper functions
     'inc/helpers/helpers-food.php',        // Food preset helper functions
+    'inc/helpers/helpers-menus.php',       // Menu import helper functions
     
     // Custom Post Types & Taxonomies
     'inc/cpt-common.php',  // Common CPTs (shared across all presets)
@@ -48,6 +49,7 @@ $alomran_includes = array(
     
     // Contact & AJAX
     'inc/contact-messages.php',
+    'inc/demo-requests.php',
     'inc/ajax.php',
     
     // Food Preset Admin (only loads in admin)

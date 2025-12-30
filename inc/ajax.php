@@ -252,3 +252,26 @@ function alomran_tech_handle_contact_submit() {
 add_action('admin_post_tech_contact_submit', 'alomran_tech_handle_contact_submit');
 add_action('admin_post_nopriv_tech_contact_submit', 'alomran_tech_handle_contact_submit');
 
+/**
+ * Handle menu reset/import AJAX request
+ */
+function alomran_handle_menu_reset() {
+    check_ajax_referer('alomran_reset_menu', 'nonce');
+    
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error(array('message' => 'غير مصرح'));
+    }
+    
+    $preset = isset($_POST['preset']) ? sanitize_text_field($_POST['preset']) : 'tech';
+    $force_update = isset($_POST['force_update']) && $_POST['force_update'] === '1';
+    
+    $result = alomran_import_preset_menus($preset, $force_update);
+    
+    if ($result['success']) {
+        wp_send_json_success($result);
+    } else {
+        wp_send_json_error($result);
+    }
+}
+add_action('wp_ajax_alomran_reset_menu', 'alomran_handle_menu_reset');
+
