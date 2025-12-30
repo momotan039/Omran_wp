@@ -49,11 +49,10 @@ $default_testimonials = array(
     ),
 );
 
-// Get testimonials items using helper function
 $testimonials_items = alomran_get_repeater_items(
     'tech_testimonials_items',
     $default_testimonials,
-    array('testimonial_name', 'testimonial_content') // Required fields for validation
+    array('testimonial_name', 'testimonial_content')
 );
 ?>
 <section id="testimonials" class="py-32 bg-slate-50 relative overflow-hidden">
@@ -76,29 +75,30 @@ $testimonials_items = alomran_get_repeater_items(
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <?php foreach ($testimonials_items as $index => $testimonial) : 
-                $testimonial_name = isset($testimonial['testimonial_name']) ? $testimonial['testimonial_name'] : '';
-                $testimonial_role = isset($testimonial['testimonial_role']) ? $testimonial['testimonial_role'] : '';
-                $testimonial_content = isset($testimonial['testimonial_content']) ? $testimonial['testimonial_content'] : '';
-                $testimonial_avatar = isset($testimonial['testimonial_avatar']) ? $testimonial['testimonial_avatar'] : '👤';
-                $testimonial_company = isset($testimonial['testimonial_company']) ? $testimonial['testimonial_company'] : '';
+                $testimonial_name = isset($testimonial['testimonial_name']) ? trim($testimonial['testimonial_name']) : '';
+                $testimonial_role = isset($testimonial['testimonial_role']) ? trim($testimonial['testimonial_role']) : '';
+                $testimonial_content = isset($testimonial['testimonial_content']) ? trim($testimonial['testimonial_content']) : '';
+                $testimonial_avatar = isset($testimonial['testimonial_avatar']) ? trim($testimonial['testimonial_avatar']) : '👤';
+                $testimonial_company = isset($testimonial['testimonial_company']) ? trim($testimonial['testimonial_company']) : '';
+                
+                if (empty($testimonial_name) && empty($testimonial_content)) {
+                    continue;
+                }
             ?>
                 <div 
                     class="testimonial-card bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2 border border-slate-100"
                     data-index="<?php echo $index; ?>"
                 >
-                    <!-- Quote icon -->
                     <div class="mb-6">
                         <svg class="w-12 h-12 text-blue-100" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.984zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                         </svg>
                     </div>
                     
-                    <!-- Content -->
                     <p class="text-slate-700 text-lg leading-relaxed mb-8 font-medium">
                         "<?php echo esc_html($testimonial_content); ?>"
                     </p>
                     
-                    <!-- Author -->
                     <div class="flex items-center gap-4 pt-6 border-t border-slate-100">
                         <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center text-2xl shadow-lg">
                             <?php echo esc_html($testimonial_avatar); ?>

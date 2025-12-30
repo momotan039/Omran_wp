@@ -45,11 +45,10 @@ $default_features = array(
     ),
 );
 
-// Get features items using helper function
 $features_items = alomran_get_repeater_items(
     'tech_features_preview_items',
     $default_features,
-    array('feature_title', 'feature_description') // Required fields for validation
+    array('feature_title', 'feature_description')
 );
 ?>
 <section id="features-preview" class="py-32 bg-white relative overflow-hidden">
@@ -73,10 +72,14 @@ $features_items = alomran_get_repeater_items(
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <?php foreach ($features_items as $index => $feature) : 
-                $feature_icon = $feature['feature_icon'] ?? '⚡';
-                $feature_title = $feature['feature_title'] ?? '';
-                $feature_description = $feature['feature_description'] ?? '';
-                $feature_color = $feature['feature_color'] ?? 'from-yellow-400 to-orange-500';
+                $feature_icon = isset($feature['feature_icon']) ? trim($feature['feature_icon']) : '⚡';
+                $feature_title = isset($feature['feature_title']) ? trim($feature['feature_title']) : '';
+                $feature_description = isset($feature['feature_description']) ? trim($feature['feature_description']) : '';
+                $feature_color = isset($feature['feature_color']) ? trim($feature['feature_color']) : 'from-yellow-400 to-orange-500';
+                
+                if (empty($feature_title) && empty($feature_description)) {
+                    continue;
+                }
             ?>
                 <div class="group feature-card bg-white p-8 rounded-3xl border border-slate-100 hover:border-transparent hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-2" data-index="<?php echo $index; ?>">
                     <div class="mb-6">

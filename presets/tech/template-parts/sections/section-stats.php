@@ -45,11 +45,10 @@ $default_stats = array(
     ),
 );
 
-// Get stats items using helper function
 $stats_items = alomran_get_repeater_items(
     'tech_stats_items',
     $default_stats,
-    array('stat_number', 'stat_label') // Required fields for validation
+    array('stat_number', 'stat_label')
 );
 ?>
 <section id="stats" class="py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white relative overflow-hidden">
@@ -77,10 +76,14 @@ $stats_items = alomran_get_repeater_items(
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
             <?php foreach ($stats_items as $index => $stat) : 
-                $stat_number = $stat['stat_number'] ?? '0';
-                $stat_label = $stat['stat_label'] ?? '';
-                $stat_icon = $stat['stat_icon'] ?? '📊';
-                $stat_color = $stat['stat_color'] ?? 'text-blue-600';
+                $stat_number = isset($stat['stat_number']) ? trim($stat['stat_number']) : '0';
+                $stat_label = isset($stat['stat_label']) ? trim($stat['stat_label']) : '';
+                $stat_icon = isset($stat['stat_icon']) ? trim($stat['stat_icon']) : '📊';
+                $stat_color = isset($stat['stat_color']) ? trim($stat['stat_color']) : 'text-blue-600';
+                
+                if (empty($stat_number) && empty($stat_label)) {
+                    continue;
+                }
             ?>
                 <div class="stat-card text-center group" data-index="<?php echo $index; ?>">
                     <div class="mb-4 inline-block">
