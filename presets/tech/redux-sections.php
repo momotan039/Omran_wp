@@ -41,5 +41,6 @@ return array(
     'tech-social.php',         // Social media links (subsection)
     'tech-typography.php',     // Typography settings (subsection)
     'tech-colors.php',         // Color settings (subsection)
+    'tech-loader.php',         // Page loader settings (subsection)
 );
 

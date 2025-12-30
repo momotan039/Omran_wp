@@ -98,7 +98,7 @@ Redux::setSection($opt_name, array(
             'type'     => 'text',
             'title'    => __('نص الزر الأساسي', 'alomran'),
             'subtitle' => __('النص الذي يظهر على الزر الأساسي', 'alomran'),
-            'default'  => 'ابدأ مجاناً',
+            'default'  => 'احجز عرضًا توضيحيًا',
             'required' => array('tech_hero_enable', '=', true),
         ),
         array(
@@ -106,8 +106,15 @@ Redux::setSection($opt_name, array(
             'type'     => 'select',
             'title'    => __('نوع رابط الزر الأساسي', 'alomran'),
             'subtitle' => __('اختر صفحة من القالب أو رابط مخصص', 'alomran'),
-            'options'  => alomran_get_preset_pages_options(),
-            'default'  => 'register',
+            'options'  => array_merge(
+                array(
+                    'book-demo' => __('احجز عرضًا توضيحيًا', 'alomran'),
+                    'pricing' => __('صفحة الأسعار', 'alomran'),
+                    'contact' => __('تواصل معنا', 'alomran'),
+                ),
+                alomran_get_preset_pages_options()
+            ),
+            'default'  => 'book-demo',
             'required' => array('tech_hero_enable', '=', true),
         ),
         array(
@@ -126,7 +133,7 @@ Redux::setSection($opt_name, array(
             'type'     => 'text',
             'title'    => __('نص الزر الثانوي', 'alomran'),
             'subtitle' => __('النص الذي يظهر على الزر الثانوي', 'alomran'),
-            'default'  => 'شاهد العرض',
+            'default'  => 'اطّلع على الباقات',
             'required' => array('tech_hero_enable', '=', true),
         ),
         array(
@@ -134,8 +141,15 @@ Redux::setSection($opt_name, array(
             'type'     => 'select',
             'title'    => __('نوع رابط الزر الثانوي', 'alomran'),
             'subtitle' => __('اختر صفحة من القالب أو رابط مخصص', 'alomran'),
-            'options'  => alomran_get_preset_pages_options(),
-            'default'  => 'features',
+            'options'  => array_merge(
+                array(
+                    'book-demo' => __('احجز عرضًا توضيحيًا', 'alomran'),
+                    'pricing' => __('صفحة الأسعار', 'alomran'),
+                    'contact' => __('تواصل معنا', 'alomran'),
+                ),
+                alomran_get_preset_pages_options()
+            ),
+            'default'  => 'pricing',
             'required' => array('tech_hero_enable', '=', true),
         ),
         array(

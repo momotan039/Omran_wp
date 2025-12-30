@@ -73,6 +73,7 @@ Redux::setSection($opt_name, array(
             'desc'        => __('<strong>ملاحظة:</strong> إذا لم تقم بإضافة أي مميزات، سيتم عرض البيانات الافتراضية (4 مميزات) في الموقع. لن تظهر العناصر الافتراضية هنا في لوحة التحكم.', 'alomran'),
             'required'    => array('tech_features_preview_enable', '=', true),
             'bind_title' => 'feature_title',
+            'item_name' => __('ميزة', 'alomran'),
             'group_values' => true, // IMPORTANT: This ensures all sub-field values are stored within the main repeater ID
             'fields'      => array(
                 array(
@@ -250,6 +251,7 @@ Redux::setSection($opt_name, array(
             'desc'        => __('<strong>ملاحظة:</strong> إذا لم تقم بإضافة أي إحصائيات، سيتم عرض البيانات الافتراضية (4 إحصائيات) في الموقع. لن تظهر العناصر الافتراضية هنا في لوحة التحكم.', 'alomran'),
             'required'    => array('tech_stats_enable', '=', true),
             'bind_title' => 'stat_label',
+            'item_name' => __('إحصائية', 'alomran'),
             'group_values' => true, // IMPORTANT: This ensures all sub-field values are stored within the main repeater ID
             'fields'      => array(
                 array(
@@ -353,6 +355,7 @@ Redux::setSection($opt_name, array(
             'desc'        => __('<strong>ملاحظة:</strong> إذا لم تقم بإضافة أي شهادات، سيتم عرض البيانات الافتراضية (4 شهادات) في الموقع. لن تظهر العناصر الافتراضية هنا في لوحة التحكم.', 'alomran'),
             'required'    => array('tech_testimonials_enable', '=', true),
             'bind_title' => 'testimonial_name',
+            'item_name' => __('شهادة', 'alomran'),
             'group_values' => true, // IMPORTANT: This ensures all sub-field values are stored within the main repeater ID
             'fields'      => array(
                 array(
@@ -453,8 +456,8 @@ Redux::setSection($opt_name, array(
             'id'       => 'tech_cta_button_text',
             'type'     => 'text',
             'title'    => __('نص الزر الأساسي', 'alomran'),
-            'subtitle' => __('النص الذي يظهر على الزر الأساسي (عادة زر التسجيل)', 'alomran'),
-            'default'  => 'ابدأ مجاناً الآن',
+            'subtitle' => __('النص الذي يظهر على الزر الأساسي', 'alomran'),
+            'default'  => 'احجز عرضًا توضيحيًا',
             'required' => array('tech_cta_enable', '=', true),
         ),
         array(
@@ -462,8 +465,15 @@ Redux::setSection($opt_name, array(
             'type'     => 'select',
             'title'    => __('صفحة الوجهة للزر الأساسي', 'alomran'),
             'subtitle' => __('اختر الصفحة التي سيؤدي إليها الزر الأساسي', 'alomran'),
-            'options'  => alomran_get_preset_pages_options(),
-            'default'  => 'register',
+            'options'  => array_merge(
+                array(
+                    'book-demo' => __('احجز عرضًا توضيحيًا', 'alomran'),
+                    'pricing' => __('صفحة الأسعار', 'alomran'),
+                    'contact' => __('تواصل معنا', 'alomran'),
+                ),
+                alomran_get_preset_pages_options()
+            ),
+            'default'  => 'book-demo',
             'required' => array('tech_cta_enable', '=', true),
         ),
         array(
@@ -489,8 +499,8 @@ Redux::setSection($opt_name, array(
             'id'       => 'tech_cta_secondary_text',
             'type'     => 'text',
             'title'    => __('نص الزر الثانوي', 'alomran'),
-            'subtitle' => __('النص الذي يظهر على الزر الثانوي (عادة زر ال)', 'alomran'),
-            'default'  => 'أو شاهد العرض التوضيحي',
+            'subtitle' => __('النص الذي يظهر على الزر الثانوي', 'alomran'),
+            'default'  => 'اطّلع على الباقات',
             'required' => array('tech_cta_enable', '=', true),
         ),
         array(
@@ -498,8 +508,15 @@ Redux::setSection($opt_name, array(
             'type'     => 'select',
             'title'    => __('صفحة الوجهة للزر الثانوي', 'alomran'),
             'subtitle' => __('اختر الصفحة التي سيؤدي إليها الزر الثانوي', 'alomran'),
-            'options'  => alomran_get_preset_pages_options(),
-            'default'  => 'features',
+            'options'  => array_merge(
+                array(
+                    'book-demo' => __('احجز عرضًا توضيحيًا', 'alomran'),
+                    'pricing' => __('صفحة الأسعار', 'alomran'),
+                    'contact' => __('تواصل معنا', 'alomran'),
+                ),
+                alomran_get_preset_pages_options()
+            ),
+            'default'  => 'pricing',
             'required' => array('tech_cta_enable', '=', true),
         ),
         array(
