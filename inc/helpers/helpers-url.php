@@ -19,6 +19,11 @@ function alomran_get_preset_pages_options() {
         '' => __('-- اختر صفحة --', 'alomran'),
     );
     
+    // Add marketing preset special pages first
+    $options['book-demo'] = __('احجز عرضًا توضيحيًا', 'alomran');
+    $options['pricing'] = __('صفحة الأسعار', 'alomran');
+    $options['contact'] = __('تواصل معنا', 'alomran');
+    
     // Add common hash links
     $options['#menu'] = __('القائمة (Hash Link)', 'alomran');
     $options['#branches'] = __('الفروع (Hash Link)', 'alomran');
@@ -133,13 +138,24 @@ function alomran_get_preset_page($slug) {
 /**
  * Get button link based on link type and custom link
  * 
- * @param string $link_type The link type (page slug, hash link, or 'custom')
+ * @param string $link_type The link type (page slug, hash link, 'book-demo', 'pricing', 'contact', or 'custom')
  * @param string $custom_link The custom link if type is 'custom'
  * @return string Formatted URL
  */
 function alomran_get_button_link($link_type, $custom_link = '') {
     if (empty($link_type)) {
         return '#';
+    }
+    
+    // Special link types for marketing preset
+    $special_links = array(
+        'book-demo' => 'book-demo',
+        'pricing' => 'pricing',
+        'contact' => 'contact',
+    );
+    
+    if (isset($special_links[$link_type])) {
+        return alomran_format_url('/' . $special_links[$link_type]);
     }
     
     // If custom link is selected

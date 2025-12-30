@@ -158,3 +158,95 @@ function alomran_get_repeater_items($option_id, $default_items = array(), $requi
     
     return $items;
 }
+
+/**
+ * Get features categories from Redux options
+ * Uses same mechanism as pricing plans for consistency
+ *
+ * @param array $default_categories Default categories to use if no saved categories found
+ * @return array Array of categories with their features
+ */
+function alomran_get_features_categories($default_categories = array()) {
+    // Get categories from Redux using same mechanism as pricing plans
+    $categories_raw = alomran_get_repeater_items('tech_features_categories', array(), array('category_label'));
+    
+    // If no saved categories, return defaults
+    if (empty($categories_raw)) {
+        return $default_categories;
+    }
+    
+    $categories = array();
+    
+    foreach ($categories_raw as $category) {
+        // Get category ID and label with trim
+        $cat_label = isset($category['category_label']) ? trim($category['category_label']) : '';
+        $cat_id = isset($category['category_id']) ? trim($category['category_id']) : '';
+        
+        // Skip if missing required field
+        if (empty($cat_label)) {
+            continue;
+        }
+        
+        // Generate category ID from label if not provided
+        if (empty($cat_id)) {
+            $cat_id = preg_replace('/[^a-z0-9_]/', '', strtolower($cat_label));
+            // If still empty, use a hash
+            if (empty($cat_id)) {
+                $cat_id = 'cat_' . md5($cat_label);
+            }
+        } else {
+            // Sanitize category ID (use only lowercase letters, numbers, and underscores)
+            $cat_id = preg_replace('/[^a-z0-9_]/', '', strtolower($cat_id));
+        }
+        
+        if (empty($cat_id)) {
+            continue;
+        }
+        
+        // Parse features from textarea (format: Title | Description | Icon)
+        $features = array();
+        if (isset($category['category_features']) && !empty($category['category_features'])) {
+            $features_text = trim($category['category_features']);
+            if (!empty($features_text)) {
+                $lines = explode("\n", $features_text);
+                foreach ($lines as $line) {
+                    $line = trim($line);
+                    if (empty($line)) {
+                        continue;
+                    }
+                    
+                    // Split by | separator
+                    $parts = array_map('trim', explode('|', $line));
+                    
+                    $feature_title = isset($parts[0]) ? trim($parts[0]) : '';
+                    $feature_desc = isset($parts[1]) ? trim($parts[1]) : '';
+                    $feature_icon = isset($parts[2]) ? trim($parts[2]) : '📦';
+                    
+                    // Skip if missing title
+                    if (empty($feature_title)) {
+                        continue;
+                    }
+                    
+                    $features[] = array(
+                        'title' => $feature_title,
+                        'desc' => $feature_desc,
+                        'icon' => !empty($feature_icon) ? $feature_icon : '📦',
+                    );
+                }
+            }
+        }
+        
+        // Add category even if no features (will show empty)
+        $categories[$cat_id] = array(
+            'label' => $cat_label,
+            'features' => $features,
+        );
+    }
+    
+    // If no valid categories found, return defaults
+    if (empty($categories)) {
+        return $default_categories;
+    }
+    
+    return $categories;
+}
