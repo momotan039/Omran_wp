@@ -284,55 +284,222 @@ function alomran_redux_arabic_js_translations() {
             }
         });
         
-        // Handle section reset to ensure all 4 default items are restored
-        $(document).on('click', '.redux-reset-section', function(e) {
-            var button = $(this);
+        /**
+         * Unified function to detect section ID from button context
+         * This is the PRIMARY method for detecting section IDs
+         * Works for both homepage and page sections
+         */
+        function detectSectionIdFromButton(button) {
             var sectionId = '';
             
-            // Try to get section ID from various sources
-            var sectionElement = button.closest('.redux-section');
+            // Configuration: Field ID to Section ID mapping
+            // This is the SINGLE SOURCE OF TRUTH for field detection
+            var fieldToSectionMap = {
+                // Homepage sections (tab 8, redux-section 3)
+                'tech_features_preview_items': 'tech_features_preview_section',
+                'tech_stats_items': 'tech_stats_section',
+                'tech_testimonials_items': 'tech_testimonials_section',
+                // Page sections
+                'tech_demo_benefits': 'tech_demo_page',
+                'tech_pricing_plans': 'tech_pricing_page',
+                'tech_features_categories': 'tech_features_page',
+                'tech_use_cases_items': 'tech_use_cases_page',
+            };
+            
+            // Method 1: Check for field IDs in the current section (PRIMARY METHOD)
+            // This works for ALL subsections (homepage and pages)
+            var currentSection = button.closest('.redux-section, .redux-group-tab, .redux-group, .redux-field-container, .redux-field');
+            if (!currentSection.length) {
+                // Try wider search if closest didn't work
+                currentSection = button.parents('.redux-section, .redux-group-tab, .redux-group');
+            }
+            
+            if (currentSection.length) {
+                
+                // Check each field ID in the map
+                // IMPORTANT: Check homepage sections FIRST (they're more specific)
+                var fieldIdsToCheck = [
+                    // Homepage sections (check first - more specific)
+                    'tech_features_preview_items',
+                    'tech_stats_items',
+                    'tech_testimonials_items',
+                    // Page sections
+                    'tech_demo_benefits',
+                    'tech_pricing_plans',
+                    'tech_features_categories',
+                    'tech_use_cases_items',
+                ];
+                
+                for (var idx = 0; idx < fieldIdsToCheck.length; idx++) {
+                    var fieldId = fieldIdsToCheck[idx];
+                    if (!fieldToSectionMap.hasOwnProperty(fieldId)) {
+                        continue;
+                    }
+                    
+                    // Multiple selectors to catch all possible field representations
+                    // IMPORTANT: Check for repeater-specific selectors first
+                    var selectors = [
+                        // Repeater-specific selectors (most reliable)
+                        '.redux-field-container[data-id*="' + fieldId + '"]',
+                        '.redux-field[data-id*="' + fieldId + '"]',
+                        '.redux-field[data-id="' + fieldId + '"]',
+                        // General selectors
+                        '[id*="' + fieldId + '"]',
+                        '[name*="' + fieldId + '"]',
+                        '[for*="' + fieldId + '"]',
+                        'input[name*="' + fieldId + '"]',
+                        'textarea[name*="' + fieldId + '"]',
+                        'select[name*="' + fieldId + '"]',
+                        // Repeater title bind (for group_values)
+                        '.redux-repeater[data-id*="' + fieldId + '"]',
+                        '.redux-repeater-title[data-field*="' + fieldId + '"]',
+                    ];
+                    
+                    var found = false;
+                    for (var i = 0; i < selectors.length; i++) {
+                        var matches = currentSection.find(selectors[i]);
+                        if (matches.length > 0) {
+                            sectionId = fieldToSectionMap[fieldId];
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    if (found) {
+                        break; // Found section, stop checking
+                    } else {
+                    }
+                }
+            }
+            
+            // Method 2: Try from button's closest redux-section or redux-field-container
+            if (!sectionId) {
+                var sectionElement = button.closest('.redux-section, .redux-field-container');
             if (sectionElement.length) {
                 sectionId = sectionElement.attr('id') || sectionElement.data('id');
+                    if (sectionId) {
+                        // Remove redux prefix if exists
+                        sectionId = sectionId.replace(/^redux-alomran_options-/, '');
+                    }
+                }
             }
             
-            // If still no ID, try from button attributes
+            // Method 3: Try from button's data attributes
             if (!sectionId) {
-                sectionId = button.data('id') || button.attr('data-id');
+                sectionId = button.data('id') || button.attr('data-id') || button.data('section-id');
+                if (sectionId) {
+                }
             }
             
-            // Try from href
+            // Method 4: Try from href
             if (!sectionId) {
                 var href = button.attr('href');
                 if (href) {
-                    var match = href.match(/section[=:]([^&]+)/i);
+                    // Try multiple patterns
+                    var match = href.match(/section[=:]([^&]+)/i) || href.match(/[#&]tab[=:](\d+)/i);
                     if (match) {
                         sectionId = match[1];
                     }
                 }
             }
             
+            // Method 5: Try from parent section container
+            if (!sectionId) {
+                var parentSection = button.closest('[id*="section"], [id*="page"]');
+                if (parentSection.length) {
+                    var parentId = parentSection.attr('id');
+                    if (parentId) {
+                        // Remove redux prefix if exists
+                        sectionId = parentId.replace(/^redux-alomran_options-/, '').replace(/^redux-section-/, '');
+                    }
+                }
+            }
+            
+            return sectionId;
+        }
+        
+        // Handle section reset to ensure all default items are restored
+        $(document).on('click', '.redux-reset-section', function(e) {
+            var button = $(this);
+            // Get current tab from URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var currentTab = urlParams.get('tab');
+            
+            var sectionId = detectSectionIdFromButton(button);
+            
+            // If sectionId is still empty, try to get it from the button's context more aggressively
+            if (!sectionId) {
+                // Try to find the section ID from the button's parent sections
+                var parentSection = button.closest('.redux-section, .redux-group-tab, .redux-group');
+                if (parentSection.length) {
+                    // Try to extract section ID from parent
+                    var parentId = parentSection.attr('id') || parentSection.data('id');
+                    if (parentId) {
+                        // Remove common prefixes
+                        parentId = parentId.replace(/^redux-alomran_options-/, '')
+                                          .replace(/^redux-section-/, '')
+                                          .replace(/^section-/, '');
+                        if (parentId && parentId !== 'redux-section') {
+                            sectionId = parentId;
+                        }
+                    }
+                }
+            }
+            
             // Only handle Tech preset repeater sections
             if (currentPreset === 'tech' && sectionId) {
+                // Get section configuration (matches PHP config)
                 var repeaterSections = {
+                    // Homepage sections (tab 8, redux-section 3)
                     'tech_features_preview_section': 'tech_features_preview_items',
                     'tech_stats_section': 'tech_stats_items',
-                    'tech_testimonials_section': 'tech_testimonials_items'
+                    'tech_testimonials_section': 'tech_testimonials_items',
+                    // Pages sections
+                    'tech_use_cases_page': 'tech_use_cases_items',
+                    'tech_features_page': 'tech_features_categories',
+                    'tech_pricing_page': 'tech_pricing_plans',
+                    'tech_demo_page': 'tech_demo_benefits'
                 };
                 
                 if (repeaterSections[sectionId]) {
                     var fieldId = repeaterSections[sectionId];
                     
-                    // Store section ID in form before reset
+                    // Store section ID in form before reset - use multiple methods
                     var form = $('form.redux-form-wrapper');
                     if (form.length) {
+                        // Remove any existing hidden inputs
                         form.find('input[name="redux-reset-section"]').remove();
+                        form.find('input[name="redux_reset_section"]').remove();
+                        form.find('input[name="redux-reset-section-id"]').remove();
+                        
+                        // Add hidden inputs with section ID
                         form.append('<input type="hidden" name="redux-reset-section" value="' + sectionId + '">');
+                        form.append('<input type="hidden" name="redux_reset_section" value="' + sectionId + '">');
+                        form.append('<input type="hidden" name="redux-reset-section-id" value="' + sectionId + '">');
+                        
+                        // Also set as data attribute on form for PHP to access
+                        form.data('redux-reset-section', sectionId);
+                        form.attr('data-redux-reset-section', sectionId);
                     }
                     
                     // Also store in sessionStorage for PHP to use
                     if (typeof sessionStorage !== 'undefined') {
                         sessionStorage.setItem('redux_reset_section', sectionId);
                         sessionStorage.setItem('redux_reset_time', Date.now());
+                    }
+                    
+                    // Also store in cookie as backup (with longer expiration)
+                    var expireDate = new Date();
+                    expireDate.setTime(expireDate.getTime() + (60 * 1000)); // 1 minute
+                    document.cookie = 'redux_reset_section=' + sectionId + '; expires=' + expireDate.toUTCString() + '; path=/';
+                    
+                    // Also add to URL if it's a GET request
+                    if (button.attr('href') && button.attr('href').indexOf('?') !== -1) {
+                        var url = button.attr('href');
+                        if (url.indexOf('redux-reset-section=') === -1) {
+                            url += (url.indexOf('&') !== -1 ? '&' : '&') + 'redux-reset-section=' + encodeURIComponent(sectionId);
+                            button.attr('href', url);
+                        }
                     }
                 }
             }
@@ -548,10 +715,141 @@ function alomran_restore_theme_preset_after_reset($old_value, $value) {
 add_action('update_option_alomran_options', 'alomran_restore_theme_preset_after_reset', 10, 2);
 
 /**
+ * Get unified section configuration for Tech preset
+ * Returns array with section ID, field ID, tab number, and type for each section
+ * This is the SINGLE SOURCE OF TRUTH for all section mappings
+ * 
+ * Structure:
+ * [
+ *   'section_id' => [
+ *     'field_id' => 'repeater_field_id',
+ *     'tab' => tab_number,  // Optional, for page sections only
+ *     'type' => 'homepage' | 'page',  // Section type
+ *     'group' => 'homepage' | 'pages'  // Group for organization
+ *   ]
+ * ]
+ */
+function alomran_get_tech_sections_config() {
+    return array(
+        // ============================================
+        // Homepage Sections (tab 8, redux-section 3)
+        // Each section is handled separately
+        // ============================================
+        'tech_features_preview_section' => array(
+            'field_id' => 'tech_features_preview_items',
+            'type' => 'homepage',
+            'group' => 'homepage',
+            'tab' => 8,  // Homepage tab
+            'redux_section' => 3,  // Redux internal section number
+        ),
+        'tech_stats_section' => array(
+            'field_id' => 'tech_stats_items',
+            'type' => 'homepage',
+            'group' => 'homepage',
+            'tab' => 8,
+            'redux_section' => 3,
+        ),
+        'tech_testimonials_section' => array(
+            'field_id' => 'tech_testimonials_items',
+            'type' => 'homepage',
+            'group' => 'homepage',
+            'tab' => 8,
+            'redux_section' => 3,
+        ),
+        // ============================================
+        // Page Sections (tabs 9-15)
+        // ============================================
+        'tech_features_page' => array(
+            'field_id' => 'tech_features_categories',
+            'type' => 'page',
+            'group' => 'pages',
+            'tab' => 9,
+            'redux_section' => 9,
+        ),
+        'tech_pricing_page' => array(
+            'field_id' => 'tech_pricing_plans',
+            'type' => 'page',
+            'group' => 'pages',
+            'tab' => 10,
+            'redux_section' => 10,
+        ),
+        'tech_use_cases_page' => array(
+            'field_id' => 'tech_use_cases_items',
+            'type' => 'page',
+            'group' => 'pages',
+            'tab' => 11,
+            'redux_section' => 11,
+        ),
+        'tech_demo_page' => array(
+            'field_id' => 'tech_demo_benefits',
+            'type' => 'page',
+            'group' => 'pages',
+            'tab' => 10,  // Same tab as pricing (subsection)
+            'redux_section' => 10,
+        ),
+    );
+}
+
+/**
+ * Get section-to-field mapping (backward compatibility)
+ * @deprecated Use alomran_get_tech_sections_config() instead
+ */
+function alomran_get_tech_section_to_field_map() {
+    $config = alomran_get_tech_sections_config();
+    $map = array();
+    foreach ($config as $section_id => $section_data) {
+        $map[$section_id] = $section_data['field_id'];
+    }
+    return $map;
+}
+
+/**
+ * Get field-to-section mapping (for reverse lookup)
+ */
+function alomran_get_tech_field_to_section_map() {
+    $config = alomran_get_tech_sections_config();
+    $map = array();
+    foreach ($config as $section_id => $section_data) {
+        $map[$section_data['field_id']] = $section_id;
+    }
+    return $map;
+}
+
+/**
+ * Get homepage sections only
+ */
+function alomran_get_tech_homepage_sections() {
+    $config = alomran_get_tech_sections_config();
+    $homepage = array();
+    foreach ($config as $section_id => $section_data) {
+        if ($section_data['type'] === 'homepage') {
+            $homepage[$section_id] = $section_data;
+        }
+    }
+    return $homepage;
+}
+
+/**
+ * Get page sections only
+ */
+function alomran_get_tech_page_sections() {
+    $config = alomran_get_tech_sections_config();
+    $pages = array();
+    foreach ($config as $section_id => $section_data) {
+        if ($section_data['type'] === 'page') {
+            $pages[$section_id] = $section_data;
+        }
+    }
+    return $pages;
+}
+
+/**
  * Get repeater defaults for Tech preset
+ * Returns default values for all repeater fields
  */
 function alomran_get_tech_repeater_defaults() {
     return array(
+        // Homepage sections
         'tech_features_preview_items' => array(
             array(
                 'feature_icon' => '⚡',
@@ -634,118 +932,903 @@ function alomran_get_tech_repeater_defaults() {
                 'testimonial_company' => 'متجر إلكتروني',
             ),
         ),
+        // Pages sections - empty defaults (user must add items manually)
+        'tech_use_cases_items' => array(),
+        'tech_features_categories' => array(),
+        'tech_pricing_plans' => array(),
+        'tech_demo_benefits' => array(),
     );
 }
 
 /**
- * Remove repeater defaults from being saved automatically
- * This ensures defaults are only used in frontend, not stored in database
- * REMOVED: No longer restoring defaults on reset - user must add items manually
+ * Backup user repeater data before reset
+ * Saves current user data to transient for potential recovery
  */
-function alomran_restore_repeater_defaults_on_section_reset($options) {
-    // DISABLED: We don't want to restore defaults automatically
-    // User must add items manually in Redux panel
-    return $options;
-    // Check if $options is an array
-    if (!is_array($options)) {
-        return $options;
-    }
-    
-    // Check if this is a section reset operation
+function alomran_backup_repeater_data_before_reset() {
+    // Check if this is a section reset operation or reset all
     $is_section_reset = false;
+    $is_reset_all = false;
     $reset_section = '';
     
-    // Check POST first
+    // Check if this is a section reset operation - check multiple sources
+    // 1. POST data
     if (isset($_POST['redux-reset-section']) && !empty($_POST['redux-reset-section'])) {
         $is_section_reset = true;
         $reset_section = sanitize_text_field($_POST['redux-reset-section']);
     } 
-    // Check GET
+    // 2. GET data
     elseif (isset($_GET['redux-reset-section']) && !empty($_GET['redux-reset-section'])) {
         $is_section_reset = true;
         $reset_section = sanitize_text_field($_GET['redux-reset-section']);
     }
-    // Check REQUEST
+    // 3. REQUEST data
     elseif (isset($_REQUEST['redux-reset-section']) && !empty($_REQUEST['redux-reset-section'])) {
         $is_section_reset = true;
         $reset_section = sanitize_text_field($_REQUEST['redux-reset-section']);
     }
+    // 4. Cookie (set by JavaScript)
+    elseif (isset($_COOKIE['redux_reset_section']) && !empty($_COOKIE['redux_reset_section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_COOKIE['redux_reset_section']);
+    }
+    // 5. Check for Redux's internal reset mechanism
+    elseif (isset($_POST['redux_reset_section']) && !empty($_POST['redux_reset_section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_POST['redux_reset_section']);
+    }
+    // 6. Check URL parameters (Redux sometimes uses this)
+    elseif (isset($_GET['section']) && isset($_GET['redux-reset']) && $_GET['redux-reset'] === '1') {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_GET['section']);
+    }
     
-    // Map section IDs to repeater field IDs
-    $section_to_field = array(
-        'tech_features_preview_section' => 'tech_features_preview_items',
-        'tech_stats_section' => 'tech_stats_items',
-        'tech_testimonials_section' => 'tech_testimonials_items',
-    );
+    // Check if this is a reset all operation
+    if (isset($_POST['redux-reset']) || 
+        (isset($_GET['reset']) && $_GET['reset'] === 'all') ||
+        (isset($_REQUEST['redux-reset']) && $_REQUEST['redux-reset'] === 'all') ||
+        (isset($_GET['redux-reset']) && $_GET['redux-reset'] === 'all')) {
+        $is_reset_all = true;
+    }
     
-    // If we have a section ID, restore its defaults
+    // Only backup on reset operations
+    if (!$is_section_reset && !$is_reset_all) {
+        return;
+    }
+    
+    // Get current options
+    $current_options = get_option('alomran_options', array());
+    
+    // Get unified section configuration
+    $section_config = alomran_get_tech_sections_config();
+    $section_to_field = alomran_get_tech_section_to_field_map();
+    
+    // Get all repeater field IDs
+    $all_repeater_fields = array_values($section_to_field);
+    
+    // Backup data
+    $backup_data = array();
+    
     if ($is_section_reset && !empty($reset_section) && isset($section_to_field[$reset_section])) {
+        // Backup single section
         $field_id = $section_to_field[$reset_section];
-        $defaults = alomran_get_tech_repeater_defaults();
-        
-        if (isset($defaults[$field_id])) {
-            $options[$field_id] = $defaults[$field_id];
+        if (isset($current_options[$field_id]) && !empty($current_options[$field_id])) {
+            $backup_data[$field_id] = $current_options[$field_id];
+        }
+    } elseif ($is_reset_all) {
+        // Backup all repeater fields
+        foreach ($all_repeater_fields as $field_id) {
+            if (isset($current_options[$field_id]) && !empty($current_options[$field_id])) {
+                $backup_data[$field_id] = $current_options[$field_id];
+            }
         }
     }
     
-    // Also check if repeater fields are being reset individually
-    // When a repeater field is reset, it might only have 1 item instead of 4
-    $repeater_fields = array('tech_features_preview_items', 'tech_stats_items', 'tech_testimonials_items');
-    $defaults = alomran_get_tech_repeater_defaults();
+    // Save backup to transient (store for 24 hours)
+    if (!empty($backup_data)) {
+        set_transient('alomran_repeater_backup_' . time(), $backup_data, DAY_IN_SECONDS);
+        // Also save with section ID for easy retrieval
+        if ($is_section_reset && !empty($reset_section)) {
+            set_transient('alomran_repeater_backup_section_' . $reset_section, $backup_data, DAY_IN_SECONDS);
+        }
+    }
+}
+add_action('redux/options/alomran_options/before_save', 'alomran_backup_repeater_data_before_reset', 5);
+
+/**
+ * Restore repeater defaults when section is reset or reset all
+ * This ensures that repeater fields are restored to defaults when user clicks Reset Section or Reset All
+ * User data is backed up before reset (see alomran_backup_repeater_data_before_reset)
+ */
+function alomran_restore_repeater_defaults_on_section_reset($options) {
+    // Check if $options is an array (not Redux_Panel object)
+    if (!is_array($options)) {
+        return $options;
+    }
     
-    foreach ($repeater_fields as $field_id) {
-        // If field exists but has less than 4 items, restore defaults
-        if (isset($options[$field_id])) {
-            $current_value = $options[$field_id];
-            
-            // Check if it's an array with less than 4 items
-            if (is_array($current_value)) {
-                // Check if it's in the format with separate field arrays
-                if (isset($current_value['feature_icon']) || isset($current_value['stat_number']) || isset($current_value['testimonial_name'])) {
-                    // This is the separate arrays format - check count
-                    $count = 0;
-                    if (isset($current_value['feature_icon']) && is_array($current_value['feature_icon'])) {
-                        $count = count($current_value['feature_icon']);
-                    } elseif (isset($current_value['stat_number']) && is_array($current_value['stat_number'])) {
-                        $count = count($current_value['stat_number']);
-                    } elseif (isset($current_value['testimonial_name']) && is_array($current_value['testimonial_name'])) {
-                        $count = count($current_value['testimonial_name']);
-                    }
-                    
-                    // If less than 4 items, restore defaults
-                    if ($count > 0 && $count < 4 && isset($defaults[$field_id])) {
-                        $options[$field_id] = $defaults[$field_id];
-                    }
-                } 
-                // Check if it's a direct array of items
-                elseif (isset($current_value[0]) && is_array($current_value[0])) {
-                    $count = count($current_value);
-                    // If less than 4 items, restore defaults
-                    if ($count > 0 && $count < 4 && isset($defaults[$field_id])) {
-                        $options[$field_id] = $defaults[$field_id];
-                    }
-                }
-                // Check redux_repeater_data format
-                elseif (isset($current_value['redux_repeater_data']) && is_array($current_value['redux_repeater_data'])) {
-                    $count = count($current_value['redux_repeater_data']);
-                    // If less than 4 items, restore defaults
-                    if ($count > 0 && $count < 4 && isset($defaults[$field_id])) {
-                        $options[$field_id] = $defaults[$field_id];
+    // Check if data is URL-encoded in POST['data']
+    $parsed_data = array();
+    if (isset($_POST['data']) && !empty($_POST['data'])) {
+        parse_str($_POST['data'], $parsed_data);
+    }
+    
+    // Check if this is a section reset operation or reset all
+    $is_section_reset = false;
+    $is_reset_all = false;
+    $reset_section = '';
+    
+    // Check Redux's defaults-section parameter (most important!)
+    if (isset($parsed_data['alomran_options']['defaults-section']) && !empty($parsed_data['alomran_options']['defaults-section'])) {
+        $is_section_reset = true;
+        if (isset($parsed_data['alomran_options']['redux-section']) && !empty($parsed_data['alomran_options']['redux-section'])) {
+            $tab_number = intval($parsed_data['alomran_options']['redux-section']);
+            // Build tab mapping from unified config
+            $section_config = alomran_get_tech_sections_config();
+            $tab_to_section = array();
+            foreach ($section_config as $section_id => $config) {
+                if (isset($config['tab']) && isset($config['type']) && $config['type'] === 'page') {
+                    $tab = $config['tab'];
+                    // Handle multiple sections on same tab (like tech_demo_page on tab 10)
+                    if (!isset($tab_to_section[$tab])) {
+                        $tab_to_section[$tab] = $section_id;
                     }
                 }
             }
+            if (isset($tab_to_section[$tab_number])) {
+                $reset_section = $tab_to_section[$tab_number];
+            }
+        }
+    }
+    // Also check in direct POST
+    elseif (isset($_POST['alomran_options']['defaults-section']) && !empty($_POST['alomran_options']['defaults-section'])) {
+        $is_section_reset = true;
+        if (isset($_POST['alomran_options']['redux-section']) && !empty($_POST['alomran_options']['redux-section'])) {
+            $tab_number = intval($_POST['alomran_options']['redux-section']);
+            // Build tab mapping from unified config
+            $section_config = alomran_get_tech_sections_config();
+            $tab_to_section = array();
+            foreach ($section_config as $section_id => $config) {
+                if (isset($config['tab']) && isset($config['type']) && $config['type'] === 'page') {
+                    $tab = $config['tab'];
+                    // Handle multiple sections on same tab (like tech_demo_page on tab 10)
+                    if (!isset($tab_to_section[$tab])) {
+                        $tab_to_section[$tab] = $section_id;
+                    }
+                }
+            }
+            if (isset($tab_to_section[$tab_number])) {
+                $reset_section = $tab_to_section[$tab_number];
+            }
+        }
+    }
+    
+    // Check JavaScript-set values (for homepage subsections and other sections)
+    // This is the PRIMARY method for homepage subsections (tech_features_preview_section, tech_stats_section, tech_testimonials_section)
+    if (empty($reset_section) && isset($_POST['redux-reset-section']) && !empty($_POST['redux-reset-section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_POST['redux-reset-section']);
+    }
+    elseif (empty($reset_section) && isset($_COOKIE['redux_reset_section']) && !empty($_COOKIE['redux_reset_section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_COOKIE['redux_reset_section']);
+    }
+    elseif (empty($reset_section) && isset($_POST['redux_reset_section']) && !empty($_POST['redux_reset_section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_POST['redux_reset_section']);
+    }
+    elseif (empty($reset_section) && isset($_POST['redux-reset-section-id']) && !empty($_POST['redux-reset-section-id'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_POST['redux-reset-section-id']);
+    }
+    elseif (empty($reset_section) && isset($_GET['redux-reset-section']) && !empty($_GET['redux-reset-section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_GET['redux-reset-section']);
+    }
+    elseif (empty($reset_section) && isset($_REQUEST['redux-reset-section']) && !empty($_REQUEST['redux-reset-section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_REQUEST['redux-reset-section']);
+    }
+    elseif (empty($reset_section) && isset($_GET['section']) && isset($_GET['redux-reset']) && $_GET['redux-reset'] === '1') {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_GET['section']);
+    }
+    
+    // Check if this is a reset all operation
+    if (isset($_POST['redux-reset']) || 
+        (isset($_GET['reset']) && $_GET['reset'] === 'all') ||
+        (isset($_REQUEST['redux-reset']) && $_REQUEST['redux-reset'] === 'all') ||
+        (isset($_GET['redux-reset']) && $_GET['redux-reset'] === 'all')) {
+        $is_reset_all = true;
+    }
+    
+    // CRITICAL: If this is NOT a reset operation, return options as-is
+    // Each section is independent - Redux will handle saving only what's in POST
+    // We don't need to preserve or modify other sections
+    if (!$is_section_reset && !$is_reset_all) {
+        // Let Redux handle normal saves naturally - no intervention needed
+        return $options;
+    }
+    
+    // Get unified section configuration
+    $section_config = alomran_get_tech_sections_config();
+    $section_to_field = alomran_get_tech_section_to_field_map();
+    
+    // Get all repeater field IDs for reset all
+    $all_repeater_fields = array_values($section_to_field);
+    
+    // Get default values
+    $defaults = alomran_get_tech_repeater_defaults();
+    
+    // Process section reset - restore defaults for single section ONLY
+    // CRITICAL: Each section is independent - we only modify the section being reset
+    // Redux will automatically preserve other sections from database
+    if ($is_section_reset && !empty($reset_section)) {
+        if (isset($section_to_field[$reset_section])) {
+            $field_id = $section_to_field[$reset_section];
+            
+            // Set to defaults or empty array for THIS section ONLY
+            if (isset($defaults[$field_id]) && !empty($defaults[$field_id])) {
+                $options[$field_id] = $defaults[$field_id];
+            } else {
+                $options[$field_id] = array();
+            }
+            
+            // Remove from POST data to prevent Redux from re-saving old data
+            if (isset($_POST['data']) && !empty($_POST['data'])) {
+                parse_str($_POST['data'], $post_data);
+                if (isset($post_data['alomran_options'][$field_id])) {
+                    unset($post_data['alomran_options'][$field_id]);
+                    $_POST['data'] = http_build_query($post_data);
+                }
+            }
+            if (isset($_POST['alomran_options'][$field_id])) {
+                unset($_POST['alomran_options'][$field_id]);
+            }
+        }
+    }
+    
+    // Process reset all - restore defaults for all repeater fields
+    if ($is_reset_all) {
+        foreach ($all_repeater_fields as $field_id) {
+            // Restore default values if available, otherwise set to empty array
+            if (isset($defaults[$field_id])) {
+                $options[$field_id] = $defaults[$field_id];
+            } else {
+                $options[$field_id] = array();
+            }
+        }
+    }
+    
+        return $options;
+    }
+add_filter('redux/options/alomran_options/validate', 'alomran_restore_repeater_defaults_on_section_reset', 1, 1);
+
+/**
+ * Handle section reset using Redux's reset hook
+ * This is more reliable than checking POST/GET data
+ */
+add_action('redux/options/alomran_options/reset', 'alomran_handle_redux_section_reset', 10, 1);
+function alomran_handle_redux_section_reset($options) {
+    // Get section ID from various sources
+    $reset_section = '';
+    
+    // Check multiple sources for section ID
+    if (isset($_POST['redux-reset-section']) && !empty($_POST['redux-reset-section'])) {
+        $reset_section = sanitize_text_field($_POST['redux-reset-section']);
+    }
+    elseif (isset($_GET['redux-reset-section']) && !empty($_GET['redux-reset-section'])) {
+        $reset_section = sanitize_text_field($_GET['redux-reset-section']);
+    }
+    elseif (isset($_REQUEST['redux-reset-section']) && !empty($_REQUEST['redux-reset-section'])) {
+        $reset_section = sanitize_text_field($_REQUEST['redux-reset-section']);
+    }
+    elseif (isset($_COOKIE['redux_reset_section']) && !empty($_COOKIE['redux_reset_section'])) {
+        $reset_section = sanitize_text_field($_COOKIE['redux_reset_section']);
+    }
+    elseif (isset($_POST['redux_reset_section']) && !empty($_POST['redux_reset_section'])) {
+        $reset_section = sanitize_text_field($_POST['redux_reset_section']);
+    }
+    elseif (isset($_GET['section']) && isset($_GET['redux-reset']) && $_GET['redux-reset'] === '1') {
+        $reset_section = sanitize_text_field($_GET['section']);
+    }
+    elseif (isset($_POST['redux-reset-section-id']) && !empty($_POST['redux-reset-section-id'])) {
+        $reset_section = sanitize_text_field($_POST['redux-reset-section-id']);
+    }
+    
+    // Get unified section configuration
+    $section_config = alomran_get_tech_sections_config();
+    $section_to_field = alomran_get_tech_section_to_field_map();
+    
+    // Get default values
+    $defaults = alomran_get_tech_repeater_defaults();
+    
+    // If we have a section ID, restore its defaults
+    if (!empty($reset_section) && isset($section_to_field[$reset_section])) {
+            $field_id = $section_to_field[$reset_section];
+        
+        // Restore default values if available, otherwise set to empty array
+        if (isset($defaults[$field_id])) {
+            $options[$field_id] = $defaults[$field_id];
+        } else {
+            $options[$field_id] = array();
         }
     }
     
     return $options;
 }
-add_filter('redux/options/alomran_options/validate', 'alomran_restore_repeater_defaults_on_section_reset', 5, 1);
 
 /**
- * DISABLED: No longer restoring defaults automatically
- * User must add items manually in Redux panel
- * Defaults are only used in frontend templates when no items are saved
+ * ULTRA-FAST: Force delete repeater data immediately after section reset
+ * This runs on EVERY page load in admin to catch reset operations
  */
+add_action('admin_init', 'alomran_ultra_fast_reset_repeater', 1);
+function alomran_ultra_fast_reset_repeater() {
+    // Only in admin
+    if (!is_admin()) {
+        return;
+    }
+    
+    // Check if data is URL-encoded in POST['data']
+    $parsed_data = array();
+    if (isset($_POST['data']) && !empty($_POST['data'])) {
+        parse_str($_POST['data'], $parsed_data);
+    }
+    
+    // CRITICAL: Only run on reset operations, NOT on normal saves
+    // Check if this is a reset operation first
+    $is_reset_operation = false;
+    
+    // Check for reset indicators
+    if (isset($parsed_data['alomran_options']['defaults-section']) && !empty($parsed_data['alomran_options']['defaults-section'])) {
+        $is_reset_operation = true;
+    }
+    if (!$is_reset_operation && isset($_POST['alomran_options']['defaults-section']) && !empty($_POST['alomran_options']['defaults-section'])) {
+        $is_reset_operation = true;
+    }
+    if (!$is_reset_operation && (isset($_POST['redux-reset-section']) || isset($_GET['redux-reset-section']) || isset($_COOKIE['redux_reset_section']))) {
+        $is_reset_operation = true;
+    }
+    
+    // If this is NOT a reset operation, handle normal save
+    // Remove homepage repeater fields that are NOT being modified
+    if (!$is_reset_operation) {
+        // Check if this is a Redux AJAX save request
+        $is_ajax_save = isset($_POST['action']) && $_POST['action'] === 'alomran_options_ajax_save';
+        
+        if ($is_ajax_save || isset($parsed_data['alomran_options'])) {
+            // Get homepage sections
+            $homepage_sections = alomran_get_tech_homepage_sections();
+            
+            // Get current tab from URL or POST
+            $current_tab = null;
+            if (isset($_GET['tab']) && !empty($_GET['tab'])) {
+                $current_tab = intval($_GET['tab']);
+            } elseif (isset($parsed_data['alomran_options']['redux-section']) && !empty($parsed_data['alomran_options']['redux-section'])) {
+                $current_tab = intval($parsed_data['alomran_options']['redux-section']);
+            } elseif (isset($_POST['alomran_options']['redux-section']) && !empty($_POST['alomran_options']['redux-section'])) {
+                $current_tab = intval($_POST['alomran_options']['redux-section']);
+            }
+            
+            // Map tab to section
+            $tab_to_section = array(
+                4 => 'tech_features_preview_section',
+                5 => 'tech_stats_section',
+                6 => 'tech_testimonials_section',
+            );
+            
+            // Determine which section is being saved
+            $current_section = null;
+            if ($current_tab && isset($tab_to_section[$current_tab])) {
+                $current_section = $tab_to_section[$current_tab];
+            }
+            
+            if ($current_section) {
+                // Remove homepage repeater fields that are NOT in the current section
+                $removed_any = false;
+                foreach ($homepage_sections as $section_id => $section_data) {
+                    $field_id = $section_data['field_id'];
+                    
+                    // Skip if this is the current section being saved
+                    if ($current_section === $section_id) {
+                        continue;
+                    }
+                    
+                    // Remove from parsed POST data
+                    if (isset($parsed_data['alomran_options'][$field_id])) {
+                        unset($parsed_data['alomran_options'][$field_id]);
+                        $removed_any = true;
+                    }
+                    
+                    // Also remove from direct POST array (Redux uses this directly)
+                    if (isset($_POST['alomran_options'][$field_id])) {
+                        unset($_POST['alomran_options'][$field_id]);
+                        $removed_any = true;
+                    }
+                }
+                
+                // Rebuild POST data string if we removed any fields
+                if ($removed_any && isset($_POST['data']) && !empty($_POST['data'])) {
+                    $_POST['data'] = http_build_query($parsed_data);
+                }
+            }
+        }
+        
+        // Exit - don't process reset logic
+        return;
+    }
+    
+    // If this is a reset operation, continue with reset logic
+    // Get unified section configuration
+    $section_config = alomran_get_tech_sections_config();
+    $section_to_field = alomran_get_tech_section_to_field_map();
+    
+    // Get section ID from ALL possible sources
+    $reset_section = '';
+    
+    // Note: $parsed_data is already set above (in the normal save check)
+    if (empty($parsed_data) && isset($_POST['data']) && !empty($_POST['data'])) {
+        parse_str($_POST['data'], $parsed_data);
+    }
+    
+    // Check Redux's defaults-section parameter (most important!)
+    // Check in parsed data first
+    if (isset($parsed_data['alomran_options']['defaults-section']) && !empty($parsed_data['alomran_options']['defaults-section'])) {
+        // Try to get section ID from redux-section (tab number)
+        if (isset($parsed_data['alomran_options']['redux-section']) && !empty($parsed_data['alomran_options']['redux-section'])) {
+            $tab_number = intval($parsed_data['alomran_options']['redux-section']);
+            
+            // Map tab numbers to section IDs using unified config
+            // WARNING: Tab numbers may vary! We should rely on JavaScript-set section ID instead
+            // This is a fallback only - JavaScript should send section ID directly
+            $section_config = alomran_get_tech_sections_config();
+            $tab_to_section = array();
+            foreach ($section_config as $section_id => $config) {
+                if (isset($config['tab']) && isset($config['type']) && $config['type'] === 'page') {
+                    $tab = $config['tab'];
+                    // Handle multiple sections on same tab (like tech_demo_page on tab 10)
+                    if (!isset($tab_to_section[$tab])) {
+                        $tab_to_section[$tab] = $section_id;
+                    }
+                }
+            }
+            
+            if (isset($tab_to_section[$tab_number])) {
+                $reset_section = $tab_to_section[$tab_number];
+            }
+        }
+    }
+    // Also check in direct POST
+    elseif (isset($_POST['alomran_options']['defaults-section']) && !empty($_POST['alomran_options']['defaults-section'])) {
+        if (isset($_POST['alomran_options']['redux-section']) && !empty($_POST['alomran_options']['redux-section'])) {
+            $tab_number = intval($_POST['alomran_options']['redux-section']);
+            
+            // Build tab mapping from unified config
+            $section_config = alomran_get_tech_sections_config();
+            $tab_to_section = array();
+            foreach ($section_config as $section_id => $config) {
+                if (isset($config['tab']) && isset($config['type']) && $config['type'] === 'page') {
+                    $tab = $config['tab'];
+                    // Handle multiple sections on same tab (like tech_demo_page on tab 10)
+                    if (!isset($tab_to_section[$tab])) {
+                        $tab_to_section[$tab] = $section_id;
+                    }
+                }
+            }
+            
+            if (isset($tab_to_section[$tab_number])) {
+                $reset_section = $tab_to_section[$tab_number];
+            }
+        }
+    }
+    
+    // Check JavaScript-set values (for homepage subsections and pages)
+    // This is the PRIMARY method - JavaScript should set this for all sections
+    if (empty($reset_section) && isset($_POST['redux-reset-section']) && !empty($_POST['redux-reset-section'])) {
+        $reset_section = sanitize_text_field($_POST['redux-reset-section']);
+    }
+    elseif (empty($reset_section) && isset($_GET['redux-reset-section']) && !empty($_GET['redux-reset-section'])) {
+        $reset_section = sanitize_text_field($_GET['redux-reset-section']);
+    }
+    elseif (empty($reset_section) && isset($_REQUEST['redux-reset-section']) && !empty($_REQUEST['redux-reset-section'])) {
+        $reset_section = sanitize_text_field($_REQUEST['redux-reset-section']);
+    }
+    elseif (empty($reset_section) && isset($_COOKIE['redux_reset_section']) && !empty($_COOKIE['redux_reset_section'])) {
+        $reset_section = sanitize_text_field($_COOKIE['redux_reset_section']);
+    }
+    elseif (empty($reset_section) && isset($_POST['redux_reset_section']) && !empty($_POST['redux_reset_section'])) {
+        $reset_section = sanitize_text_field($_POST['redux_reset_section']);
+    }
+    elseif (empty($reset_section) && isset($_GET['section']) && isset($_GET['redux-reset'])) {
+        $reset_section = sanitize_text_field($_GET['section']);
+    }
+    elseif (empty($reset_section) && isset($_POST['redux-reset-section-id']) && !empty($_POST['redux-reset-section-id'])) {
+        $reset_section = sanitize_text_field($_POST['redux-reset-section-id']);
+    }
+    
+    // For homepage subsections, detect from field IDs in POST data
+    // IMPORTANT: Use URL tab parameter to narrow down which section we're in
+    // Then check which homepage repeater field is present in POST data
+    if (empty($reset_section) && isset($parsed_data['alomran_options']['defaults-section'])) {
+        // Get homepage sections from unified config
+        $homepage_sections = alomran_get_tech_homepage_sections();
+        $field_to_section = alomran_get_tech_field_to_section_map();
+        
+        // Get current tab from URL or POST
+        $current_tab = null;
+        if (isset($_GET['tab']) && !empty($_GET['tab'])) {
+            $current_tab = intval($_GET['tab']);
+        } elseif (isset($parsed_data['alomran_options']['redux-section']) && !empty($parsed_data['alomran_options']['redux-section'])) {
+            $current_tab = intval($parsed_data['alomran_options']['redux-section']);
+        }
+        
+        // Check which homepage repeater field is present in POST data
+        // IMPORTANT: If we have a current tab, use it to determine which section is being reset
+        // This works regardless of how many items are in the repeater
+        $best_match = null;
+        $best_match_score = 999; // Lower is better
+        
+        // First, try to match by tab number (most reliable when tab is known)
+        if ($current_tab) {
+            $tab_to_section = array(
+                4 => 'tech_features_preview_section',  // Tab 4 = Features Preview
+                5 => 'tech_stats_section',              // Tab 5 = Stats
+                6 => 'tech_testimonials_section',        // Tab 6 = Testimonials
+            );
+            
+            if (isset($tab_to_section[$current_tab])) {
+                $candidate_section = $tab_to_section[$current_tab];
+                $candidate_field = isset($homepage_sections[$candidate_section]) ? $homepage_sections[$candidate_section]['field_id'] : null;
+                
+                // Verify that this field exists in POST data
+                if ($candidate_field && isset($parsed_data['alomran_options'][$candidate_field])) {
+                    $best_match = $candidate_section;
+                    $best_match_score = 0; // Highest priority
+                } else {
+                }
+            }
+        }
+        
+        // Fallback: If tab matching didn't work, check all fields and find the best match
+        if (!$best_match) {
+            foreach ($homepage_sections as $section_id => $section_data) {
+                $field_id = $section_data['field_id'];
+                if (isset($parsed_data['alomran_options'][$field_id])) {
+                    $field_data = $parsed_data['alomran_options'][$field_id];
+                    
+                    // Count how many items are in this repeater field
+                    $item_count = 0;
+                    if (is_array($field_data)) {
+                        // Check for repeater structure: look for sub-arrays or indexed arrays
+                        if (isset($field_data['redux_repeater_data']) && is_array($field_data['redux_repeater_data'])) {
+                            $item_count = count($field_data['redux_repeater_data']);
+                        } else {
+                            // Check if it's a flat array with indexed values
+                            foreach ($field_data as $key => $value) {
+                                if (is_array($value) && isset($value[0])) {
+                                    // Count how many items based on first sub-array length
+                                    $item_count = count($value);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // IMPORTANT: If we have a current tab, prioritize fields that are likely in that tab
+                    // Tab 4 is usually features preview section
+                    // Tab 5 is usually stats section
+                    // Tab 6 is usually testimonials section
+                    $is_likely_match = false;
+                    $priority_boost = 0;
+                    
+                    if ($current_tab === 4) {
+                        // Tab 4 is likely features preview
+                        if ($section_id === 'tech_features_preview_section') {
+                            $is_likely_match = true;
+                            $priority_boost = 20; // High priority for features preview in tab 4
+                        }
+                    } elseif ($current_tab === 5) {
+                        // Tab 5 is likely stats section
+                        if ($section_id === 'tech_stats_section') {
+                            $is_likely_match = true;
+                            $priority_boost = 20; // High priority for stats in tab 5
+                        }
+                    } elseif ($current_tab === 6) {
+                        // Tab 6 is likely testimonials section
+                        if ($section_id === 'tech_testimonials_section') {
+                            $is_likely_match = true;
+                            $priority_boost = 20; // High priority for testimonials in tab 6
+                        }
+                    }
+                    
+                    // Calculate score: lower is better
+                    // Boost priority for likely matches based on tab
+                    // Use item_count as base score (fewer items = higher priority, but not required)
+                    $score = $item_count - $priority_boost;
+                    
+                    if ($score < $best_match_score) {
+                        $best_match = $section_id;
+                        $best_match_score = $score;
+                    }
+                }
+            }
+        }
+        
+        if ($best_match) {
+            $reset_section = $best_match;
+        }
+    }
+    
+    
+    // If we found a section to reset
+    if (!empty($reset_section) && isset($section_to_field[$reset_section])) {
+        
+        $field_id = $section_to_field[$reset_section];
+        $defaults = alomran_get_tech_repeater_defaults();
+        
+        
+        // Get current options DIRECTLY from database
+        global $wpdb;
+        $options_raw = $wpdb->get_var("SELECT option_value FROM {$wpdb->options} WHERE option_name = 'alomran_options'");
+        $current_options = maybe_unserialize($options_raw);
+        if (!is_array($current_options)) {
+            $current_options = array();
+        }
+        
+        // Log current value before reset
+        if (isset($current_options[$field_id])) {
+        }
+        
+        // FORCE DELETE - set to empty array or defaults
+        // IMPORTANT: Always use defaults if available, regardless of current value
+        if (isset($defaults[$field_id]) && !empty($defaults[$field_id])) {
+            // Ensure defaults are in correct format (array of arrays for repeater)
+            $default_value = $defaults[$field_id];
+            if (is_array($default_value) && !empty($default_value)) {
+                $current_options[$field_id] = $default_value;
+            } else {
+                $current_options[$field_id] = array();
+            }
+        } else {
+            $current_options[$field_id] = array();
+        }
+        
+        // CRITICAL: Remove data from POST to prevent Redux from saving it again
+        if (isset($_POST['data']) && !empty($_POST['data'])) {
+            // Parse and remove the field from POST data
+            parse_str($_POST['data'], $post_data);
+            if (isset($post_data['alomran_options'][$field_id])) {
+                unset($post_data['alomran_options'][$field_id]);
+                // Rebuild POST data string
+                $_POST['data'] = http_build_query($post_data);
+            }
+        }
+        
+        // Also remove from direct POST array
+        if (isset($_POST['alomran_options'][$field_id])) {
+            unset($_POST['alomran_options'][$field_id]);
+        }
+        
+        // Update DIRECTLY in database (bypass all hooks)
+        $result = $wpdb->update(
+            $wpdb->options,
+            array('option_value' => maybe_serialize($current_options)),
+            array('option_name' => 'alomran_options'),
+            array('%s'),
+            array('%s')
+        );
+        
+        
+        // Clear ALL caches
+        delete_transient('redux-alomran_options');
+        wp_cache_delete('alomran_options', 'options');
+        wp_cache_delete('alloptions', 'options');
+        
+        // Clear cookie
+        if (isset($_COOKIE['redux_reset_section'])) {
+            setcookie('redux_reset_section', '', time() - 3600, '/');
+            unset($_COOKIE['redux_reset_section']);
+        }
+        
+    } else {
+        // Log if section not found
+        if (!empty($reset_section)) {
+        }
+    }
+}
+
+/**
+ * Ensure repeater defaults are restored after section reset or reset all
+ * This hook runs after option is updated in database (EXACT same as restore_theme_preset_after_reset)
+ * IMPORTANT: Use a flag to prevent infinite loops
+ * Only process on section reset operations or reset all, not normal saves
+ */
+function alomran_ensure_repeater_defaults_restored_after_section_reset($old_value, $value) {
+    // Prevent infinite loop
+    static $restoring = false;
+    if ($restoring) {
+        return;
+    }
+    
+    // Only run for alomran_options
+    if (!is_array($value)) {
+        return;
+    }
+    
+    // Check if this is a section reset operation or reset all
+    $is_section_reset = false;
+    $is_reset_all = false;
+    $reset_section = '';
+    
+    // Check if data is URL-encoded in POST['data']
+    $parsed_data = array();
+    if (isset($_POST['data']) && !empty($_POST['data'])) {
+        parse_str($_POST['data'], $parsed_data);
+    }
+    
+    // Check Redux's defaults-section parameter (most important!)
+    if (isset($parsed_data['alomran_options']['defaults-section']) && !empty($parsed_data['alomran_options']['defaults-section'])) {
+        $is_section_reset = true;
+        if (isset($parsed_data['alomran_options']['redux-section']) && !empty($parsed_data['alomran_options']['redux-section'])) {
+            $tab_number = intval($parsed_data['alomran_options']['redux-section']);
+            // Build tab mapping from unified config
+            $section_config = alomran_get_tech_sections_config();
+            $tab_to_section = array();
+            foreach ($section_config as $section_id => $config) {
+                if (isset($config['tab']) && isset($config['type']) && $config['type'] === 'page') {
+                    $tab = $config['tab'];
+                    // Handle multiple sections on same tab (like tech_demo_page on tab 10)
+                    if (!isset($tab_to_section[$tab])) {
+                        $tab_to_section[$tab] = $section_id;
+                    }
+                }
+            }
+            if (isset($tab_to_section[$tab_number])) {
+                $reset_section = $tab_to_section[$tab_number];
+            }
+        }
+    }
+    // Also check in direct POST
+    elseif (isset($_POST['alomran_options']['defaults-section']) && !empty($_POST['alomran_options']['defaults-section'])) {
+        $is_section_reset = true;
+        if (isset($_POST['alomran_options']['redux-section']) && !empty($_POST['alomran_options']['redux-section'])) {
+            $tab_number = intval($_POST['alomran_options']['redux-section']);
+            // Build tab mapping from unified config
+            $section_config = alomran_get_tech_sections_config();
+            $tab_to_section = array();
+            foreach ($section_config as $section_id => $config) {
+                if (isset($config['tab']) && isset($config['type']) && $config['type'] === 'page') {
+                    $tab = $config['tab'];
+                    // Handle multiple sections on same tab (like tech_demo_page on tab 10)
+                    if (!isset($tab_to_section[$tab])) {
+                        $tab_to_section[$tab] = $section_id;
+                    }
+                }
+            }
+            if (isset($tab_to_section[$tab_number])) {
+                $reset_section = $tab_to_section[$tab_number];
+            }
+        }
+    }
+    
+    // Check if this is a section reset operation - check multiple sources
+    // 1. POST data
+    if (empty($reset_section) && isset($_POST['redux-reset-section']) && !empty($_POST['redux-reset-section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_POST['redux-reset-section']);
+    }
+    // 2. GET data
+    elseif (empty($reset_section) && isset($_GET['redux-reset-section']) && !empty($_GET['redux-reset-section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_GET['redux-reset-section']);
+    }
+    // 3. REQUEST data
+    elseif (empty($reset_section) && isset($_REQUEST['redux-reset-section']) && !empty($_REQUEST['redux-reset-section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_REQUEST['redux-reset-section']);
+    }
+    // 4. Cookie (set by JavaScript)
+    elseif (empty($reset_section) && isset($_COOKIE['redux_reset_section']) && !empty($_COOKIE['redux_reset_section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_COOKIE['redux_reset_section']);
+    }
+    // 5. Check for Redux's internal reset mechanism
+    elseif (isset($_POST['redux_reset_section']) && !empty($_POST['redux_reset_section'])) {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_POST['redux_reset_section']);
+    }
+    // 6. Check URL parameters (Redux sometimes uses this)
+    elseif (isset($_GET['section']) && isset($_GET['redux-reset']) && $_GET['redux-reset'] === '1') {
+        $is_section_reset = true;
+        $reset_section = sanitize_text_field($_GET['section']);
+    }
+    
+    // Check if this is a reset all operation
+    if (isset($_POST['redux-reset']) || 
+        (isset($_GET['reset']) && $_GET['reset'] === 'all') ||
+        (isset($_REQUEST['redux-reset']) && $_REQUEST['redux-reset'] === 'all') ||
+        (isset($_GET['redux-reset']) && $_GET['redux-reset'] === 'all')) {
+        $is_reset_all = true;
+    }
+    
+    // Only process on section reset or reset all, not on normal save
+    if (!$is_section_reset && !$is_reset_all) {
+        return;
+    }
+    
+    // Get unified section configuration
+    $section_config = alomran_get_tech_sections_config();
+    $section_to_field = alomran_get_tech_section_to_field_map();
+    
+    // Get default values
+    $defaults = alomran_get_tech_repeater_defaults();
+    
+    // Process section reset - ensure defaults are restored
+    // Each section is handled separately
+    if ($is_section_reset && !empty($reset_section) && isset($section_to_field[$reset_section])) {
+        $field_id = $section_to_field[$reset_section];
+        
+        $restoring = true;
+        
+        // Always set to empty array (don't check - just do it)
+        // Restore default values if available, otherwise set to empty array
+        if (isset($defaults[$field_id]) && !empty($defaults[$field_id])) {
+            $value[$field_id] = $defaults[$field_id];
+        } else {
+            $value[$field_id] = array();
+        }
+        
+        // Use update_option with autoload=false to prevent triggering hooks
+        update_option('alomran_options', $value, false);
+        
+        // Clear Redux cache
+        delete_transient('redux-alomran_options');
+        wp_cache_delete('alomran_options', 'options');
+        wp_cache_delete('alloptions', 'options');
+        
+        // Clear cookie after use
+        if (isset($_COOKIE['redux_reset_section'])) {
+            setcookie('redux_reset_section', '', time() - 3600, '/');
+        }
+        
+        $restoring = false;
+    }
+    
+    // Process reset all - ensure defaults are restored for all fields
+    if ($is_reset_all) {
+        $all_repeater_fields = array_values($section_to_field);
+        $needs_update = false;
+        
+        foreach ($all_repeater_fields as $field_id) {
+            // Check if field needs default values restored
+            if (isset($defaults[$field_id])) {
+                // Field has defaults - check if current value matches defaults
+                if (!isset($value[$field_id]) || $value[$field_id] !== $defaults[$field_id]) {
+                    $value[$field_id] = $defaults[$field_id];
+                    $needs_update = true;
+                }
+            } else {
+                // Field has no defaults - ensure it's empty array
+        if (isset($value[$field_id]) && !empty($value[$field_id])) {
+                    $value[$field_id] = array();
+                    $needs_update = true;
+                }
+            }
+        }
+        
+        // Update options if any fields were restored
+        if ($needs_update) {
+            $restoring = true;
+            
+            // Use update_option with autoload=false to prevent triggering hooks
+            update_option('alomran_options', $value, false);
+            
+            // Clear Redux cache
+            delete_transient('redux-alomran_options');
+            
+            $restoring = false;
+        }
+    }
+}
+add_action('update_option_alomran_options', 'alomran_ensure_repeater_defaults_restored_after_section_reset', 10, 2);
 
 /**
  * ULTRA-AGGRESSIVE frontend protection: Block Redux completely on frontend
