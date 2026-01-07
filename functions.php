@@ -37,6 +37,7 @@ $alomran_includes = array(
     'inc/helpers/helpers-taxonomies.php',  // Taxonomy helper functions
     'inc/helpers/helpers-food.php',        // Food preset helper functions
     'inc/helpers/helpers-menus.php',       // Menu import helper functions
+    'inc/helpers/helpers-redux-repeater.php', // Redux repeater helper functions
     
     // Custom Post Types & Taxonomies
     'inc/cpt-common.php',  // Common CPTs (shared across all presets)
