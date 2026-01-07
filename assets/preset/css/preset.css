@@ -1,0 +1,223 @@
+/**
+ * Tech Preset - Custom Styles
+ * 
+ * @package AlOmran
+ * @subpackage Tech
+ */
+
+/* Tech Preset Specific Styles */
+.preset-tech {
+    font-family: 'Cairo', sans-serif;
+}
+
+/* Navbar scroll effect */
+.tech-navbar {
+    transition: all 0.3s ease;
+}
+
+.tech-navbar.scrolled {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile menu animations */
+.tech-mobile-menu {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Gradient text animation */
+@keyframes gradient-x {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 3s ease infinite;
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Cinematic Intersection Observer animations */
+section[id] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+section[id].visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Feature cards animation */
+.feature-card {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Testimonial cards animation */
+.testimonial-card {
+    opacity: 0;
+    transform: translateY(50px) rotateX(10deg);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.testimonial-card.visible {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+}
+
+/* Stat cards animation */
+.stat-card {
+    opacity: 0;
+    transform: scale(0.8) translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Use case rows */
+.use-case-row {
+    opacity: 0;
+    transform: translateX(0);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.use-case-row.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Pricing toggle animation */
+#pricing-toggle-dot {
+    transition: left 0.5s ease;
+}
+
+/* Button hover effects */
+.group:hover .group-hover\:translate-x-\[-5px\] {
+    transform: translateX(-5px);
+}
+
+/* Floating animation for particles */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.1;
+    }
+    50% {
+        transform: translateY(-20px) translateX(10px);
+        opacity: 0.3;
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Gradient animation */
+@keyframes gradient-x {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 3s ease infinite;
+}
+
+/* Smooth fade-in animation */
+.animate-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero section specific animations */
+.hero-badge.visible,
+.hero-title.visible,
+.hero-description.visible,
+.hero-buttons.visible,
+.hero-image-container.visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.hero-title.visible {
+    filter: blur(0) !important;
+}
+
+/* Case study section animation */
+#case-study .max-w-7xl.visible {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+/* Parallax effect for hero image */
+.hero-image-container {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+}
+
+/* Glow effect on hover */
+.feature-card:hover,
+.testimonial-card:hover {
+    box-shadow: 0 20px 60px -15px rgba(37, 99, 235, 0.3);
+}
+
+/* Form focus states */
+input:focus,
+textarea:focus {
+    outline: none;
+}
+
+/* Loading states */
+.opacity-0 {
+    opacity: 0;
+}
+
+.transition-opacity {
+    transition: opacity 0.5s ease;
+}
+

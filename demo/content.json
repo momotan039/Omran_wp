@@ -1,0 +1,71 @@
+[
+  {
+    "post_type": "page",
+    "post_title": "المميزات",
+    "post_name": "features",
+    "post_content": "",
+    "post_excerpt": "اكتشف المميزات القوية لمنصة إتقان التقنية.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-features.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "الأسعار",
+    "post_name": "pricing",
+    "post_content": "",
+    "post_excerpt": "خطط مرنة وشفافة تناسب جميع احتياجاتك.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-pricing.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "حالات الاستخدام",
+    "post_name": "use-cases",
+    "post_content": "",
+    "post_excerpt": "اكتشف كيف يمكن لمنصة إتقان أن تساعد عملك.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-use-cases.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "من نحن",
+    "post_name": "about",
+    "post_content": "",
+    "post_excerpt": "تعرف على فريق إتقان ورؤيتنا للمستقبل.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-about.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "تواصل معنا",
+    "post_name": "contact",
+    "post_content": "",
+    "post_excerpt": "تواصل معنا للاستفسارات والاقتراحات، فريقنا جاهز للرد عليكم.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-contact.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "احجز عرضًا توضيحيًا",
+    "post_name": "book-demo",
+    "post_content": "",
+    "post_excerpt": "احجز عرضًا توضيحيًا مجانيًا لترى كيف يمكن لمنصة إتقان أن تحول عملك.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-book-demo.php"
+    }
+  }
+]
+
+
+

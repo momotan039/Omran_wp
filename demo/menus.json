@@ -1,0 +1,85 @@
+[
+  {
+    "name": "القائمة الرئيسية",
+    "location": "primary",
+    "items": [
+      {
+        "title": "الرئيسية",
+        "url": "/",
+        "type": "custom"
+      },
+      {
+        "title": "المميزات",
+        "url": "/features",
+        "type": "page"
+      },
+      {
+        "title": "حالات الاستخدام",
+        "url": "/use-cases",
+        "type": "page"
+      },
+      {
+        "title": "الأسعار",
+        "url": "/pricing",
+        "type": "page"
+      },
+      {
+        "title": "عن المنصة",
+        "url": "/about",
+        "type": "page"
+      }
+    ]
+  },
+  {
+    "name": "قائمة الفوتر",
+    "location": "footer",
+    "items": [
+      {
+        "title": "المنصة",
+        "type": "custom",
+        "children": [
+          {
+            "title": "المميزات",
+            "url": "/features",
+            "type": "page"
+          },
+          {
+            "title": "خطط الأسعار",
+            "url": "/pricing",
+            "type": "page"
+          },
+          {
+            "title": "حالات الاستخدام",
+            "url": "/use-cases",
+            "type": "page"
+          }
+        ]
+      },
+      {
+        "title": "الشركة",
+        "type": "custom",
+        "children": [
+          {
+            "title": "من نحن",
+            "url": "/about",
+            "type": "page"
+          }
+        ]
+      },
+      {
+        "title": "الدعم والمساعدة",
+        "type": "custom",
+        "children": [
+          {
+            "title": "تواصل معنا",
+            "url": "/contact",
+            "type": "page"
+          }
+        ]
+      }
+    ]
+  }
+]
+
+
+
