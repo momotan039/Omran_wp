@@ -1,0 +1,83 @@
+[
+  {
+    "name": "Primary Menu",
+    "location": "primary",
+    "items": [
+      {
+        "title": "الرئيسية",
+        "url": "/",
+        "type": "custom"
+      },
+      {
+        "title": "القصة",
+        "url": "/story",
+        "type": "page"
+      },
+      {
+        "title": "القائمة",
+        "url": "/menu",
+        "type": "post_type",
+        "post_type": "menu_item"
+      },
+      {
+        "title": "التجربة",
+        "url": "/experience",
+        "type": "page"
+      },
+      {
+        "title": "المجلة",
+        "url": "/blog",
+        "type": "post_type",
+        "post_type": "blog_post"
+      },
+      {
+        "title": "احجز الآن",
+        "url": "/reservations",
+        "type": "page"
+      }
+    ]
+  },
+  {
+    "name": "Footer Menu",
+    "location": "footer",
+    "items": [
+      {
+        "title": "عن الجوهرة",
+        "url": "/story",
+        "type": "page"
+      },
+      {
+        "title": "القائمة",
+        "url": "/menu",
+        "type": "post_type",
+        "post_type": "menu_item"
+      },
+      {
+        "title": "التجربة",
+        "url": "/experience",
+        "type": "page"
+      },
+      {
+        "title": "المجلة",
+        "url": "/blog",
+        "type": "post_type",
+        "post_type": "blog_post"
+      },
+      {
+        "title": "العروض",
+        "url": "/offers",
+        "type": "custom"
+      },
+      {
+        "title": "المناسبات",
+        "url": "/events",
+        "type": "custom"
+      },
+      {
+        "title": "اتصل بنا",
+        "url": "/contact",
+        "type": "custom"
+      }
+    ]
+  }
+]

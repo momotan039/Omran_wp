@@ -1,0 +1,422 @@
+[
+  {
+    "post_type": "page",
+    "post_title": "القصة",
+    "post_name": "story",
+    "post_content": "",
+    "post_excerpt": "اكتشف قصة الجوهرة وكيف بدأنا رحلتنا في عالم الضيافة الفاخرة.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-story.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "التجربة",
+    "post_name": "experience",
+    "post_content": "",
+    "post_excerpt": "اكتشف تجربة الجوهرة الفريدة من الإضاءة إلى الخدمة.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-experience.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "احجز طاولتك",
+    "post_name": "reservations",
+    "post_content": "",
+    "post_excerpt": "احجز طاولتك في أحد فروع الجوهرة.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-reservations.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "تواصل معنا",
+    "post_name": "contact",
+    "post_content": "",
+    "post_excerpt": "تواصل معنا للاستفسارات والاقتراحات، فريقنا جاهز للرد عليكم.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-contact.php"
+    }
+  },
+  {
+    "post_type": "page",
+    "post_title": "فروعنا",
+    "post_name": "branches",
+    "post_content": "",
+    "post_excerpt": "اكتشف جميع فروع الجوهرة المنتشرة في المنطقة.",
+    "post_status": "publish",
+    "meta": {
+      "_wp_page_template": "page-branches.php"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "حمص بالكمأ",
+    "post_content": "<p>حمص كريمي محضر يدوياً مع زيت الكمأ الأسود والصنوبر المحمص والذهب الصالح للأكل.</p>",
+    "post_excerpt": "حمص كريمي محضر يدوياً مع زيت الكمأ الأسود والصنوبر المحمص والذهب الصالح للأكل.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["starters"]
+    },
+    "meta": {
+      "price": "٧٥ ر.س",
+      "name_en": "Truffle Hummus",
+      "featured_image": "menu-truffle-hummus.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "كبة الجوهرة الخاصة",
+    "post_content": "<p>كبة مقلية محشوة باللحم والمكسرات الفاخرة مع دبس الرمان.</p>",
+    "post_excerpt": "كبة مقلية محشوة باللحم والمكسرات الفاخرة مع دبس الرمان.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["starters"]
+    },
+    "meta": {
+      "price": "٦٠ ر.س",
+      "name_en": "Al-Jawhara Kibbeh",
+      "featured_image": "menu-kibbeh.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "فتوش ملكي",
+    "post_content": "<p>خضروات طازجة مع خبز محمص بالأعشاب وصوص السماق والرمان.</p>",
+    "post_excerpt": "خضروات طازجة مع خبز محمص بالأعشاب وصوص السماق والرمان.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["starters"]
+    },
+    "meta": {
+      "price": "٥٠ ر.س",
+      "name_en": "Royal Fattoush",
+      "featured_image": "menu-fattoush.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "ورق عنب بالزيت",
+    "post_content": "<p>ورق عنب محشو بالأرز والأعشاب الطازجة مع لمسة من الليمون وزيت الزيتون.</p>",
+    "post_excerpt": "ورق عنب محشو بالأرز والأعشاب الطازجة مع لمسة من الليمون وزيت الزيتون.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["starters"]
+    },
+    "meta": {
+      "price": "٥٥ ر.س",
+      "name_en": "Stuffed Vine Leaves",
+      "featured_image": "menu-vine-leaves.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "بابا غنوج مدخن",
+    "post_content": "<p>باذنجان مشوي على الفحم مع الطحينة وزيت الزيتون البكر.</p>",
+    "post_excerpt": "باذنجان مشوي على الفحم مع الطحينة وزيت الزيتون البكر.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["starters"]
+    },
+    "meta": {
+      "price": "٤٥ ر.س",
+      "name_en": "Smoked Baba Ghanoush",
+      "featured_image": "menu-baba-ghanoush.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "كباب الكرز الملوكي",
+    "post_content": "<p>لحم ضأن مفروم متبل بصوص الكرز البري الحلو والحامض، يُقدم على خبز محمص.</p>",
+    "post_excerpt": "لحم ضأن مفروم متبل بصوص الكرز البري الحلو والحامض، يُقدم على خبز محمص.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["mains"]
+    },
+    "meta": {
+      "price": "١٤٥ ر.س",
+      "name_en": "Royal Cherry Kebab",
+      "featured_image": "menu-cherry-kebab.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "اوزي لحم فاخر",
+    "post_content": "<p>كتف لحم ضأن مطهو ببطء لمدة ١٢ ساعة يقدم مع الأرز الشرقي والمكسرات الفاخرة.</p>",
+    "post_excerpt": "كتف لحم ضأن مطهو ببطء لمدة ١٢ ساعة يقدم مع الأرز الشرقي والمكسرات الفاخرة.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["mains"]
+    },
+    "meta": {
+      "price": "٢٢٠ ر.س",
+      "name_en": "Premium Lamb Ouzi",
+      "featured_image": "menu-lamb-ouzi.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "منسف أردني أصيل",
+    "post_content": "<p>لحم بلدي مطهو بجميد كركي أصيل يقدم على خبز الشراك والأرز باللوز.</p>",
+    "post_excerpt": "لحم بلدي مطهو بجميد كركي أصيل يقدم على خبز الشراك والأرز باللوز.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["mains"]
+    },
+    "meta": {
+      "price": "١٨٠ ر.س",
+      "name_en": "Authentic Mansaf",
+      "featured_image": "menu-mansaf.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "صيادية سمك فاخرة",
+    "post_content": "<p>سمك طازج مع الأرز البني المحضر ببهاراتنا الخاصة والبصل المقرمش.</p>",
+    "post_excerpt": "سمك طازج مع الأرز البني المحضر ببهاراتنا الخاصة والبصل المقرمش.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["mains"]
+    },
+    "meta": {
+      "price": "١٦٠ ر.س",
+      "name_en": "Luxury Sayadieh",
+      "featured_image": "menu-sayadieh.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "مشاوي مشكلة مدخنة",
+    "post_content": "<p>تشكيلة من الشيش طاووق، الريش، والكباب المشوي على الفحم الطبيعي.</p>",
+    "post_excerpt": "تشكيلة من الشيش طاووق، الريش، والكباب المشوي على الفحم الطبيعي.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["mains"]
+    },
+    "meta": {
+      "price": "١٩٠ ر.س",
+      "name_en": "Smoked Mixed Grill",
+      "featured_image": "menu-mixed-grill.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "ريش غنم بالزعتر",
+    "post_content": "<p>ريش غنم طرية متبلة بالزعتر البري وزيت الزيتون تقدم مع الخضار المشوية.</p>",
+    "post_excerpt": "ريش غنم طرية متبلة بالزعتر البري وزيت الزيتون تقدم مع الخضار المشوية.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["mains"]
+    },
+    "meta": {
+      "price": "١٧٥ ر.س",
+      "name_en": "Lamb Chops with Zaatar",
+      "featured_image": "menu-lamb-chops.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "مقلوبة دجاج بيتي",
+    "post_content": "<p>دجاج مطهو مع الباذنجان والزهرة والأرز، يقلب ليقدم لوحة فنية شهية.</p>",
+    "post_excerpt": "دجاج مطهو مع الباذنجان والزهرة والأرز، يقلب ليقدم لوحة فنية شهية.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["mains"]
+    },
+    "meta": {
+      "price": "١٣٠ ر.س",
+      "name_en": "Home-style Maqluba",
+      "featured_image": "menu-maqluba.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "بقلاوة بالفستق الحلبي",
+    "post_content": "<p>رقائق البقلاوة الهشة محشوة بالفستق الحلبي الفاخر وتقدم مع آيس كريم المستكة.</p>",
+    "post_excerpt": "رقائق البقلاوة الهشة محشوة بالفستق الحلبي الفاخر وتقدم مع آيس كريم المستكة.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["desserts"]
+    },
+    "meta": {
+      "price": "٦٥ ر.س",
+      "name_en": "Pistachio Baklava",
+      "featured_image": "menu-baklava.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "كنافة نابلسية بالجبن",
+    "post_content": "<p>كنافة ساخنة بجبنة عكاوي ذائبة مغطاة بالفستق الحلبي والقطر الساخن.</p>",
+    "post_excerpt": "كنافة ساخنة بجبنة عكاوي ذائبة مغطاة بالفستق الحلبي والقطر الساخن.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["desserts"]
+    },
+    "meta": {
+      "price": "٧٠ ر.س",
+      "name_en": "Cheese Kunafa",
+      "featured_image": "menu-kunafa.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "أم علي بالقشطة",
+    "post_content": "<p>رقائق العجين مع الحليب الساخن والمكسرات والقشطة الطازجة.</p>",
+    "post_excerpt": "رقائق العجين مع الحليب الساخن والمكسرات والقشطة الطازجة.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["desserts"]
+    },
+    "meta": {
+      "price": "٥٥ ر.س",
+      "name_en": "Um Ali with Cream",
+      "featured_image": "menu-um-ali.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "أرز بالحليب والورد",
+    "post_content": "<p>أرز بالحليب كريمي مع ماء الورد الطبيعي وبتلات الورد المجفف.</p>",
+    "post_excerpt": "أرز بالحليب كريمي مع ماء الورد الطبيعي وبتلات الورد المجفف.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["desserts"]
+    },
+    "meta": {
+      "price": "٤٥ ر.س",
+      "name_en": "Rose Rice Pudding",
+      "featured_image": "menu-rice-pudding.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "ليمون بالنعناع منعش",
+    "post_content": "<p>عصير الليمون الطازج مع أوراق النعناع المقطوفة يدوياً والثلج المجروش.</p>",
+    "post_excerpt": "عصير الليمون الطازج مع أوراق النعناع المقطوفة يدوياً والثلج المجروش.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["drinks"]
+    },
+    "meta": {
+      "price": "٣٥ ر.س",
+      "name_en": "Mint Lemonade",
+      "featured_image": "menu-lemonade.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "قهوة سعودية أصيلة",
+    "post_content": "<p>قهوة شقراء محمصة بعناية مع الهيل الفاخر والزعفران، تقدم مع التمر السكري.</p>",
+    "post_excerpt": "قهوة شقراء محمصة بعناية مع الهيل الفاخر والزعفران، تقدم مع التمر السكري.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["drinks"]
+    },
+    "meta": {
+      "price": "٤٠ ر.س",
+      "name_en": "Authentic Saudi Coffee",
+      "featured_image": "menu-saudi-coffee.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "شاي مغربي ملكي",
+    "post_content": "<p>شاي أخضر بالنعناع المغربي الأصيل يحضر بالطريقة التقليدية.</p>",
+    "post_excerpt": "شاي أخضر بالنعناع المغربي الأصيل يحضر بالطريقة التقليدية.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["drinks"]
+    },
+    "meta": {
+      "price": "٣٠ ر.س",
+      "name_en": "Royal Moroccan Tea",
+      "featured_image": "menu-moroccan-tea.jpg"
+    }
+  },
+  {
+    "post_type": "menu_item",
+    "post_title": "عصير رمان طبيعي",
+    "post_content": "<p>عصير رمان طازج غني بمضادات الأكسدة بدون إضافة سكر.</p>",
+    "post_excerpt": "عصير رمان طازج غني بمضادات الأكسدة بدون إضافة سكر.",
+    "post_status": "publish",
+    "taxonomies": {
+      "menu_category": ["drinks"]
+    },
+    "meta": {
+      "price": "٤٠ ر.س",
+      "name_en": "Natural Pomegranate",
+      "featured_image": "menu-pomegranate.jpg"
+    }
+  },
+  {
+    "post_type": "blog_post",
+    "post_title": "سر التوابل الملوكية في الجوهرة",
+    "post_content": "<p>لطالما كانت التوابل هي الروح النابضة للمطبخ العربي، وفي الجوهرة، نأخذ هذا المفهوم إلى آفاق جديدة. نحن لا نكتفي بشراء التوابل الجاهزة، بل نقوم باستيراد بذور الزعفران النقية مباشرة من مزارعها الأصلية، ونقوم بتحميص المكسرات في مطابخنا يومياً لضمان أعلى مستويات النضارة.</p><p>إن التوازن بين المذاق الحامض للسمّاق والدفء المنبعث من الكمون هو ما يخلق تلك النغمة المميزة في أطباقنا. في هذا المقال، نشارككم جزءاً من فلسفتنا في اختيار المكونات وكيف نحول طبقاً بسيطاً إلى تجربة ملكية تستحق الاكتشاف.</p>",
+    "post_excerpt": "نأخذكم في رحلة لاستكشاف خبايا النكهات التي تميز مطبخ الجوهرة، من حقول الزعفران إلى موائدكم...",
+    "post_status": "publish",
+    "meta": {
+      "featured_image": "blog-spices.jpg"
+    }
+  },
+  {
+    "post_type": "blog_post",
+    "post_title": "فن الضيافة العربية المعاصرة",
+    "post_content": "<p>الضيافة في ثقافتنا ليست مجرد خدمة، بل هي واجب مقدس وشكل من أشكال الفن. في الجوهرة، قمنا بدراسة تاريخ الضيافة العربية لنستلهم منها قيم الكرم والترحاب، ودمجناها مع معايير الخدمة العالمية.</p><p>منذ لحظة دخولك، نستقبلك برائحة العود الفاخرة ونغمات القانون الهادئة، حيث يتم تصميم كل ركن ليوفر الخصوصية والراحة. نحن نؤمن بأن \"الجوهرة\" ليست مجرد مكان لتناول الطعام، بل هي مساحة ثقافية تجمع العائلات والأصدقاء في جو مفعم بالأناقة والود.</p>",
+    "post_excerpt": "كيف نجمع بين التراث العريق واللمسات العصرية في استقبال ضيوفنا لضمان تجربة لا تُنسى...",
+    "post_status": "publish",
+    "meta": {
+      "featured_image": "blog-hospitality.jpg"
+    }
+  },
+  {
+    "post_type": "branch",
+    "post_title": "الرياض - شارع التحلية",
+    "post_content": "<p>فرعنا الرئيسي في الرياض يقع في قلب شارع التحلية، أحد أرقى الأحياء في العاصمة. يتميز بمساحات واسعة وخصوصية تامة.</p>",
+    "post_excerpt": "فرعنا الرئيسي في الرياض يقع في قلب شارع التحلية.",
+    "post_status": "publish",
+    "meta": {
+      "name_en": "Riyadh - Tahlia St.",
+      "city": "الرياض",
+      "address": "حي السليمانية، الرياض",
+      "phone": "011-234-5678",
+      "map_link": "#",
+      "featured_image": "branch-riyadh.jpg"
+    }
+  },
+  {
+    "post_type": "branch",
+    "post_title": "جدة - الكورنيش",
+    "post_content": "<p>فرعنا في جدة يطل على الكورنيش مباشرة، يوفر إطلالة خلابة على البحر الأحمر مع أجواء راقية.</p>",
+    "post_excerpt": "فرعنا في جدة يطل على الكورنيش مباشرة.",
+    "post_status": "publish",
+    "meta": {
+      "name_en": "Jeddah - Corniche",
+      "city": "جدة",
+      "address": "طريق الكورنيش، جدة",
+      "phone": "012-345-6789",
+      "map_link": "#",
+      "featured_image": "branch-jeddah.jpg"
+    }
+  },
+  {
+    "post_type": "branch",
+    "post_title": "دبي - داون تاون",
+    "post_content": "<p>فرعنا في دبي يقع في قلب داون تاون، يوفر تجربة فاخرة في أحد أرقى الأحياء في الإمارات.</p>",
+    "post_excerpt": "فرعنا في دبي يقع في قلب داون تاون.",
+    "post_status": "publish",
+    "meta": {
+      "name_en": "Dubai - Downtown",
+      "city": "دبي",
+      "address": "بوليفارد الشيخ محمد، دبي",
+      "phone": "+971-4-567-8901",
+      "map_link": "#",
+      "featured_image": "branch-dubai.jpg"
+    }
+  }
+]
