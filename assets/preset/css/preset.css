@@ -1,0 +1,38 @@
+/**
+ * Industrial Preset Styles
+ * 
+ * Additional styles specific to the Industrial preset
+ */
+
+/* Industrial-specific overrides */
+.preset-industrial .hero-section {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.preset-industrial .btn-accent {
+    box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
+}
+
+.preset-industrial .btn-accent:hover {
+    box-shadow: 0 6px 8px rgba(249, 115, 22, 0.4);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* Statistics section styling */
+.preset-industrial .stats-section {
+    background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
+}
+
+/* Product cards */
+.preset-industrial .product-card {
+    border: 1px solid var(--theme-gray-200);
+    transition: all 0.3s ease;
+}
+
+.preset-industrial .product-card:hover {
+    border-color: var(--theme-accent);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+}

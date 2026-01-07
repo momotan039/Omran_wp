@@ -1,0 +1,19 @@
+/*
+Theme Name: Al-Omran Industrial
+Theme URI: https://alomran-eg.com
+Author: Al-Omran Development Team
+Author URI: https://mohamad-taha.com
+Description: Professional WordPress theme for manufacturing and industrial companies specializing in stainless steel drainage systems, grease traps, and water treatment solutions. Features include product showcase, statistics section, testimonials, company information, and news/blog section.
+Version: 1.0.0
+Text Domain: alomran-industrial
+Requires at least: 5.0
+Tested up to: 6.4
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: custom, industrial, manufacturing, business, rtl, arabic
+*/
+
+/* This file is required for WordPress theme recognition */
+/* All styles are loaded via Tailwind CSS CDN in header.php */
+
