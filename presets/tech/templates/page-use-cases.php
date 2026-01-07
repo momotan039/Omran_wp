@@ -18,8 +18,8 @@ get_header();
 $page_title = alomran_get_option('tech_use_cases_page_title', 'حلول مصممة لتحدياتك');
 $page_subtitle = alomran_get_option('tech_use_cases_page_subtitle', 'نحن نفهم تحديات السوق المحلي ونقدم حلولاً تقنية تعالج جذور المشكلة.');
 
-// Use cases data (can be extended with Redux repeater)
-$use_cases = array(
+// Default use cases data (used if no data saved in Redux)
+$default_use_cases = array(
     array(
         'title' => 'منصات التجارة الإلكترونية',
         'target' => 'E-commerce',
@@ -48,6 +48,68 @@ $use_cases = array(
         'image' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000',
     ),
 );
+
+// Get use cases from Redux repeater or use defaults
+$use_cases_redux = alomran_get_repeater_items('tech_use_cases_items', array(), array('title'));
+
+// Process Redux data and convert to expected format
+$use_cases = array();
+
+if (!empty($use_cases_redux) && is_array($use_cases_redux)) {
+    foreach ($use_cases_redux as $item) {
+        if (!is_array($item) || empty($item['title'])) {
+            continue;
+        }
+        
+        // Get image URL from media field
+        $image_url = '';
+        if (isset($item['image'])) {
+            if (is_array($item['image'])) {
+                // Check for URL first
+                if (isset($item['image']['url']) && !empty($item['image']['url'])) {
+                    $image_url = $item['image']['url'];
+                }
+                // If no URL, try to get from attachment ID
+                if (empty($image_url) && isset($item['image']['id']) && is_numeric($item['image']['id'])) {
+                    $attachment_url = wp_get_attachment_image_url(intval($item['image']['id']), 'full');
+                    if ($attachment_url) {
+                        $image_url = $attachment_url;
+                    }
+                }
+            } elseif (is_string($item['image']) && !empty($item['image'])) {
+                // Direct URL string
+                $image_url = $item['image'];
+            } elseif (is_numeric($item['image'])) {
+                // Just attachment ID
+                $attachment_url = wp_get_attachment_image_url(intval($item['image']), 'full');
+                if ($attachment_url) {
+                    $image_url = $attachment_url;
+                }
+            }
+        }
+        
+        // Build use case array
+        $use_case = array(
+            'title' => isset($item['title']) ? $item['title'] : '',
+            'target' => isset($item['target']) ? $item['target'] : '',
+            'problem' => isset($item['problem']) ? $item['problem'] : '',
+            'solution' => isset($item['solution']) ? $item['solution'] : '',
+            'result' => isset($item['result']) ? $item['result'] : '',
+            'icon' => isset($item['icon']) ? $item['icon'] : '📦',
+            'image' => !empty($image_url) ? $image_url : 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=2000',
+        );
+        
+        // Only add if title is not empty
+        if (!empty($use_case['title'])) {
+            $use_cases[] = $use_case;
+        }
+    }
+}
+
+// Use defaults if no valid use cases from Redux
+if (empty($use_cases)) {
+    $use_cases = $default_use_cases;
+}
 ?>
 
 <div class="py-24 bg-slate-50 overflow-hidden">
@@ -99,6 +161,15 @@ $use_cases = array(
 
 <?php
 get_footer();
+
+
+
+
+
+
+
+
+
 
 
 

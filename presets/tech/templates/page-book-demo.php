@@ -20,13 +20,14 @@ $page_subtitle = alomran_get_option('tech_demo_page_subtitle', 'اكتشف كي�
 $page_description = alomran_get_option('tech_demo_page_description', 'خلال 30 دقيقة، سنعرض لك كيف يمكن لمنصة إتقان أن تساعدك في تحقيق أهدافك التجارية. احجز موعدك الآن واستمتع بعرض توضيحي مخصص لاحتياجاتك.');
 
 // Get benefits from Redux repeater or use defaults
-$demo_benefits_redux = alomran_get_option('tech_demo_benefits', array());
+// Use helper function to get repeater items (same as other pages)
+$demo_benefits_redux = alomran_get_repeater_items('tech_demo_benefits', array(), array('benefit_text'));
 $demo_benefits = array();
 
 if (!empty($demo_benefits_redux) && is_array($demo_benefits_redux)) {
     foreach ($demo_benefits_redux as $benefit_data) {
-        if (isset($benefit_data['benefit_text']) && !empty($benefit_data['benefit_text'])) {
-            $demo_benefits[] = $benefit_data['benefit_text'];
+        if (is_array($benefit_data) && isset($benefit_data['benefit_text']) && !empty(trim($benefit_data['benefit_text']))) {
+            $demo_benefits[] = trim($benefit_data['benefit_text']);
         }
     }
 }
